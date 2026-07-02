@@ -6,4 +6,6 @@ matplotlib
 pytest
 sb3-contrib
 stable-baselines3
-
+tensorboard
+tqdm
+rich
