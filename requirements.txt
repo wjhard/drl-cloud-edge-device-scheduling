@@ -1,0 +1,9 @@
+networkx
+gymnasium
+pyyaml
+numpy
+matplotlib
+pytest
+sb3-contrib
+stable-baselines3
+

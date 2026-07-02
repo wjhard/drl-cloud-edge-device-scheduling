@@ -1,0 +1,16 @@
+__pycache__/
+.pytest_cache/
+*.py[cod]
+
+# Demo/validation artifacts
+env/dag_demo.png
+evaluation/scenarios/
+evaluation/results/
+
+# Training artifacts
+training/checkpoints/
+training/tb_logs/
+training/monitor_logs/
+
+# Local run logs
+*.log
