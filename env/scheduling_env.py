@@ -31,16 +31,20 @@ class SchedulingEnv(gym.Env):
         dag_generator_fn: Callable[..., DAGTask],
         resource_config: ResourceConfig,
         max_tasks: int = 50,
+        reward_mode: str = "raw",
     ):
         super().__init__()
         if max_tasks <= 0:
             raise ValueError("max_tasks must be positive")
+        if reward_mode not in {"raw", "relative_heft"}:
+            raise ValueError("reward_mode must be either 'raw' or 'relative_heft'")
 
         self.dag_generator_fn = dag_generator_fn
         self.resource_config = resource_config
         self.max_tasks = max_tasks
         self.max_ready_tasks = max_tasks
         self.num_resources = len(resource_config.resources)
+        self.reward_mode = reward_mode
 
         self.task_feature_dim = 5
         self.resource_feature_dim = 4
@@ -66,6 +70,7 @@ class SchedulingEnv(gym.Env):
         }
         self.ready_tasks: list[int] = []
         self.current_makespan = 0.0
+        self._heft_makespan_ref: float | None = None
 
     def _call_dag_generator(self, seed: int | None) -> DAGTask:
         if seed is None:
@@ -149,6 +154,7 @@ class SchedulingEnv(gym.Env):
         self.task_times = {}
         self.resource_events = {resource.id: [] for resource in self.resource_config.resources}
         self.current_makespan = 0.0
+        self._heft_makespan_ref = self._compute_heft_makespan_reference()
         self.ready_tasks = get_ready_tasks(self.dag, self.completed_tasks)
         return self._get_observation(), {"ready_tasks": list(self.ready_tasks), "makespan": 0.0}
 
@@ -176,9 +182,14 @@ class SchedulingEnv(gym.Env):
         if not terminated and not self.ready_tasks:
             raise RuntimeError("no legal actions remain before all tasks are completed")
 
-        reward = -1.0
-        if terminated:
-            reward -= self.current_makespan
+        if self.reward_mode == "relative_heft":
+            reward = -0.01
+            if terminated and self._heft_makespan_ref is not None and self._heft_makespan_ref > 1e-12:
+                reward -= (self.current_makespan / self._heft_makespan_ref - 1.0)
+        else:
+            reward = -1.0
+            if terminated:
+                reward -= self.current_makespan
 
         info = {
             "task_id": task_id,
@@ -227,6 +238,28 @@ class SchedulingEnv(gym.Env):
         if not events:
             return 0.0
         return max(event.finish_time for event in events)
+
+    def _compute_heft_makespan_reference(self) -> float | None:
+        if self.reward_mode != "relative_heft":
+            return None
+        assert self.dag is not None
+
+        from baselines.heft_scheduler import HEFTScheduler
+
+        reference_config = ResourceConfig(
+            [
+                Resource(
+                    id=resource.id,
+                    tier=resource.tier,
+                    compute_power=resource.compute_power,
+                    bandwidth=resource.bandwidth,
+                )
+                for resource in self.resource_config.resources
+            ]
+        )
+        scheduler = HEFTScheduler()
+        schedule_result = scheduler.schedule(self.dag, reference_config)
+        return scheduler.compute_makespan(schedule_result)
 
 
 def _run_random_policy_demo() -> None:

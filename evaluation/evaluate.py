@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+from datetime import datetime
 import json
 import os
 import statistics
@@ -42,6 +43,23 @@ def _ensure_scenarios(config_path: str | Path, scenarios_dir: Path) -> list[Path
     return sorted(scenarios_dir.glob("*.json"))
 
 
+def _resolve_model_zip_path(model_path: str | Path) -> Path:
+    path = Path(model_path)
+    zip_path = path if path.suffix == ".zip" else Path(f"{path}.zip")
+    return zip_path.resolve()
+
+
+def _print_model_path_diagnostic(stage: str, model_path: str | Path) -> None:
+    model_path_abs = Path(model_path).resolve()
+    model_zip_path = _resolve_model_zip_path(model_path)
+    mtime = os.path.getmtime(model_zip_path)
+    mtime_text = datetime.fromtimestamp(mtime).strftime("%Y-%m-%d %H:%M:%S")
+    print(f"[evaluate:model:{stage}] model_path_arg_abs={model_path_abs}")
+    print(f"[evaluate:model:{stage}] model_zip_abs={model_zip_path}")
+    print(f"[evaluate:model:{stage}] model_zip_mtime_epoch={mtime:.6f}")
+    print(f"[evaluate:model:{stage}] model_zip_mtime_local={mtime_text}")
+
+
 def evaluate(config_path: str | Path, model_path: str | Path) -> dict:
     config = _load_config(config_path)
     env_config = config["env"]
@@ -53,11 +71,14 @@ def evaluate(config_path: str | Path, model_path: str | Path) -> dict:
         raise RuntimeError(f"no validation scenarios found in {scenarios_dir}")
 
     heft_scheduler = HEFTScheduler()
+    _print_model_path_diagnostic("before_load", model_path)
     rl_scheduler = RLScheduler(
         model_path=model_path,
         max_tasks=int(env_config["max_tasks_padding"]),
         deterministic=True,
+        reward_mode=str(env_config.get("reward_mode", "raw")),
     )
+    _print_model_path_diagnostic("after_load", model_path)
 
     records: list[dict] = []
     for scenario_path in scenario_paths:
@@ -149,4 +170,5 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
 

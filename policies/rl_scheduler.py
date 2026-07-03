@@ -19,16 +19,24 @@ from scheduler_interface import BaseScheduler, ScheduleResult
 
 
 class RLScheduler(BaseScheduler):
-    def __init__(self, model_path: str | Path, max_tasks: int, deterministic: bool = True):
+    def __init__(
+        self,
+        model_path: str | Path,
+        max_tasks: int,
+        deterministic: bool = True,
+        reward_mode: str = "raw",
+    ):
         self.model = MaskablePPO.load(str(model_path))
         self.max_tasks = max_tasks
         self.deterministic = deterministic
+        self.reward_mode = reward_mode
 
     def schedule(self, dag: DAGTask, resource_config: ResourceConfig) -> ScheduleResult:
         env = SchedulingEnv(
             dag_generator_fn=lambda seed=None: dag,
             resource_config=resource_config,
             max_tasks=self.max_tasks,
+            reward_mode=self.reward_mode,
         )
         observation, _ = env.reset()
 

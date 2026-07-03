@@ -14,3 +14,4 @@ training/monitor_logs/
 
 # Local run logs
 *.log
+*_audit_report.txt

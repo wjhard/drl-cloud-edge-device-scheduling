@@ -98,6 +98,7 @@ def build_model(config: dict) -> tuple[MaskablePPO, ActionMasker]:
         dag_generator_fn=dag_generator,
         resource_config=resource_config,
         max_tasks=int(env_config["max_tasks_padding"]),
+        reward_mode=str(env_config.get("reward_mode", "raw")),
     )
 
     monitor_log_dir = _resolve_project_path(train_config["monitor_log_dir"])
