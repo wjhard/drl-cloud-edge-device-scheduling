@@ -48,16 +48,46 @@ class SchedulingEnv(gym.Env):
 
         self.task_feature_dim = 5
         self.resource_feature_dim = 4
-        observation_dim = (
-            self.max_ready_tasks * self.task_feature_dim
-            + self.num_resources * self.resource_feature_dim
-            + 2
-        )
-        self.observation_space = spaces.Box(
-            low=-np.inf,
-            high=np.inf,
-            shape=(observation_dim,),
-            dtype=np.float32,
+        self.global_feature_dim = 2
+        self.observation_space = spaces.Dict(
+            {
+                "task_features": spaces.Box(
+                    low=-np.inf,
+                    high=np.inf,
+                    shape=(self.max_tasks, self.task_feature_dim),
+                    dtype=np.float32,
+                ),
+                "task_valid_mask": spaces.Box(
+                    low=0.0,
+                    high=1.0,
+                    shape=(self.max_tasks,),
+                    dtype=np.float32,
+                ),
+                "task_adjacency": spaces.Box(
+                    low=0.0,
+                    high=1.0,
+                    shape=(self.max_tasks, self.max_tasks),
+                    dtype=np.float32,
+                ),
+                "ready_task_node_ids": spaces.Box(
+                    low=0,
+                    high=max(0, self.max_tasks - 1),
+                    shape=(self.max_ready_tasks,),
+                    dtype=np.int64,
+                ),
+                "resource_features": spaces.Box(
+                    low=-np.inf,
+                    high=np.inf,
+                    shape=(self.num_resources, self.resource_feature_dim),
+                    dtype=np.float32,
+                ),
+                "global_features": spaces.Box(
+                    low=-np.inf,
+                    high=np.inf,
+                    shape=(self.global_feature_dim,),
+                    dtype=np.float32,
+                ),
+            }
         )
         self.action_space = spaces.Discrete(self.max_ready_tasks * self.num_resources)
 
@@ -88,46 +118,69 @@ class SchedulingEnv(gym.Env):
             for succ in graph.successors(task_id)
         )
 
-    def _get_observation(self) -> np.ndarray:
+    def _task_features(self, task_id: int) -> list[float]:
         assert self.dag is not None
         graph = self.dag.graph
-        features: list[float] = []
+        node_data = graph.nodes[task_id]
+        return [
+            1.0,
+            float(task_id) / max(1, self.max_tasks - 1),
+            float(node_data["computation_cost"]),
+            float(graph.out_degree(task_id)),
+            self._successor_cost_sum(task_id),
+        ]
 
-        for slot in range(self.max_ready_tasks):
-            if slot < len(self.ready_tasks):
-                task_id = self.ready_tasks[slot]
-                node_data = graph.nodes[task_id]
-                features.extend(
-                    [
-                        1.0,
-                        float(task_id) / max(1, self.max_tasks - 1),
-                        float(node_data["computation_cost"]),
-                        float(graph.out_degree(task_id)),
-                        self._successor_cost_sum(task_id),
-                    ]
-                )
-            else:
-                features.extend([0.0] * self.task_feature_dim)
+    def _get_observation(self) -> dict[str, np.ndarray]:
+        assert self.dag is not None
+        graph = self.dag.graph
+        task_features = np.zeros((self.max_tasks, self.task_feature_dim), dtype=np.float32)
+        task_valid_mask = np.zeros((self.max_tasks,), dtype=np.float32)
+        task_adjacency = np.zeros((self.max_tasks, self.max_tasks), dtype=np.float32)
+        ready_task_node_ids = np.zeros((self.max_ready_tasks,), dtype=np.int64)
+        resource_features = np.zeros((self.num_resources, self.resource_feature_dim), dtype=np.float32)
 
-        for resource in self.resource_config.resources:
+        for task_id in graph.nodes:
+            if 0 <= int(task_id) < self.max_tasks:
+                task_features[int(task_id)] = np.asarray(self._task_features(int(task_id)), dtype=np.float32)
+                task_valid_mask[int(task_id)] = 1.0
+                task_adjacency[int(task_id), int(task_id)] = 1.0
+
+        for src, dst in graph.edges:
+            if 0 <= int(src) < self.max_tasks and 0 <= int(dst) < self.max_tasks:
+                task_adjacency[int(src), int(dst)] = 1.0
+                task_adjacency[int(dst), int(src)] = 1.0
+
+        for slot, task_id in enumerate(self.ready_tasks[: self.max_ready_tasks]):
+            ready_task_node_ids[slot] = int(task_id)
+
+        for index, resource in enumerate(self.resource_config.resources):
             resource_available_time = self._resource_available_time(resource.id)
-            features.extend(
+            resource_features[index] = np.asarray(
                 [
                     float(resource_available_time),
                     TIER_ENCODING.get(resource.tier, 0.0),
                     float(resource.compute_power),
                     float(resource.bandwidth),
-                ]
+                ],
+                dtype=np.float32,
             )
 
         total_tasks = graph.number_of_nodes()
-        features.extend(
+        global_features = np.asarray(
             [
                 len(self.completed_tasks) / max(1, total_tasks),
                 float(self.current_makespan),
-            ]
+            ],
+            dtype=np.float32,
         )
-        return np.asarray(features, dtype=np.float32)
+        return {
+            "task_features": task_features,
+            "task_valid_mask": task_valid_mask,
+            "task_adjacency": task_adjacency,
+            "ready_task_node_ids": ready_task_node_ids,
+            "resource_features": resource_features,
+            "global_features": global_features,
+        }
 
     def action_masks(self) -> np.ndarray:
         mask = np.zeros(self.action_space.n, dtype=bool)
@@ -142,7 +195,7 @@ class SchedulingEnv(gym.Env):
         *,
         seed: int | None = None,
         options: dict[str, Any] | None = None,
-    ) -> tuple[np.ndarray, dict[str, Any]]:
+    ) -> tuple[dict[str, np.ndarray], dict[str, Any]]:
         super().reset(seed=seed)
         self.dag = self._call_dag_generator(seed)
         if self.dag.graph.number_of_nodes() > self.max_tasks:
@@ -158,7 +211,7 @@ class SchedulingEnv(gym.Env):
         self.ready_tasks = get_ready_tasks(self.dag, self.completed_tasks)
         return self._get_observation(), {"ready_tasks": list(self.ready_tasks), "makespan": 0.0}
 
-    def step(self, action: int) -> tuple[np.ndarray, float, bool, bool, dict[str, Any]]:
+    def step(self, action: int) -> tuple[dict[str, np.ndarray], float, bool, bool, dict[str, Any]]:
         assert self.dag is not None
         if action < 0 or action >= self.action_space.n:
             raise ValueError(f"action {action} is outside action space")
@@ -219,7 +272,6 @@ class SchedulingEnv(gym.Env):
             )
             data_ready_time = max(data_ready_time, pred_finish + communication_time)
 
-        start_time = max(resource.available_time, data_ready_time)
         execution_time = self.resource_config.get_execution_time(graph.nodes[task_id], resource)
         start_time, finish_time = find_earliest_slot(
             self.resource_events[resource.id],

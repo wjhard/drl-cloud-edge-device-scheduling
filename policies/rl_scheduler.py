@@ -5,6 +5,9 @@ import sys
 import types
 from pathlib import Path
 
+import gymnasium as gym
+from gymnasium import spaces
+
 if __package__ in {None, ""}:
     sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -30,20 +33,22 @@ class RLScheduler(BaseScheduler):
         self.max_tasks = max_tasks
         self.deterministic = deterministic
         self.reward_mode = reward_mode
+        self._uses_dict_observation = isinstance(self.model.observation_space, spaces.Dict)
 
     def schedule(self, dag: DAGTask, resource_config: ResourceConfig) -> ScheduleResult:
-        env = SchedulingEnv(
+        raw_env = SchedulingEnv(
             dag_generator_fn=lambda seed=None: dag,
             resource_config=resource_config,
             max_tasks=self.max_tasks,
             reward_mode=self.reward_mode,
         )
+        env: gym.Env = raw_env if self._uses_dict_observation else gym.wrappers.FlattenObservation(raw_env)
         observation, _ = env.reset()
 
         schedule_result: ScheduleResult = {}
         terminated = False
         while not terminated:
-            mask = env.action_masks()
+            mask = raw_env.action_masks()
             action, _ = self.model.predict(
                 observation,
                 action_masks=mask,

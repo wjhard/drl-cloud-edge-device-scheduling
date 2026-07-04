@@ -11,6 +11,7 @@ from pathlib import Path
 sys.modules.setdefault("tensorboard.compat.notf", types.ModuleType("tensorboard.compat.notf"))
 
 import yaml
+from gymnasium.wrappers import FlattenObservation
 from stable_baselines3.common.callbacks import BaseCallback
 from stable_baselines3.common.monitor import Monitor
 from sb3_contrib import MaskablePPO
@@ -21,6 +22,7 @@ if __package__ in {None, ""}:
 
 from env.resource_config import load_resource_config
 from env.scheduling_env import SchedulingEnv
+from policies.gat_features_extractor import TaskGraphFeaturesExtractor
 from training.dag_curriculum import make_training_dag_generator
 
 
@@ -100,10 +102,12 @@ def build_model(config: dict) -> tuple[MaskablePPO, ActionMasker]:
         max_tasks=int(env_config["max_tasks_padding"]),
         reward_mode=str(env_config.get("reward_mode", "raw")),
     )
+    use_gat_encoder = bool(env_config.get("use_gat_encoder", False))
+    training_env = raw_env if use_gat_encoder else FlattenObservation(raw_env)
 
     monitor_log_dir = _resolve_project_path(train_config["monitor_log_dir"])
     monitor_log_dir.mkdir(parents=True, exist_ok=True)
-    monitored_env = Monitor(raw_env, filename=str(monitor_log_dir / "monitor.csv"))
+    monitored_env = Monitor(training_env, filename=str(monitor_log_dir / "monitor.csv"))
     masked_env = ActionMasker(monitored_env, _mask_fn)
 
     tensorboard_log = train_config.get("tensorboard_log")
@@ -112,8 +116,21 @@ def build_model(config: dict) -> tuple[MaskablePPO, ActionMasker]:
         Path(tensorboard_log).mkdir(parents=True, exist_ok=True)
 
     policy_kwargs = {"net_arch": list(train_config["net_arch"])}
+    policy_name = "MlpPolicy"
+    if use_gat_encoder:
+        policy_name = "MultiInputPolicy"
+        policy_kwargs.update(
+            {
+                "features_extractor_class": TaskGraphFeaturesExtractor,
+                "features_extractor_kwargs": {
+                    "hidden_dim": 64,
+                    "num_gat_layers": 2,
+                    "num_heads": 2,
+                },
+            }
+        )
     model = MaskablePPO(
-        "MlpPolicy",
+        policy_name,
         masked_env,
         learning_rate=float(train_config["learning_rate"]),
         n_steps=int(train_config["n_steps"]),
@@ -146,7 +163,7 @@ def train(config_path: str | Path) -> Path:
         total_timesteps=total_timesteps,
         progress_bar=True,
         callback=callback,
-        tb_log_name="ppo_mlp_baseline",
+        tb_log_name=save_path.name,
     )
     model.save(str(save_path))
     elapsed = time.time() - start

@@ -13,6 +13,13 @@ def _resource_config():
     return load_resource_config(default_resource_config_path())
 
 
+def _assert_observation_matches_space(observation, env):
+    assert set(observation) == set(env.observation_space.spaces)
+    for key, space in env.observation_space.spaces.items():
+        assert observation[key].shape == space.shape
+        assert observation[key].dtype == space.dtype
+
+
 def test_dag_generator_no_cycle():
     dag = generate_random_dag(num_tasks=20, edge_density=0.4, seed=1)
     assert nx.is_directed_acyclic_graph(dag.graph)
@@ -25,7 +32,7 @@ def test_env_reset_and_step():
         max_tasks=20,
     )
     observation, info = env.reset(seed=2)
-    assert observation.shape == env.observation_space.shape
+    _assert_observation_matches_space(observation, env)
     assert info["ready_tasks"]
 
     terminated = False
@@ -34,7 +41,7 @@ def test_env_reset_and_step():
         legal_actions = np.flatnonzero(env.action_masks())
         assert legal_actions.size > 0
         observation, reward, terminated, truncated, info = env.step(int(legal_actions[0]))
-        assert observation.shape == env.observation_space.shape
+        _assert_observation_matches_space(observation, env)
         assert not truncated
         assert reward <= -1.0
         steps += 1
@@ -74,4 +81,3 @@ def test_action_mask_consistency():
     assert mask.dtype == bool
     assert mask.shape == (env.action_space.n,)
     assert int(mask.sum()) == len(env.ready_tasks) * env.num_resources
-
