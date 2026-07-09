@@ -11,7 +11,11 @@ evaluation/results/
 training/checkpoints/
 training/tb_logs/
 training/monitor_logs/
+training/bc_datasets/
 
 # Local run logs
 *.log
+*.pid
+*_meta.txt
 *_audit_report.txt
+experiment_logs/

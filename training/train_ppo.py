@@ -14,6 +14,7 @@ import yaml
 from gymnasium.wrappers import FlattenObservation
 from stable_baselines3.common.callbacks import BaseCallback
 from stable_baselines3.common.monitor import Monitor
+from stable_baselines3.common.vec_env import DummyVecEnv, VecNormalize
 from sb3_contrib import MaskablePPO
 from sb3_contrib.common.wrappers import ActionMasker
 
@@ -23,6 +24,7 @@ if __package__ in {None, ""}:
 from env.resource_config import load_resource_config
 from env.scheduling_env import SchedulingEnv
 from policies.gat_features_extractor import TaskGraphFeaturesExtractor
+from training.behavior_cloning import pretrain_policy_with_bc
 from training.dag_curriculum import make_training_dag_generator
 
 
@@ -78,13 +80,24 @@ def _load_config(config_path: str | Path) -> dict:
         return yaml.safe_load(file)
 
 
+def _as_bool(value: object, default: bool = False) -> bool:
+    if value is None:
+        return default
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, str):
+        return value.strip().lower() in {"1", "true", "yes", "y", "on"}
+    return bool(value)
+
+
 def _mask_fn(env: SchedulingEnv):
     if hasattr(env, "action_masks"):
         return env.action_masks()
     return env.unwrapped.action_masks()
 
 
-def build_model(config: dict) -> tuple[MaskablePPO, ActionMasker]:
+def build_model(config: dict) -> tuple[MaskablePPO, object]:
+    _force_tensorboard_stub()
     env_config = config["env"]
     train_config = config["training"]
 
@@ -101,14 +114,22 @@ def build_model(config: dict) -> tuple[MaskablePPO, ActionMasker]:
         resource_config=resource_config,
         max_tasks=int(env_config["max_tasks_padding"]),
         reward_mode=str(env_config.get("reward_mode", "raw")),
+        normalize_observations=_as_bool(env_config.get("normalize_observations", False)),
     )
-    use_gat_encoder = bool(env_config.get("use_gat_encoder", False))
+    use_gat_encoder = _as_bool(env_config.get("use_gat_encoder", False))
     training_env = raw_env if use_gat_encoder else FlattenObservation(raw_env)
 
     monitor_log_dir = _resolve_project_path(train_config["monitor_log_dir"])
     monitor_log_dir.mkdir(parents=True, exist_ok=True)
     monitored_env = Monitor(training_env, filename=str(monitor_log_dir / "monitor.csv"))
     masked_env = ActionMasker(monitored_env, _mask_fn)
+    model_env: object = masked_env
+    if _as_bool(train_config.get("normalize_reward", False)):
+        model_env = VecNormalize(
+            DummyVecEnv([lambda: masked_env]),
+            norm_obs=False,
+            norm_reward=True,
+        )
 
     tensorboard_log = train_config.get("tensorboard_log")
     if tensorboard_log:
@@ -131,7 +152,7 @@ def build_model(config: dict) -> tuple[MaskablePPO, ActionMasker]:
         )
     model = MaskablePPO(
         policy_name,
-        masked_env,
+        model_env,
         learning_rate=float(train_config["learning_rate"]),
         n_steps=int(train_config["n_steps"]),
         batch_size=int(train_config["batch_size"]),
@@ -140,12 +161,13 @@ def build_model(config: dict) -> tuple[MaskablePPO, ActionMasker]:
         gae_lambda=float(train_config["gae_lambda"]),
         clip_range=float(train_config["clip_range"]),
         ent_coef=float(train_config["ent_coef"]),
+        vf_coef=float(train_config.get("vf_coef", 0.5)),
         policy_kwargs=policy_kwargs,
         seed=int(train_config["seed"]),
         tensorboard_log=tensorboard_log,
         verbose=1,
     )
-    return model, masked_env
+    return model, model_env
 
 
 def train(config_path: str | Path) -> Path:
@@ -157,6 +179,15 @@ def train(config_path: str | Path) -> Path:
     start = time.time()
     _force_tensorboard_stub()
     model, _ = build_model(config)
+    if _as_bool(train_config.get("warm_start_bc", False)):
+        dataset_path = _resolve_project_path(train_config["bc_dataset_path"])
+        pretrain_policy_with_bc(
+            model,
+            dataset_path=dataset_path,
+            epochs=int(train_config.get("bc_epochs", 10)),
+            batch_size=int(train_config.get("bc_batch_size", 64)),
+            learning_rate=float(train_config.get("bc_learning_rate", 1e-4)),
+        )
     total_timesteps = int(train_config["total_timesteps"])
     callback = ProgressPrinterCallback(total_timesteps)
     model.learn(

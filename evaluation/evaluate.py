@@ -77,6 +77,7 @@ def evaluate(config_path: str | Path, model_path: str | Path) -> dict:
         max_tasks=int(env_config["max_tasks_padding"]),
         deterministic=True,
         reward_mode=str(env_config.get("reward_mode", "raw")),
+        normalize_observations=bool(env_config.get("normalize_observations", False)),
     )
     _print_model_path_diagnostic("after_load", model_path)
 

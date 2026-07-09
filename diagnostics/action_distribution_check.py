@@ -25,20 +25,28 @@ def main() -> None:
     parser.add_argument("--max-tasks", type=int, default=DEFAULT_MAX_TASKS)
     parser.add_argument("--edge-density", type=float, default=0.35)
     parser.add_argument("--seed-start", type=int, default=424200)
+    parser.add_argument(
+        "--normalize-observations",
+        action="store_true",
+        help="Normalize observations before passing them to the scheduler.",
+    )
     args = parser.parse_args()
 
     model_path = Path(args.model_path).resolve()
     model_zip = Path(f"{model_path}.zip") if model_path.suffix != ".zip" else model_path
+    normalize_observations = args.normalize_observations or "normalized" in str(args.model_path).lower()
     print("ACTION_DISTRIBUTION_CHECK")
     print(f"model_path_arg_abs={model_path}")
     print(f"model_zip_abs={model_zip.resolve()}")
     print(f"model_zip_size_bytes={model_zip.stat().st_size}")
     print(f"model_zip_mtime_epoch={model_zip.stat().st_mtime:.6f}")
+    print(f"normalize_observations={normalize_observations}")
 
     scheduler = RLScheduler(
         model_path=args.model_path,
         max_tasks=args.max_tasks,
         deterministic=True,
+        normalize_observations=normalize_observations,
     )
 
     total_counts: Counter[str] = Counter()

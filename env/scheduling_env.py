@@ -12,6 +12,7 @@ if __package__ in {None, ""}:
     sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from env.dag_generator import DAGTask, generate_random_dag, get_ready_tasks
+from env.observation_normalizer import ObservationNormalizer
 from env.resource_config import Resource, ResourceConfig, default_resource_config_path, load_resource_config
 from env.scheduling_utils import ScheduledEvent, find_earliest_slot
 
@@ -32,6 +33,7 @@ class SchedulingEnv(gym.Env):
         resource_config: ResourceConfig,
         max_tasks: int = 50,
         reward_mode: str = "raw",
+        normalize_observations: bool = False,
     ):
         super().__init__()
         if max_tasks <= 0:
@@ -45,6 +47,8 @@ class SchedulingEnv(gym.Env):
         self.max_ready_tasks = max_tasks
         self.num_resources = len(resource_config.resources)
         self.reward_mode = reward_mode
+        self.normalize_observations = normalize_observations
+        self.observation_normalizer = ObservationNormalizer() if normalize_observations else None
 
         self.task_feature_dim = 5
         self.resource_feature_dim = 4
@@ -173,7 +177,7 @@ class SchedulingEnv(gym.Env):
             ],
             dtype=np.float32,
         )
-        return {
+        observation = {
             "task_features": task_features,
             "task_valid_mask": task_valid_mask,
             "task_adjacency": task_adjacency,
@@ -181,6 +185,9 @@ class SchedulingEnv(gym.Env):
             "resource_features": resource_features,
             "global_features": global_features,
         }
+        if self.observation_normalizer is not None:
+            observation = self.observation_normalizer.normalize(observation)
+        return observation
 
     def action_masks(self) -> np.ndarray:
         mask = np.zeros(self.action_space.n, dtype=bool)

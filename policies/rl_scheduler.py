@@ -28,11 +28,13 @@ class RLScheduler(BaseScheduler):
         max_tasks: int,
         deterministic: bool = True,
         reward_mode: str = "raw",
+        normalize_observations: bool = False,
     ):
         self.model = MaskablePPO.load(str(model_path))
         self.max_tasks = max_tasks
         self.deterministic = deterministic
         self.reward_mode = reward_mode
+        self.normalize_observations = normalize_observations
         self._uses_dict_observation = isinstance(self.model.observation_space, spaces.Dict)
 
     def schedule(self, dag: DAGTask, resource_config: ResourceConfig) -> ScheduleResult:
@@ -41,6 +43,7 @@ class RLScheduler(BaseScheduler):
             resource_config=resource_config,
             max_tasks=self.max_tasks,
             reward_mode=self.reward_mode,
+            normalize_observations=self.normalize_observations,
         )
         env: gym.Env = raw_env if self._uses_dict_observation else gym.wrappers.FlattenObservation(raw_env)
         observation, _ = env.reset()

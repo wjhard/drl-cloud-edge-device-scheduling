@@ -1,0 +1,50 @@
+{
+  "source": "training/bc_datasets/mlp_bc_dataset.npz, 500 DAGs, seed_start=2000000",
+  "epsilon": 1e-08,
+  "task_features": {
+    "2": {
+      "name": "computation_cost",
+      "mean": 5.4964399337768555,
+      "std": 2.6043312549591064
+    },
+    "3": {
+      "name": "out_degree",
+      "mean": 2.573108196258545,
+      "std": 2.59713077545166
+    },
+    "4": {
+      "name": "successor_cost_sum",
+      "mean": 14.22797966003418,
+      "std": 14.892826080322266
+    }
+  },
+  "resource_features": {
+    "0": {
+      "name": "available_time",
+      "mean": 0.21781891584396362,
+      "std": 0.2511979341506958
+    },
+    "2": {
+      "name": "compute_power",
+      "mean": 40.0,
+      "std": 35.881752014160156
+    },
+    "3": {
+      "name": "bandwidth",
+      "mean": 342.5,
+      "std": 385.25152587890625
+    }
+  },
+  "global_features": {
+    "0": {
+      "name": "completed_fraction",
+      "mean": 0.4688977301120758,
+      "std": 0.28826048970222473
+    },
+    "1": {
+      "name": "current_makespan",
+      "mean": 0.3830050528049469,
+      "std": 0.24824093282222748
+    }
+  }
+}
