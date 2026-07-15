@@ -45,6 +45,8 @@ class ObservationNormalizer:
 
         for column_text, stat in self.stats.get("task_features", {}).items():
             column = int(column_text)
+            if column >= task_features.shape[-1]:
+                continue
             mean = float(stat["mean"])
             std = float(stat["std"])
             task_features[valid_rows, column] = (
@@ -54,6 +56,8 @@ class ObservationNormalizer:
     def _normalize_feature_columns(self, features: np.ndarray, stats: dict[str, dict]) -> None:
         for column_text, stat in stats.items():
             column = int(column_text)
+            if column >= features.shape[-1]:
+                continue
             mean = float(stat["mean"])
             std = float(stat["std"])
             features[..., column] = (features[..., column] - mean) / (std + self.epsilon)

@@ -23,9 +23,12 @@ if __package__ in {None, ""}:
 
 from env.resource_config import load_resource_config
 from env.scheduling_env import SchedulingEnv
+from env.scheduling_env_ranked import SchedulingEnvRanked
+from env.scheduling_env_residual import SchedulingEnvResidual
 from policies.gat_features_extractor import TaskGraphFeaturesExtractor
+from policies.residual_ranking_policy import ResidualRankingPolicy
 from training.behavior_cloning import pretrain_policy_with_bc
-from training.dag_curriculum import make_training_dag_generator
+from training.dag_curriculum import make_progressive_task_range_generator, make_training_dag_generator
 
 
 DEFAULT_CONFIG = "training/configs/ppo_mlp_baseline.yaml"
@@ -57,13 +60,16 @@ def _force_tensorboard_stub() -> None:
 
 
 class ProgressPrinterCallback(BaseCallback):
-    def __init__(self, total_timesteps: int):
+    def __init__(self, total_timesteps: int, dag_generator: object | None = None):
         super().__init__()
         self.total_timesteps = total_timesteps
+        self.dag_generator = dag_generator
         self.interval = max(1, total_timesteps // 10)
         self.next_report = self.interval
 
     def _on_step(self) -> bool:
+        if self.dag_generator is not None and hasattr(self.dag_generator, "set_progress_ratio"):
+            self.dag_generator.set_progress_ratio(self.num_timesteps / max(1, self.total_timesteps))
         while self.num_timesteps >= self.next_report:
             percent = min(100.0, 100.0 * self.num_timesteps / self.total_timesteps)
             print(
@@ -90,7 +96,7 @@ def _as_bool(value: object, default: bool = False) -> bool:
     return bool(value)
 
 
-def _mask_fn(env: SchedulingEnv):
+def _mask_fn(env):
     if hasattr(env, "action_masks"):
         return env.action_masks()
     return env.unwrapped.action_masks()
@@ -101,23 +107,44 @@ def build_model(config: dict) -> tuple[MaskablePPO, object]:
     env_config = config["env"]
     train_config = config["training"]
 
-    dag_generator = make_training_dag_generator(
-        min_tasks=int(env_config["min_tasks"]),
-        max_tasks=int(env_config["max_tasks"]),
-        edge_density_min=float(env_config["edge_density_min"]),
-        edge_density_max=float(env_config["edge_density_max"]),
-        base_seed=int(train_config["seed"]),
-    )
+    curriculum_config = train_config.get("curriculum", {})
+    if _as_bool(curriculum_config.get("enabled", False)):
+        dag_generator = make_progressive_task_range_generator(
+            min_tasks=int(env_config["min_tasks"]),
+            max_tasks=int(env_config["max_tasks"]),
+            edge_density_min=float(env_config["edge_density_min"]),
+            edge_density_max=float(env_config["edge_density_max"]),
+            base_seed=int(train_config["seed"]),
+            phases=curriculum_config.get("phases"),
+        )
+    else:
+        dag_generator = make_training_dag_generator(
+            min_tasks=int(env_config["min_tasks"]),
+            max_tasks=int(env_config["max_tasks"]),
+            edge_density_min=float(env_config["edge_density_min"]),
+            edge_density_max=float(env_config["edge_density_max"]),
+            base_seed=int(train_config["seed"]),
+        )
     resource_config = load_resource_config(_resolve_project_path(env_config["resource_config_path"]))
-    raw_env = SchedulingEnv(
+    scheduler_mode = str(env_config.get("scheduler_mode", "joint"))
+    if scheduler_mode not in {"joint", "ranked", "residual"}:
+        raise ValueError("env.scheduler_mode must be one of 'joint', 'ranked', or 'residual'")
+    env_class = {
+        "joint": SchedulingEnv,
+        "ranked": SchedulingEnvRanked,
+        "residual": SchedulingEnvResidual,
+    }[scheduler_mode]
+    raw_env = env_class(
         dag_generator_fn=dag_generator,
         resource_config=resource_config,
         max_tasks=int(env_config["max_tasks_padding"]),
         reward_mode=str(env_config.get("reward_mode", "raw")),
         normalize_observations=_as_bool(env_config.get("normalize_observations", False)),
+        include_upward_rank_feature=_as_bool(env_config.get("include_upward_rank_feature", False)),
     )
     use_gat_encoder = _as_bool(env_config.get("use_gat_encoder", False))
-    training_env = raw_env if use_gat_encoder else FlattenObservation(raw_env)
+    use_dict_observation = use_gat_encoder or scheduler_mode == "residual"
+    training_env = raw_env if use_dict_observation else FlattenObservation(raw_env)
 
     monitor_log_dir = _resolve_project_path(train_config["monitor_log_dir"])
     monitor_log_dir.mkdir(parents=True, exist_ok=True)
@@ -138,7 +165,15 @@ def build_model(config: dict) -> tuple[MaskablePPO, object]:
 
     policy_kwargs = {"net_arch": list(train_config["net_arch"])}
     policy_name = "MlpPolicy"
-    if use_gat_encoder:
+    if scheduler_mode == "residual":
+        policy_name = ResidualRankingPolicy
+        policy_kwargs.update(
+            {
+                "delta_scale": float(train_config.get("residual_delta_scale", 1.0)),
+                "rank_scale": float(train_config.get("residual_rank_scale", 1.0)),
+            }
+        )
+    elif use_gat_encoder:
         policy_name = "MultiInputPolicy"
         policy_kwargs.update(
             {
@@ -162,11 +197,15 @@ def build_model(config: dict) -> tuple[MaskablePPO, object]:
         clip_range=float(train_config["clip_range"]),
         ent_coef=float(train_config["ent_coef"]),
         vf_coef=float(train_config.get("vf_coef", 0.5)),
+        target_kl=None
+        if train_config.get("target_kl") is None
+        else float(train_config["target_kl"]),
         policy_kwargs=policy_kwargs,
         seed=int(train_config["seed"]),
         tensorboard_log=tensorboard_log,
         verbose=1,
     )
+    setattr(model, "_dag_generator", dag_generator)
     return model, model_env
 
 
@@ -189,7 +228,7 @@ def train(config_path: str | Path) -> Path:
             learning_rate=float(train_config.get("bc_learning_rate", 1e-4)),
         )
     total_timesteps = int(train_config["total_timesteps"])
-    callback = ProgressPrinterCallback(total_timesteps)
+    callback = ProgressPrinterCallback(total_timesteps, getattr(model, "_dag_generator", None))
     model.learn(
         total_timesteps=total_timesteps,
         progress_bar=True,

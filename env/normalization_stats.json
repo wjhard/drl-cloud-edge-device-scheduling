@@ -16,6 +16,11 @@
       "name": "successor_cost_sum",
       "mean": 14.22797966003418,
       "std": 14.892826080322266
+    },
+    "5": {
+      "name": "upward_rank",
+      "mean": 1.201817509605060,
+      "std": 0.799531551541235
     }
   },
   "resource_features": {

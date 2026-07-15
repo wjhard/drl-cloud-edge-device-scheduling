@@ -34,6 +34,7 @@ class SchedulingEnv(gym.Env):
         max_tasks: int = 50,
         reward_mode: str = "raw",
         normalize_observations: bool = False,
+        include_upward_rank_feature: bool = False,
     ):
         super().__init__()
         if max_tasks <= 0:
@@ -48,9 +49,10 @@ class SchedulingEnv(gym.Env):
         self.num_resources = len(resource_config.resources)
         self.reward_mode = reward_mode
         self.normalize_observations = normalize_observations
+        self.include_upward_rank_feature = include_upward_rank_feature
         self.observation_normalizer = ObservationNormalizer() if normalize_observations else None
 
-        self.task_feature_dim = 5
+        self.task_feature_dim = 6 if include_upward_rank_feature else 5
         self.resource_feature_dim = 4
         self.global_feature_dim = 2
         self.observation_space = spaces.Dict(
@@ -105,6 +107,7 @@ class SchedulingEnv(gym.Env):
         self.ready_tasks: list[int] = []
         self.current_makespan = 0.0
         self._heft_makespan_ref: float | None = None
+        self._upward_ranks: dict[int, float] = {}
 
     def _call_dag_generator(self, seed: int | None) -> DAGTask:
         if seed is None:
@@ -126,13 +129,16 @@ class SchedulingEnv(gym.Env):
         assert self.dag is not None
         graph = self.dag.graph
         node_data = graph.nodes[task_id]
-        return [
+        features = [
             1.0,
             float(task_id) / max(1, self.max_tasks - 1),
             float(node_data["computation_cost"]),
             float(graph.out_degree(task_id)),
             self._successor_cost_sum(task_id),
         ]
+        if self.include_upward_rank_feature:
+            features.append(float(self._upward_ranks.get(task_id, 0.0)))
+        return features
 
     def _get_observation(self) -> dict[str, np.ndarray]:
         assert self.dag is not None
@@ -215,6 +221,7 @@ class SchedulingEnv(gym.Env):
         self.resource_events = {resource.id: [] for resource in self.resource_config.resources}
         self.current_makespan = 0.0
         self._heft_makespan_ref = self._compute_heft_makespan_reference()
+        self._upward_ranks = self._compute_upward_ranks_for_observation()
         self.ready_tasks = get_ready_tasks(self.dag, self.completed_tasks)
         return self._get_observation(), {"ready_tasks": list(self.ready_tasks), "makespan": 0.0}
 
@@ -319,6 +326,26 @@ class SchedulingEnv(gym.Env):
         scheduler = HEFTScheduler()
         schedule_result = scheduler.schedule(self.dag, reference_config)
         return scheduler.compute_makespan(schedule_result)
+
+    def _compute_upward_ranks_for_observation(self) -> dict[int, float]:
+        if not self.include_upward_rank_feature:
+            return {}
+        assert self.dag is not None
+
+        from baselines.heft_scheduler import compute_upward_ranks
+
+        reference_config = ResourceConfig(
+            [
+                Resource(
+                    id=resource.id,
+                    tier=resource.tier,
+                    compute_power=resource.compute_power,
+                    bandwidth=resource.bandwidth,
+                )
+                for resource in self.resource_config.resources
+            ]
+        )
+        return compute_upward_ranks(self.dag, reference_config)
 
 
 def _run_random_policy_demo() -> None:

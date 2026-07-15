@@ -14,6 +14,43 @@ from env.scheduling_utils import ScheduledEvent, find_earliest_slot
 from scheduler_interface import BaseScheduler, ScheduleResult
 
 
+def compute_upward_ranks(dag: DAGTask, resource_config: ResourceConfig) -> dict[int, float]:
+    ranks: dict[int, float] = {}
+
+    def average_compute_time(task_id: int) -> float:
+        return sum(
+            resource_config.get_execution_time(dag.graph.nodes[task_id], resource)
+            for resource in resource_config.resources
+        ) / len(resource_config.resources)
+
+    def average_communication_time(data_size: float) -> float:
+        resources = resource_config.resources
+        if len(resources) <= 1:
+            return 0.0
+        times = [
+            resource_config.get_communication_time(data_size, source, target)
+            for source in resources
+            for target in resources
+        ]
+        return sum(times) / len(times)
+
+    def rank(task_id: int) -> float:
+        if task_id in ranks:
+            return ranks[task_id]
+
+        avg_compute = average_compute_time(task_id)
+        successor_terms = []
+        for successor in dag.graph.successors(task_id):
+            data_size = float(dag.graph.edges[task_id, successor].get("data_size", 0.0))
+            successor_terms.append(average_communication_time(data_size) + rank(successor))
+        ranks[task_id] = avg_compute + (max(successor_terms) if successor_terms else 0.0)
+        return ranks[task_id]
+
+    for task_id in reversed(list(nx.topological_sort(dag.graph))):
+        rank(task_id)
+    return ranks
+
+
 class HEFTScheduler(BaseScheduler):
     def schedule(self, dag: DAGTask, resource_config: ResourceConfig) -> ScheduleResult:
         if not nx.is_directed_acyclic_graph(dag.graph):
@@ -52,30 +89,12 @@ class HEFTScheduler(BaseScheduler):
         return schedule_result
 
     def _task_order(self, dag: DAGTask, resource_config: ResourceConfig) -> list[int]:
-        ranks = self._compute_upward_ranks(dag, resource_config)
+        ranks = compute_upward_ranks(dag, resource_config)
         topological_index = {task_id: index for index, task_id in enumerate(nx.topological_sort(dag.graph))}
         return sorted(dag.graph.nodes, key=lambda task_id: (-ranks[task_id], topological_index[task_id]))
 
     def _compute_upward_ranks(self, dag: DAGTask, resource_config: ResourceConfig) -> dict[int, float]:
-        ranks: dict[int, float] = {}
-
-        def rank(task_id: int) -> float:
-            if task_id in ranks:
-                return ranks[task_id]
-
-            avg_compute = self._average_compute_time(task_id, dag, resource_config)
-            successor_terms = []
-            for successor in dag.graph.successors(task_id):
-                data_size = float(dag.graph.edges[task_id, successor].get("data_size", 0.0))
-                successor_terms.append(
-                    self._average_communication_time(data_size, resource_config) + rank(successor)
-                )
-            ranks[task_id] = avg_compute + (max(successor_terms) if successor_terms else 0.0)
-            return ranks[task_id]
-
-        for task_id in reversed(list(nx.topological_sort(dag.graph))):
-            rank(task_id)
-        return ranks
+        return compute_upward_ranks(dag, resource_config)
 
     def _average_compute_time(
         self,

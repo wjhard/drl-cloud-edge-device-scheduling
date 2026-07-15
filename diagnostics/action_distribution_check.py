@@ -26,27 +26,53 @@ def main() -> None:
     parser.add_argument("--edge-density", type=float, default=0.35)
     parser.add_argument("--seed-start", type=int, default=424200)
     parser.add_argument(
+        "--scheduler-mode",
+        choices=["joint", "ranked", "residual", "auto"],
+        default="auto",
+        help="Scheduler environment mode. auto infers ranked from model path.",
+    )
+    parser.add_argument(
         "--normalize-observations",
         action="store_true",
         help="Normalize observations before passing them to the scheduler.",
+    )
+    parser.add_argument(
+        "--include-upward-rank-feature",
+        action="store_true",
+        help="Use the upward-rank task feature in scheduler observations.",
     )
     args = parser.parse_args()
 
     model_path = Path(args.model_path).resolve()
     model_zip = Path(f"{model_path}.zip") if model_path.suffix != ".zip" else model_path
-    normalize_observations = args.normalize_observations or "normalized" in str(args.model_path).lower()
+    model_path_text = str(args.model_path).lower()
+    if args.scheduler_mode == "auto" and "residual" in model_path_text:
+        scheduler_mode = "residual"
+    elif args.scheduler_mode == "auto" and "ranked" in model_path_text:
+        scheduler_mode = "ranked"
+    else:
+        scheduler_mode = args.scheduler_mode
+    if scheduler_mode == "auto":
+        scheduler_mode = "joint"
+    normalize_observations = args.normalize_observations or any(
+        marker in model_path_text
+        for marker in ("normalized", "ranked", "residual")
+    )
     print("ACTION_DISTRIBUTION_CHECK")
     print(f"model_path_arg_abs={model_path}")
     print(f"model_zip_abs={model_zip.resolve()}")
     print(f"model_zip_size_bytes={model_zip.stat().st_size}")
     print(f"model_zip_mtime_epoch={model_zip.stat().st_mtime:.6f}")
     print(f"normalize_observations={normalize_observations}")
+    print(f"scheduler_mode={scheduler_mode}")
 
     scheduler = RLScheduler(
         model_path=args.model_path,
         max_tasks=args.max_tasks,
         deterministic=True,
         normalize_observations=normalize_observations,
+        include_upward_rank_feature=args.include_upward_rank_feature,
+        scheduler_mode=scheduler_mode,
     )
 
     total_counts: Counter[str] = Counter()
