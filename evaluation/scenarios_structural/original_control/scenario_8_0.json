@@ -1,0 +1,87 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "task_id": 0,
+      "level": 2,
+      "computation_cost": 7.806032686362319,
+      "id": 0
+    },
+    {
+      "task_id": 1,
+      "level": 0,
+      "computation_cost": 5.773230843049679,
+      "id": 1
+    },
+    {
+      "task_id": 2,
+      "level": 2,
+      "computation_cost": 6.443057341850561,
+      "id": 2
+    },
+    {
+      "task_id": 3,
+      "level": 1,
+      "computation_cost": 6.607093537844872,
+      "id": 3
+    },
+    {
+      "task_id": 4,
+      "level": 0,
+      "computation_cost": 1.8508401682003313,
+      "id": 4
+    },
+    {
+      "task_id": 5,
+      "level": 0,
+      "computation_cost": 3.888218695425808,
+      "id": 5
+    },
+    {
+      "task_id": 6,
+      "level": 1,
+      "computation_cost": 6.118467085706914,
+      "id": 6
+    },
+    {
+      "task_id": 7,
+      "level": 2,
+      "computation_cost": 4.396889533531926,
+      "id": 7
+    }
+  ],
+  "links": [
+    {
+      "data_size": 5.2415800427368335,
+      "source": 1,
+      "target": 3
+    },
+    {
+      "data_size": 2.4393333333230065,
+      "source": 1,
+      "target": 6
+    },
+    {
+      "data_size": 3.2362953986172256,
+      "source": 4,
+      "target": 2
+    },
+    {
+      "data_size": 6.906922120488489,
+      "source": 5,
+      "target": 2
+    },
+    {
+      "data_size": 5.038829583035397,
+      "source": 6,
+      "target": 0
+    },
+    {
+      "data_size": 3.399008776903194,
+      "source": 6,
+      "target": 2
+    }
+  ]
+}

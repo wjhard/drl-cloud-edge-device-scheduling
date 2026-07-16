@@ -1,0 +1,33 @@
+step	variant	mean_ratio	better_than_heft_count	num_samples	train_seconds	eval_seconds	note
+baseline	MLP ranked 200k deterministic	1.081277126922	0	1	413.70		existing baseline
+baseline	MLP ranked best-of-8	1.021786217480	6	8		8.980642	existing baseline best-of-N
+baseline	MLP ranked best-of-64	0.994363344071	10	64		42.005389	existing baseline best-of-N
+baseline	MLP ranked best-of-128	0.979919965774	16	128		81.319640	existing baseline best-of-N
+1	ranked + BC deterministic	1.118387459785	0	1	293.76	3.670572	BC acc 0.989674
+1	ranked + BC best-of-8	1.064016056039	2	8		5.691332
+2	ranked + upward-rank feature deterministic	1.111497953783	2	1	349.32	3.589042
+2	ranked + upward-rank feature best-of-8	1.030609113928	6	8		5.836910
+3	ranked + curriculum deterministic	1.131470996496	0	1	346.59	3.570116
+3	ranked + curriculum best-of-8	1.035511866515	4	8		5.815858
+4 quick	ppo_mlp_ranked_lr1e-4_128_quick	1.119619910643	2	1	90.036701	3.646149	50k quick
+4 quick	ppo_mlp_ranked_lr3e-4_128_quick	1.100863342161	0	1	91.860642	3.559870	50k quick
+4 quick	ppo_mlp_ranked_lr1e-3_128_quick	1.100635641897	2	1	90.707421	3.569681	50k quick
+4 quick	ppo_mlp_ranked_lr1e-4_256_quick	1.109257734723	1	1	98.555435	3.563253	50k quick
+4 quick	ppo_mlp_ranked_lr3e-4_256_quick	1.111152197581	1	1	96.707899	3.621049	50k quick
+4 quick	ppo_mlp_ranked_lr1e-3_256_quick	1.112742333544	0	1	99.828212	3.557859	50k quick
+4 full	ranked lr=0.001 [128,128] deterministic	1.076032571855	4	1	369.62	3.671628
+4 full	ranked lr=0.001 [128,128] best-of-8	1.022695202321	5	8		6.190932
+5	GAT ranked deterministic	1.087670984382	3	1	2543.56		existing trained model
+5	GAT ranked best-of-8	1.008509346487	8	8		9.628272
+5	GAT ranked best-of-64	0.980804383150	14	64		47.458054
+6	ranked lr=0.001 [128,128] 400k deterministic	1.083945118806	3	1	751.22	3.516687
+6	ranked lr=0.001 [128,128] 400k best-of-8	1.026993250290	6	8		6.509981
+7 seed	ranked seed 123 deterministic	1.081277126922	0	1	377.485904	3.626609
+7 seed	ranked seed 123 best-of-8	1.021786217480	6	8		6.038562
+7 seed	ranked seed 456 deterministic	1.101665798041	0	1	380.876498	3.665422
+7 seed	ranked seed 456 best-of-8	1.027839720746	4	8		5.922245
+7 seed	ranked seed 789 deterministic	1.120238205389	0	1	411.880297	3.911521
+7 seed	ranked seed 789 best-of-8	1.032986740133	3	8		6.245035
+7 ensemble	3-seed ensemble best-of-8 per model (24 candidates)	0.998549507054	10	8	1170.24 total train	11.621375	no deterministic fallback
+combined	BC + rank feature + curriculum deterministic	1.085535121185	1	1	292.26	3.848748	target_kl=0.03
+combined	BC + rank feature + curriculum best-of-8	1.054941133339	3	8		6.366540

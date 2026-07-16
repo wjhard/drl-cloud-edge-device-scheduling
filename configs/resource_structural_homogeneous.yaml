@@ -1,0 +1,17 @@
+resources:
+  - id: cloud_0
+    tier: cloud
+    compute_power: 40.0
+    bandwidth: 1000.0
+  - id: edge_0
+    tier: edge
+    compute_power: 35.0
+    bandwidth: 200.0
+  - id: edge_1
+    tier: edge
+    compute_power: 30.0
+    bandwidth: 150.0
+  - id: device_0
+    tier: device
+    compute_power: 25.0
+    bandwidth: 20.0

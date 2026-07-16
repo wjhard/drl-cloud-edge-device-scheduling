@@ -1,0 +1,9 @@
+ranked_bc_deterministic	3.670572
+ranked_bc_bestof8	5.691332
+ranked_with_rank_deterministic	3.589042
+ranked_with_rank_bestof8	5.836910
+ranked_curriculum_deterministic	3.570116
+ranked_curriculum_bestof8	5.815858
+gat_ranked_bestof8	9.628272
+gat_ranked_bestof64	47.458054
+ensemble3_bestof8	11.621375

@@ -1,0 +1,111 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "task_id": 0,
+      "level": 0,
+      "computation_cost": 8.830309722199193,
+      "id": 0
+    },
+    {
+      "task_id": 1,
+      "level": 2,
+      "computation_cost": 7.193344778986394,
+      "id": 1
+    },
+    {
+      "task_id": 2,
+      "level": 2,
+      "computation_cost": 2.1420279831067255,
+      "id": 2
+    },
+    {
+      "task_id": 3,
+      "level": 2,
+      "computation_cost": 5.261019217650098,
+      "id": 3
+    },
+    {
+      "task_id": 4,
+      "level": 0,
+      "computation_cost": 2.149321338468848,
+      "id": 4
+    },
+    {
+      "task_id": 5,
+      "level": 0,
+      "computation_cost": 4.789121898061795,
+      "id": 5
+    },
+    {
+      "task_id": 6,
+      "level": 3,
+      "computation_cost": 9.780121862497259,
+      "id": 6
+    },
+    {
+      "task_id": 7,
+      "level": 2,
+      "computation_cost": 8.890526932292119,
+      "id": 7
+    },
+    {
+      "task_id": 8,
+      "level": 0,
+      "computation_cost": 7.992622502806933,
+      "id": 8
+    },
+    {
+      "task_id": 9,
+      "level": 3,
+      "computation_cost": 9.502570890683206,
+      "id": 9
+    },
+    {
+      "task_id": 10,
+      "level": 3,
+      "computation_cost": 8.43615783221688,
+      "id": 10
+    },
+    {
+      "task_id": 11,
+      "level": 1,
+      "computation_cost": 8.08423064720922,
+      "id": 11
+    }
+  ],
+  "links": [
+    {
+      "data_size": 7.451454431735993,
+      "source": 0,
+      "target": 6
+    },
+    {
+      "data_size": 8.63410428576121,
+      "source": 0,
+      "target": 7
+    },
+    {
+      "data_size": 4.827572794523584,
+      "source": 1,
+      "target": 6
+    },
+    {
+      "data_size": 7.720170374170785,
+      "source": 4,
+      "target": 1
+    },
+    {
+      "data_size": 8.291277063520486,
+      "source": 4,
+      "target": 11
+    },
+    {
+      "data_size": 8.072972704849315,
+      "source": 8,
+      "target": 7
+    }
+  ]
+}

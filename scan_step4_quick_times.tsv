@@ -1,0 +1,7 @@
+name	train_seconds	eval_seconds
+ppo_mlp_ranked_lr1e-4_128_quick	90.036701	3.646149
+ppo_mlp_ranked_lr3e-4_128_quick	91.860642	3.559870
+ppo_mlp_ranked_lr1e-3_128_quick	90.707421	3.569681
+ppo_mlp_ranked_lr1e-4_256_quick	98.555435	3.563253
+ppo_mlp_ranked_lr3e-4_256_quick	96.707899	3.621049
+ppo_mlp_ranked_lr1e-3_256_quick	99.828212	3.557859

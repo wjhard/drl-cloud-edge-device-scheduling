@@ -1,0 +1,224 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "task_id": 0,
+      "level": 3,
+      "computation_cost": 4.205152346982638,
+      "id": 0
+    },
+    {
+      "task_id": 1,
+      "level": 1,
+      "computation_cost": 7.6562014748480385,
+      "id": 1
+    },
+    {
+      "task_id": 2,
+      "level": 4,
+      "computation_cost": 8.50350723435638,
+      "id": 2
+    },
+    {
+      "task_id": 3,
+      "level": 0,
+      "computation_cost": 9.92907763670707,
+      "id": 3
+    },
+    {
+      "task_id": 4,
+      "level": 4,
+      "computation_cost": 5.517119436737491,
+      "id": 4
+    },
+    {
+      "task_id": 5,
+      "level": 1,
+      "computation_cost": 6.756223083988813,
+      "id": 5
+    },
+    {
+      "task_id": 6,
+      "level": 3,
+      "computation_cost": 6.012061209760099,
+      "id": 6
+    },
+    {
+      "task_id": 7,
+      "level": 3,
+      "computation_cost": 1.362247716243627,
+      "id": 7
+    },
+    {
+      "task_id": 8,
+      "level": 3,
+      "computation_cost": 4.515693827175345,
+      "id": 8
+    },
+    {
+      "task_id": 9,
+      "level": 3,
+      "computation_cost": 6.200921793554259,
+      "id": 9
+    },
+    {
+      "task_id": 10,
+      "level": 3,
+      "computation_cost": 6.4723955723422275,
+      "id": 10
+    },
+    {
+      "task_id": 11,
+      "level": 0,
+      "computation_cost": 5.555288510043078,
+      "id": 11
+    },
+    {
+      "task_id": 12,
+      "level": 0,
+      "computation_cost": 7.327773919962056,
+      "id": 12
+    },
+    {
+      "task_id": 13,
+      "level": 0,
+      "computation_cost": 6.6954758426956404,
+      "id": 13
+    },
+    {
+      "task_id": 14,
+      "level": 1,
+      "computation_cost": 2.1809332496000646,
+      "id": 14
+    },
+    {
+      "task_id": 15,
+      "level": 3,
+      "computation_cost": 8.071975461809206,
+      "id": 15
+    },
+    {
+      "task_id": 16,
+      "level": 0,
+      "computation_cost": 4.531427135899692,
+      "id": 16
+    },
+    {
+      "task_id": 17,
+      "level": 2,
+      "computation_cost": 4.366486870162631,
+      "id": 17
+    },
+    {
+      "task_id": 18,
+      "level": 1,
+      "computation_cost": 2.7471765098172023,
+      "id": 18
+    },
+    {
+      "task_id": 19,
+      "level": 4,
+      "computation_cost": 5.255955245152258,
+      "id": 19
+    }
+  ],
+  "links": [
+    {
+      "data_size": 5.482162475705333,
+      "source": 1,
+      "target": 8
+    },
+    {
+      "data_size": 7.750460961881059,
+      "source": 3,
+      "target": 5
+    },
+    {
+      "data_size": 1.2727199257949668,
+      "source": 3,
+      "target": 8
+    },
+    {
+      "data_size": 6.714014582369426,
+      "source": 3,
+      "target": 9
+    },
+    {
+      "data_size": 1.5635429571712596,
+      "source": 3,
+      "target": 19
+    },
+    {
+      "data_size": 6.003349614873802,
+      "source": 5,
+      "target": 19
+    },
+    {
+      "data_size": 9.09509905124279,
+      "source": 6,
+      "target": 2
+    },
+    {
+      "data_size": 9.054125046399266,
+      "source": 11,
+      "target": 2
+    },
+    {
+      "data_size": 7.716894117633386,
+      "source": 11,
+      "target": 15
+    },
+    {
+      "data_size": 2.0134163714479953,
+      "source": 11,
+      "target": 18
+    },
+    {
+      "data_size": 6.217453773778329,
+      "source": 12,
+      "target": 10
+    },
+    {
+      "data_size": 8.65257122824223,
+      "source": 12,
+      "target": 17
+    },
+    {
+      "data_size": 1.5205615218827488,
+      "source": 12,
+      "target": 19
+    },
+    {
+      "data_size": 3.227039648630682,
+      "source": 13,
+      "target": 8
+    },
+    {
+      "data_size": 3.6259797299197327,
+      "source": 13,
+      "target": 10
+    },
+    {
+      "data_size": 6.874148090613886,
+      "source": 13,
+      "target": 15
+    },
+    {
+      "data_size": 9.40741502584909,
+      "source": 15,
+      "target": 4
+    },
+    {
+      "data_size": 9.185954031015855,
+      "source": 16,
+      "target": 9
+    },
+    {
+      "data_size": 1.4650060808074992,
+      "source": 16,
+      "target": 14
+    }
+  ]
+}
