@@ -1,0 +1,211 @@
+{
+  "design": "15 paired runs using identical entropy-derived seed within each pair",
+  "difference_definition": "Residual best-of-64 mean_ratio minus Hybrid mean_ratio",
+  "standard_deviation": "sample standard deviation (n-1)",
+  "paired_runs": [
+    {
+      "pair": 1,
+      "seed": 113274394,
+      "bestof64_mean_ratio": 0.9512100303567068,
+      "hybrid_mean_ratio": 0.955231229187891,
+      "difference_bestof64_minus_hybrid": -0.004021198831184236,
+      "bestof64_better_than_heft_count": 18,
+      "hybrid_better_than_heft_count": 18,
+      "bestof64_source": "evaluation\\results\\paired15\\bestof64\\summary_seed_113274394.json",
+      "hybrid_source": "evaluation\\results\\paired15\\hybrid\\summary_seed_113274394.json"
+    },
+    {
+      "pair": 2,
+      "seed": 340104416,
+      "bestof64_mean_ratio": 0.9586409346823117,
+      "hybrid_mean_ratio": 0.9670519060002333,
+      "difference_bestof64_minus_hybrid": -0.008410971317921567,
+      "bestof64_better_than_heft_count": 18,
+      "hybrid_better_than_heft_count": 14,
+      "bestof64_source": "evaluation\\results\\repeated_bestof64\\summary_residual_bestof64_run5.json",
+      "hybrid_source": "evaluation\\results\\paired15\\hybrid\\summary_seed_340104416.json"
+    },
+    {
+      "pair": 3,
+      "seed": 447377315,
+      "bestof64_mean_ratio": 0.9546328040642535,
+      "hybrid_mean_ratio": 0.9628736254457234,
+      "difference_bestof64_minus_hybrid": -0.008240821381469865,
+      "bestof64_better_than_heft_count": 18,
+      "hybrid_better_than_heft_count": 17,
+      "bestof64_source": "evaluation\\results\\paired15\\bestof64\\summary_seed_447377315.json",
+      "hybrid_source": "evaluation\\results\\repeated\\summary_hybrid_residual_bestof16_run1.json"
+    },
+    {
+      "pair": 4,
+      "seed": 610506791,
+      "bestof64_mean_ratio": 0.9555691440950869,
+      "hybrid_mean_ratio": 0.9608322761889605,
+      "difference_bestof64_minus_hybrid": -0.005263132093873635,
+      "bestof64_better_than_heft_count": 18,
+      "hybrid_better_than_heft_count": 17,
+      "bestof64_source": "evaluation\\results\\repeated_bestof64\\summary_residual_bestof64_run3.json",
+      "hybrid_source": "evaluation\\results\\paired15\\hybrid\\summary_seed_610506791.json"
+    },
+    {
+      "pair": 5,
+      "seed": 673928160,
+      "bestof64_mean_ratio": 0.9518826411075366,
+      "hybrid_mean_ratio": 0.9536740015055847,
+      "difference_bestof64_minus_hybrid": -0.0017913603980480586,
+      "bestof64_better_than_heft_count": 19,
+      "hybrid_better_than_heft_count": 20,
+      "bestof64_source": "evaluation\\results\\repeated_bestof64\\summary_residual_bestof64_run1.json",
+      "hybrid_source": "evaluation\\results\\paired15\\hybrid\\summary_seed_673928160.json"
+    },
+    {
+      "pair": 6,
+      "seed": 899661321,
+      "bestof64_mean_ratio": 0.9470980905483088,
+      "hybrid_mean_ratio": 0.9561403141453357,
+      "difference_bestof64_minus_hybrid": -0.009042223597026888,
+      "bestof64_better_than_heft_count": 19,
+      "hybrid_better_than_heft_count": 17,
+      "bestof64_source": "evaluation\\results\\paired15\\bestof64\\summary_seed_899661321.json",
+      "hybrid_source": "evaluation\\results\\repeated\\summary_hybrid_residual_bestof16_run3.json"
+    },
+    {
+      "pair": 7,
+      "seed": 937972726,
+      "bestof64_mean_ratio": 0.9500630456212141,
+      "hybrid_mean_ratio": 0.9576001101751073,
+      "difference_bestof64_minus_hybrid": -0.007537064553893136,
+      "bestof64_better_than_heft_count": 18,
+      "hybrid_better_than_heft_count": 17,
+      "bestof64_source": "evaluation\\results\\paired15\\bestof64\\summary_seed_937972726.json",
+      "hybrid_source": "evaluation\\results\\paired15\\hybrid\\summary_seed_937972726.json"
+    },
+    {
+      "pair": 8,
+      "seed": 1268216875,
+      "bestof64_mean_ratio": 0.9490081657803477,
+      "hybrid_mean_ratio": 0.9581952893767758,
+      "difference_bestof64_minus_hybrid": -0.009187123596428037,
+      "bestof64_better_than_heft_count": 18,
+      "hybrid_better_than_heft_count": 18,
+      "bestof64_source": "evaluation\\results\\paired15\\bestof64\\summary_seed_1268216875.json",
+      "hybrid_source": "evaluation\\results\\paired15\\hybrid\\summary_seed_1268216875.json"
+    },
+    {
+      "pair": 9,
+      "seed": 1383495036,
+      "bestof64_mean_ratio": 0.9467725080291558,
+      "hybrid_mean_ratio": 0.9557755595568492,
+      "difference_bestof64_minus_hybrid": -0.009003051527693429,
+      "bestof64_better_than_heft_count": 19,
+      "hybrid_better_than_heft_count": 19,
+      "bestof64_source": "evaluation\\results\\paired15\\bestof64\\summary_seed_1383495036.json",
+      "hybrid_source": "evaluation\\results\\repeated\\summary_hybrid_residual_bestof16_run2.json"
+    },
+    {
+      "pair": 10,
+      "seed": 1528210608,
+      "bestof64_mean_ratio": 0.9495676333519019,
+      "hybrid_mean_ratio": 0.957277713019413,
+      "difference_bestof64_minus_hybrid": -0.007710079667511138,
+      "bestof64_better_than_heft_count": 19,
+      "hybrid_better_than_heft_count": 19,
+      "bestof64_source": "evaluation\\results\\paired15\\bestof64\\summary_seed_1528210608.json",
+      "hybrid_source": "evaluation\\results\\repeated\\summary_hybrid_residual_bestof16_run5.json"
+    },
+    {
+      "pair": 11,
+      "seed": 1580188249,
+      "bestof64_mean_ratio": 0.9515871589652345,
+      "hybrid_mean_ratio": 0.960736869139477,
+      "difference_bestof64_minus_hybrid": -0.009149710174242487,
+      "bestof64_better_than_heft_count": 18,
+      "hybrid_better_than_heft_count": 15,
+      "bestof64_source": "evaluation\\results\\paired15\\bestof64\\summary_seed_1580188249.json",
+      "hybrid_source": "evaluation\\results\\repeated\\summary_hybrid_residual_bestof16_run4.json"
+    },
+    {
+      "pair": 12,
+      "seed": 1895322075,
+      "bestof64_mean_ratio": 0.9536540784697125,
+      "hybrid_mean_ratio": 0.9562003571989388,
+      "difference_bestof64_minus_hybrid": -0.0025462787292263034,
+      "bestof64_better_than_heft_count": 18,
+      "hybrid_better_than_heft_count": 17,
+      "bestof64_source": "evaluation\\results\\paired15\\bestof64\\summary_seed_1895322075.json",
+      "hybrid_source": "evaluation\\results\\paired15\\hybrid\\summary_seed_1895322075.json"
+    },
+    {
+      "pair": 13,
+      "seed": 1941980563,
+      "bestof64_mean_ratio": 0.9573409703455524,
+      "hybrid_mean_ratio": 0.9591450394059914,
+      "difference_bestof64_minus_hybrid": -0.0018040690604389509,
+      "bestof64_better_than_heft_count": 18,
+      "hybrid_better_than_heft_count": 19,
+      "bestof64_source": "evaluation\\results\\repeated_bestof64\\summary_residual_bestof64_run4.json",
+      "hybrid_source": "evaluation\\results\\paired15\\hybrid\\summary_seed_1941980563.json"
+    },
+    {
+      "pair": 14,
+      "seed": 2010943116,
+      "bestof64_mean_ratio": 0.9464689847785763,
+      "hybrid_mean_ratio": 0.958959522107228,
+      "difference_bestof64_minus_hybrid": -0.012490537328651685,
+      "bestof64_better_than_heft_count": 18,
+      "hybrid_better_than_heft_count": 16,
+      "bestof64_source": "evaluation\\results\\paired15\\bestof64\\summary_seed_2010943116.json",
+      "hybrid_source": "evaluation\\results\\paired15\\hybrid\\summary_seed_2010943116.json"
+    },
+    {
+      "pair": 15,
+      "seed": 2050040597,
+      "bestof64_mean_ratio": 0.9494142563200793,
+      "hybrid_mean_ratio": 0.9625159948470143,
+      "difference_bestof64_minus_hybrid": -0.01310173852693508,
+      "bestof64_better_than_heft_count": 17,
+      "hybrid_better_than_heft_count": 17,
+      "bestof64_source": "evaluation\\results\\repeated_bestof64\\summary_residual_bestof64_run2.json",
+      "hybrid_source": "evaluation\\results\\paired15\\hybrid\\summary_seed_2050040597.json"
+    }
+  ],
+  "statistics": {
+    "bestof64_mean_ratio": {
+      "mean": 0.9515273631010651,
+      "sample_std": 0.0037772319654013147,
+      "min": 0.9464689847785763,
+      "max": 0.9586409346823117
+    },
+    "hybrid_mean_ratio": {
+      "mean": 0.9588139871533684,
+      "sample_std": 0.0035115547376666258,
+      "min": 0.9536740015055847,
+      "max": 0.9670519060002333
+    },
+    "bestof64_better_than_heft_count": {
+      "mean": 18.2,
+      "sample_std": 0.560611910581388,
+      "min": 17.0,
+      "max": 19.0
+    },
+    "hybrid_better_than_heft_count": {
+      "mean": 17.333333333333332,
+      "sample_std": 1.5886502207249786,
+      "min": 14.0,
+      "max": 20.0
+    },
+    "paired_difference": {
+      "mean": -0.007286624052302967,
+      "sample_std": 0.0035244951294603716,
+      "min": -0.01310173852693508,
+      "max": -0.0017913603980480586
+    },
+    "paired_t_test_two_sided": {
+      "t_statistic": -8.00709678068548,
+      "degrees_of_freedom": 14,
+      "p_value": 1.3553918251890252e-06,
+      "alpha": 0.05,
+      "significant": true
+    }
+  }
+}

@@ -1,0 +1,162 @@
+[
+    {
+        "scheme":  "bestof64",
+        "seed":  447377315,
+        "exit_code":  0,
+        "elapsed_seconds":  27.196681599999998,
+        "result":  "evaluation/results/paired15/bestof64/summary_seed_447377315.json",
+        "log":  "evaluation/results/paired15/bestof64/seed_447377315.log"
+    },
+    {
+        "scheme":  "bestof64",
+        "seed":  1383495036,
+        "exit_code":  0,
+        "elapsed_seconds":  27.8146299,
+        "result":  "evaluation/results/paired15/bestof64/summary_seed_1383495036.json",
+        "log":  "evaluation/results/paired15/bestof64/seed_1383495036.log"
+    },
+    {
+        "scheme":  "bestof64",
+        "seed":  899661321,
+        "exit_code":  0,
+        "elapsed_seconds":  28.8298782,
+        "result":  "evaluation/results/paired15/bestof64/summary_seed_899661321.json",
+        "log":  "evaluation/results/paired15/bestof64/seed_899661321.log"
+    },
+    {
+        "scheme":  "bestof64",
+        "seed":  1580188249,
+        "exit_code":  0,
+        "elapsed_seconds":  27.6004887,
+        "result":  "evaluation/results/paired15/bestof64/summary_seed_1580188249.json",
+        "log":  "evaluation/results/paired15/bestof64/seed_1580188249.log"
+    },
+    {
+        "scheme":  "bestof64",
+        "seed":  1528210608,
+        "exit_code":  0,
+        "elapsed_seconds":  27.7538241,
+        "result":  "evaluation/results/paired15/bestof64/summary_seed_1528210608.json",
+        "log":  "evaluation/results/paired15/bestof64/seed_1528210608.log"
+    },
+    {
+        "scheme":  "bestof64",
+        "seed":  1895322075,
+        "exit_code":  0,
+        "elapsed_seconds":  28.702911399999998,
+        "result":  "evaluation/results/paired15/bestof64/summary_seed_1895322075.json",
+        "log":  "evaluation/results/paired15/bestof64/seed_1895322075.log"
+    },
+    {
+        "scheme":  "bestof64",
+        "seed":  1268216875,
+        "exit_code":  0,
+        "elapsed_seconds":  28.589004,
+        "result":  "evaluation/results/paired15/bestof64/summary_seed_1268216875.json",
+        "log":  "evaluation/results/paired15/bestof64/seed_1268216875.log"
+    },
+    {
+        "scheme":  "bestof64",
+        "seed":  2010943116,
+        "exit_code":  0,
+        "elapsed_seconds":  27.248866699999997,
+        "result":  "evaluation/results/paired15/bestof64/summary_seed_2010943116.json",
+        "log":  "evaluation/results/paired15/bestof64/seed_2010943116.log"
+    },
+    {
+        "scheme":  "bestof64",
+        "seed":  937972726,
+        "exit_code":  0,
+        "elapsed_seconds":  27.3364661,
+        "result":  "evaluation/results/paired15/bestof64/summary_seed_937972726.json",
+        "log":  "evaluation/results/paired15/bestof64/seed_937972726.log"
+    },
+    {
+        "scheme":  "bestof64",
+        "seed":  113274394,
+        "exit_code":  0,
+        "elapsed_seconds":  27.3166554,
+        "result":  "evaluation/results/paired15/bestof64/summary_seed_113274394.json",
+        "log":  "evaluation/results/paired15/bestof64/seed_113274394.log"
+    },
+    {
+        "scheme":  "hybrid",
+        "seed":  673928160,
+        "exit_code":  0,
+        "elapsed_seconds":  76.967747,
+        "result":  "evaluation/results/paired15/hybrid/summary_seed_673928160.json",
+        "log":  "evaluation/results/paired15/hybrid/seed_673928160.log"
+    },
+    {
+        "scheme":  "hybrid",
+        "seed":  2050040597,
+        "exit_code":  0,
+        "elapsed_seconds":  76.2484851,
+        "result":  "evaluation/results/paired15/hybrid/summary_seed_2050040597.json",
+        "log":  "evaluation/results/paired15/hybrid/seed_2050040597.log"
+    },
+    {
+        "scheme":  "hybrid",
+        "seed":  610506791,
+        "exit_code":  0,
+        "elapsed_seconds":  76.8740223,
+        "result":  "evaluation/results/paired15/hybrid/summary_seed_610506791.json",
+        "log":  "evaluation/results/paired15/hybrid/seed_610506791.log"
+    },
+    {
+        "scheme":  "hybrid",
+        "seed":  1941980563,
+        "exit_code":  0,
+        "elapsed_seconds":  76.4958181,
+        "result":  "evaluation/results/paired15/hybrid/summary_seed_1941980563.json",
+        "log":  "evaluation/results/paired15/hybrid/seed_1941980563.log"
+    },
+    {
+        "scheme":  "hybrid",
+        "seed":  340104416,
+        "exit_code":  0,
+        "elapsed_seconds":  76.2051822,
+        "result":  "evaluation/results/paired15/hybrid/summary_seed_340104416.json",
+        "log":  "evaluation/results/paired15/hybrid/seed_340104416.log"
+    },
+    {
+        "scheme":  "hybrid",
+        "seed":  1895322075,
+        "exit_code":  0,
+        "elapsed_seconds":  76.4762973,
+        "result":  "evaluation/results/paired15/hybrid/summary_seed_1895322075.json",
+        "log":  "evaluation/results/paired15/hybrid/seed_1895322075.log"
+    },
+    {
+        "scheme":  "hybrid",
+        "seed":  1268216875,
+        "exit_code":  0,
+        "elapsed_seconds":  76.810012399999991,
+        "result":  "evaluation/results/paired15/hybrid/summary_seed_1268216875.json",
+        "log":  "evaluation/results/paired15/hybrid/seed_1268216875.log"
+    },
+    {
+        "scheme":  "hybrid",
+        "seed":  2010943116,
+        "exit_code":  0,
+        "elapsed_seconds":  76.7486158,
+        "result":  "evaluation/results/paired15/hybrid/summary_seed_2010943116.json",
+        "log":  "evaluation/results/paired15/hybrid/seed_2010943116.log"
+    },
+    {
+        "scheme":  "hybrid",
+        "seed":  937972726,
+        "exit_code":  0,
+        "elapsed_seconds":  76.205035999999993,
+        "result":  "evaluation/results/paired15/hybrid/summary_seed_937972726.json",
+        "log":  "evaluation/results/paired15/hybrid/seed_937972726.log"
+    },
+    {
+        "scheme":  "hybrid",
+        "seed":  113274394,
+        "exit_code":  0,
+        "elapsed_seconds":  76.0892645,
+        "result":  "evaluation/results/paired15/hybrid/summary_seed_113274394.json",
+        "log":  "evaluation/results/paired15/hybrid/seed_113274394.log"
+    }
+]

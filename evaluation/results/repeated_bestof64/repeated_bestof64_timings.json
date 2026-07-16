@@ -1,0 +1,42 @@
+[
+    {
+        "Run":  1,
+        "Seed":  673928160,
+        "ExitCode":  0,
+        "ElapsedSeconds":  29.8486877,
+        "Result":  "evaluation/results/repeated_bestof64/summary_residual_bestof64_run1.json",
+        "Log":  "evaluation/results/repeated_bestof64/residual_bestof64_run1.log"
+    },
+    {
+        "Run":  2,
+        "Seed":  2050040597,
+        "ExitCode":  0,
+        "ElapsedSeconds":  26.9993147,
+        "Result":  "evaluation/results/repeated_bestof64/summary_residual_bestof64_run2.json",
+        "Log":  "evaluation/results/repeated_bestof64/residual_bestof64_run2.log"
+    },
+    {
+        "Run":  3,
+        "Seed":  610506791,
+        "ExitCode":  0,
+        "ElapsedSeconds":  27.4622171,
+        "Result":  "evaluation/results/repeated_bestof64/summary_residual_bestof64_run3.json",
+        "Log":  "evaluation/results/repeated_bestof64/residual_bestof64_run3.log"
+    },
+    {
+        "Run":  4,
+        "Seed":  1941980563,
+        "ExitCode":  0,
+        "ElapsedSeconds":  27.2038133,
+        "Result":  "evaluation/results/repeated_bestof64/summary_residual_bestof64_run4.json",
+        "Log":  "evaluation/results/repeated_bestof64/residual_bestof64_run4.log"
+    },
+    {
+        "Run":  5,
+        "Seed":  340104416,
+        "ExitCode":  0,
+        "ElapsedSeconds":  27.295313399999998,
+        "Result":  "evaluation/results/repeated_bestof64/summary_residual_bestof64_run5.json",
+        "Log":  "evaluation/results/repeated_bestof64/residual_bestof64_run5.log"
+    }
+]

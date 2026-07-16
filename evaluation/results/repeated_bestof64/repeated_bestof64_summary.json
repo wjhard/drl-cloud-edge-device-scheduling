@@ -1,0 +1,69 @@
+{
+    "model_path":  "training/checkpoints/ppo_mlp_residual",
+    "scenario_count":  20,
+    "repeat_count":  5,
+    "num_samples":  64,
+    "seed_source":  "OS cryptographic entropy; independent seed recorded per run",
+    "standard_deviation":  "sample standard deviation (n-1)",
+    "runs":  [
+                 {
+                     "run":  1,
+                     "entropy_seed":  673928160,
+                     "elapsed_seconds":  29.8486877,
+                     "mean_ratio":  0.95188264110753662,
+                     "better_than_heft_count":  19,
+                     "result_path":  "evaluation/results/repeated_bestof64/summary_residual_bestof64_run1.json",
+                     "log_path":  "evaluation/results/repeated_bestof64/residual_bestof64_run1.log"
+                 },
+                 {
+                     "run":  2,
+                     "entropy_seed":  2050040597,
+                     "elapsed_seconds":  26.9993147,
+                     "mean_ratio":  0.94941425632007925,
+                     "better_than_heft_count":  17,
+                     "result_path":  "evaluation/results/repeated_bestof64/summary_residual_bestof64_run2.json",
+                     "log_path":  "evaluation/results/repeated_bestof64/residual_bestof64_run2.log"
+                 },
+                 {
+                     "run":  3,
+                     "entropy_seed":  610506791,
+                     "elapsed_seconds":  27.4622171,
+                     "mean_ratio":  0.95556914409508675,
+                     "better_than_heft_count":  18,
+                     "result_path":  "evaluation/results/repeated_bestof64/summary_residual_bestof64_run3.json",
+                     "log_path":  "evaluation/results/repeated_bestof64/residual_bestof64_run3.log"
+                 },
+                 {
+                     "run":  4,
+                     "entropy_seed":  1941980563,
+                     "elapsed_seconds":  27.2038133,
+                     "mean_ratio":  0.95734097034555243,
+                     "better_than_heft_count":  18,
+                     "result_path":  "evaluation/results/repeated_bestof64/summary_residual_bestof64_run4.json",
+                     "log_path":  "evaluation/results/repeated_bestof64/residual_bestof64_run4.log"
+                 },
+                 {
+                     "run":  5,
+                     "entropy_seed":  340104416,
+                     "elapsed_seconds":  27.2953134,
+                     "mean_ratio":  0.9586409346823116,
+                     "better_than_heft_count":  18,
+                     "result_path":  "evaluation/results/repeated_bestof64/summary_residual_bestof64_run5.json",
+                     "log_path":  "evaluation/results/repeated_bestof64/residual_bestof64_run5.log"
+                 }
+             ],
+    "statistics":  {
+                       "mean_ratio":  {
+                                          "mean":  0.95456958931011349,
+                                          "sample_std":  0.0038422865793996592,
+                                          "min":  0.94941425632007925,
+                                          "max":  0.9586409346823116
+                                      },
+                       "better_than_heft_count":  {
+                                                      "mean":  18,
+                                                      "sample_std":  0.70710678118654757,
+                                                      "min":  17,
+                                                      "max":  19
+                                                  }
+                   }
+}
