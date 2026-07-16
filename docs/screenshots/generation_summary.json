@@ -1,0 +1,22 @@
+{
+  "input": "C:\\Users\\23307\\Desktop\\操作系统创新大赛\\基于深度强化学习的云-边-端异构计算资源管理调度方法\\project\\docs\\技术报告.md",
+  "template": null,
+  "output_docx": "C:\\Users\\23307\\Desktop\\操作系统创新大赛\\基于深度强化学习的云-边-端异构计算资源管理调度方法\\project\\docs\\技术报告.docx",
+  "output_pdf": "C:\\Users\\23307\\Desktop\\操作系统创新大赛\\基于深度强化学习的云-边-端异构计算资源管理调度方法\\project\\docs\\技术报告.pdf",
+  "page_count": 39,
+  "table_count": 15,
+  "page_map": {
+    "01_封面": 1,
+    "02_目录": 2,
+    "03_正文表格": 7,
+    "04_附录": 37
+  },
+  "screenshots": [
+    "C:\\Users\\23307\\Desktop\\操作系统创新大赛\\基于深度强化学习的云-边-端异构计算资源管理调度方法\\project\\docs\\screenshots\\01_封面_第1页.png",
+    "C:\\Users\\23307\\Desktop\\操作系统创新大赛\\基于深度强化学习的云-边-端异构计算资源管理调度方法\\project\\docs\\screenshots\\02_目录_第2页.png",
+    "C:\\Users\\23307\\Desktop\\操作系统创新大赛\\基于深度强化学习的云-边-端异构计算资源管理调度方法\\project\\docs\\screenshots\\03_正文表格_第7页.png",
+    "C:\\Users\\23307\\Desktop\\操作系统创新大赛\\基于深度强化学习的云-边-端异构计算资源管理调度方法\\project\\docs\\screenshots\\04_附录_第37页.png"
+  ],
+  "docx_size_bytes": 76131,
+  "pdf_size_bytes": 747624
+}
