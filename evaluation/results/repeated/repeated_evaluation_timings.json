@@ -1,0 +1,42 @@
+﻿[
+    {
+        "Run":  1,
+        "Seed":  447377315,
+        "ExitCode":  0,
+        "ElapsedSeconds":  79.7033951,
+        "Result":  "evaluation/results/repeated/summary_hybrid_residual_bestof16_run1.json",
+        "Log":  "evaluation/results/repeated/hybrid_residual_bestof16_run1.log"
+    },
+    {
+        "Run":  2,
+        "Seed":  1383495036,
+        "ExitCode":  0,
+        "ElapsedSeconds":  79.87980499999999,
+        "Result":  "evaluation/results/repeated/summary_hybrid_residual_bestof16_run2.json",
+        "Log":  "evaluation/results/repeated/hybrid_residual_bestof16_run2.log"
+    },
+    {
+        "Run":  3,
+        "Seed":  899661321,
+        "ExitCode":  0,
+        "ElapsedSeconds":  80.2311213,
+        "Result":  "evaluation/results/repeated/summary_hybrid_residual_bestof16_run3.json",
+        "Log":  "evaluation/results/repeated/hybrid_residual_bestof16_run3.log"
+    },
+    {
+        "Run":  4,
+        "Seed":  1580188249,
+        "ExitCode":  0,
+        "ElapsedSeconds":  79.7823555,
+        "Result":  "evaluation/results/repeated/summary_hybrid_residual_bestof16_run4.json",
+        "Log":  "evaluation/results/repeated/hybrid_residual_bestof16_run4.log"
+    },
+    {
+        "Run":  5,
+        "Seed":  1528210608,
+        "ExitCode":  0,
+        "ElapsedSeconds":  79.6612708,
+        "Result":  "evaluation/results/repeated/summary_hybrid_residual_bestof16_run5.json",
+        "Log":  "evaluation/results/repeated/hybrid_residual_bestof16_run5.log"
+    }
+]

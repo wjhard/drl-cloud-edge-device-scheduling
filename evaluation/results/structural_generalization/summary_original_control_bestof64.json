@@ -1,0 +1,82 @@
+{
+  "config_path": "evaluation/results/structural_generalization/generated_configs/original_control.yaml",
+  "model_path": "training/checkpoints/ppo_mlp_residual",
+  "scenario_count": 5,
+  "num_samples": 64,
+  "sampling_deterministic_fallback": true,
+  "sampling_seed": 20260709,
+  "hybrid": {
+    "enabled": false,
+    "task_threshold": null,
+    "milp_timeout_seconds": null,
+    "requires_proven_optimal": null
+  },
+  "overall": {
+    "mean_ratio": 0.9640854811986935,
+    "std_ratio": 0.040773568347066226
+  },
+  "by_task_size": {
+    "8": {
+      "count": 1,
+      "mean_ratio": 0.9288437786543332,
+      "std_ratio": 0.0
+    },
+    "12": {
+      "count": 1,
+      "mean_ratio": 0.9969145549113502,
+      "std_ratio": 0.0
+    },
+    "16": {
+      "count": 1,
+      "mean_ratio": 0.9149507917479734,
+      "std_ratio": 0.0
+    },
+    "20": {
+      "count": 1,
+      "mean_ratio": 0.9563187692832614,
+      "std_ratio": 0.0
+    },
+    "25": {
+      "count": 1,
+      "mean_ratio": 1.0233995113965495,
+      "std_ratio": 0.0
+    }
+  },
+  "scenarios": [
+    {
+      "scenario": "scenario_12_1.json",
+      "num_tasks": 12,
+      "heft_makespan": 0.43734192471314726,
+      "rl_makespan": 0.4359925302194804,
+      "ratio": 0.9969145549113502
+    },
+    {
+      "scenario": "scenario_16_2.json",
+      "num_tasks": 16,
+      "heft_makespan": 0.7113507204679433,
+      "rl_makespan": 0.6508509049026361,
+      "ratio": 0.9149507917479734
+    },
+    {
+      "scenario": "scenario_20_3.json",
+      "num_tasks": 20,
+      "heft_makespan": 0.8347020035030448,
+      "rl_makespan": 0.7982411927083044,
+      "ratio": 0.9563187692832614
+    },
+    {
+      "scenario": "scenario_25_4.json",
+      "num_tasks": 25,
+      "heft_makespan": 0.8101416390211456,
+      "rl_makespan": 0.8290985575362402,
+      "ratio": 1.0233995113965495
+    },
+    {
+      "scenario": "scenario_8_0.json",
+      "num_tasks": 8,
+      "heft_makespan": 0.3274788149481434,
+      "rl_makespan": 0.30417665990567666,
+      "ratio": 0.9288437786543332
+    }
+  ]
+}

@@ -5,16 +5,20 @@ __pycache__/
 # Demo/validation artifacts
 env/dag_demo.png
 evaluation/scenarios/
-evaluation/results/
+evaluation/results/final_pipeline_fresh_clone_path.txt
 
 # Training artifacts
-training/checkpoints/
+training/checkpoints/*
+!training/checkpoints/README.md
+!training/checkpoints/ppo_mlp_residual.zip
 training/tb_logs/
 training/monitor_logs/
 training/bc_datasets/
 
 # Local run logs
 *.log
+!artifacts/**/*.log
+!evaluation/results/**/*.log
 *.pid
 *_meta.txt
 *_audit_report.txt

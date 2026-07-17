@@ -1,0 +1,71 @@
+Welcome to the CBC MILP Solver
+Version: 2.10.3
+Build Date: Dec 15 2019
+
+command line - <USER_HOME>\AppData\Local\Programs\Python\Python312\Lib\site-packages\pulp\apis\../solverdir/cbc/win/i64/cbc.exe cloud_edge_device_dag_scheduling-pulp.mps -mips cloud_edge_device_dag_scheduling-pulp.mst -sec 300.0 -presolve on -gomory on knapsack on probing on -timeMode elapsed -solve -printingOptions all -solution cloud_edge_device_dag_scheduling-pulp.sol (default strategy 1)
+At line 2 NAME          MODEL
+At line 3 ROWS
+At line 449 COLUMNS
+At line 4095 RHS
+At line 4540 BOUNDS
+At line 4716 ENDATA
+Problem MODEL has 444 rows, 175 columns and 3316 elements
+Coin0008I MODEL read with 0 errors
+opening mipstart file .\cloud_edge_device_dag_scheduling-pulp.mst.
+MIPStart values read for 175 variables.
+seconds was changed from 1e+100 to 300
+Option for gomoryCuts changed from ifmove to on
+Option for knapsackCuts changed from ifmove to on
+Option for timeMode changed from cpu to elapsed
+Continuous objective value is 0.104022 - 0.00 seconds
+Cgl0003I 1 fixed, 0 tightened bounds, 281 strengthened rows, 0 substitutions
+Cgl0003I 0 fixed, 0 tightened bounds, 245 strengthened rows, 0 substitutions
+Cgl0003I 1 fixed, 0 tightened bounds, 97 strengthened rows, 1 substitutions
+Cgl0003I 0 fixed, 0 tightened bounds, 21 strengthened rows, 0 substitutions
+Cgl0003I 0 fixed, 0 tightened bounds, 32 strengthened rows, 0 substitutions
+Cgl0003I 0 fixed, 0 tightened bounds, 17 strengthened rows, 0 substitutions
+Cgl0003I 0 fixed, 0 tightened bounds, 1 strengthened rows, 0 substitutions
+Cgl0004I processed model has 360 rows, 132 columns (121 integer (121 of which binary)) and 2809 elements
+Cbc0045I MIPStart provided solution with cost 0.508816
+Cbc0012I Integer solution of 0.50881563 found by Reduced search after 0 iterations and 0 nodes (0.02 seconds)
+Cbc0038I Full problem 360 rows 132 columns, reduced to 159 rows 59 columns
+Cbc0031I 20 added rows had average density of 18.6
+Cbc0013I At root node, 20 cuts changed objective from 0.13130776 to 0.26828753 in 56 passes
+Cbc0014I Cut generator 0 (Probing) - 216 row cuts average 7.2 elements, 0 column cuts (0 active)  in 0.021 seconds - new frequency is 1
+Cbc0014I Cut generator 1 (Gomory) - 748 row cuts average 21.8 elements, 0 column cuts (0 active)  in 0.012 seconds - new frequency is 1
+Cbc0014I Cut generator 2 (Knapsack) - 6 row cuts average 4.2 elements, 0 column cuts (0 active)  in 0.012 seconds - new frequency is 3
+Cbc0014I Cut generator 3 (Clique) - 0 row cuts average 0.0 elements, 0 column cuts (0 active)  in 0.001 seconds - new frequency is -100
+Cbc0014I Cut generator 4 (MixedIntegerRounding2) - 327 row cuts average 3.9 elements, 0 column cuts (0 active)  in 0.028 seconds - new frequency is 1
+Cbc0014I Cut generator 5 (FlowCover) - 0 row cuts average 0.0 elements, 0 column cuts (0 active)  in 0.017 seconds - new frequency is -100
+Cbc0014I Cut generator 6 (TwoMirCuts) - 597 row cuts average 6.5 elements, 0 column cuts (0 active)  in 0.012 seconds - new frequency is 1
+Cbc0010I After 0 nodes, 1 on tree, 0.50881563 best solution, best possible 0.26828753 (0.22 seconds)
+Cbc0016I Integer solution of 0.49832283 found by strong branching after 2696 iterations and 22 nodes (0.38 seconds)
+Cbc0038I Full problem 360 rows 132 columns, reduced to 43 rows 22 columns
+Cbc0016I Integer solution of 0.46775172 found by strong branching after 3957 iterations and 91 nodes (0.51 seconds)
+Cbc0038I Full problem 360 rows 132 columns, reduced to 96 rows 37 columns
+Cbc0012I Integer solution of 0.46046269 found by DiveCoefficient after 55703 iterations and 170 nodes (1.36 seconds)
+Cbc0016I Integer solution of 0.45955867 found by strong branching after 56662 iterations and 231 nodes (1.44 seconds)
+Cbc0001I Search completed - best objective 0.4595586696960001, took 56662 iterations and 231 nodes (1.44 seconds)
+Cbc0032I Strong branching done 1948 times (18524 iterations), fathomed 39 nodes and fixed 52 variables
+Cbc0035I Maximum depth 17, 0 variables fixed on reduced cost
+Cuts at root node changed objective from 0.131308 to 0.268288
+Probing was tried 383 times and created 3026 cuts of which 0 were active after adding rounds of cuts (0.047 seconds)
+Gomory was tried 338 times and created 1758 cuts of which 0 were active after adding rounds of cuts (0.039 seconds)
+Knapsack was tried 141 times and created 10 cuts of which 0 were active after adding rounds of cuts (0.018 seconds)
+Clique was tried 56 times and created 0 cuts of which 0 were active after adding rounds of cuts (0.001 seconds)
+MixedIntegerRounding2 was tried 338 times and created 1240 cuts of which 0 were active after adding rounds of cuts (0.082 seconds)
+FlowCover was tried 56 times and created 0 cuts of which 0 were active after adding rounds of cuts (0.017 seconds)
+TwoMirCuts was tried 338 times and created 1318 cuts of which 0 were active after adding rounds of cuts (0.038 seconds)
+ZeroHalf was tried 1 times and created 0 cuts of which 0 were active after adding rounds of cuts (0.000 seconds)
+ImplicationCuts was tried 144 times and created 17 cuts of which 0 were active after adding rounds of cuts (0.000 seconds)
+
+Result - Optimal solution found
+
+Objective value:                0.45955867
+Enumerated nodes:               231
+Total iterations:               56662
+Time (CPU seconds):             1.45
+Time (Wallclock seconds):       1.45
+
+Option for printingOptions changed from normal to all
+Total time (CPU seconds):       1.48   (Wallclock seconds):       1.48

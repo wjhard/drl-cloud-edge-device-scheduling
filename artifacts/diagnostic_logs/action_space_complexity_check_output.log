@@ -1,0 +1,56 @@
+ACTION_SPACE_COMPLEXITY_CHECK
+config=<USER_HOME>\Desktop\����ϵͳ���´���\�������ǿ��ѧϰ����-��-���칹������Դ������ȷ���\project\training\configs\ppo_mlp_normalized.yaml
+model_path=<USER_HOME>\Desktop\����ϵͳ���´���\�������ǿ��ѧϰ����-��-���칹������Դ������ȷ���\project\training\checkpoints\ppo_mlp_normalized
+model_zip=<USER_HOME>\Desktop\����ϵͳ���´���\�������ǿ��ѧϰ����-��-���칹������Դ������ȷ���\project\training\checkpoints\ppo_mlp_normalized.zip
+model_zip_size_bytes=4121010
+scenario_count=20
+scenario_dir=<USER_HOME>\Desktop\����ϵͳ���´���\�������ǿ��ѧϰ����-��-���칹������Դ������ȷ���\project\evaluation\scenarios
+ACTION_SPACE_COMPLEXITY_BY_SCENARIO
+  scenario_10_0.json: steps=10 avg_legal_actions=11.600000 avg_ready_tasks=2.900000 avg_resources_per_ready_task=4.000000
+  scenario_10_1.json: steps=10 avg_legal_actions=11.200000 avg_ready_tasks=2.800000 avg_resources_per_ready_task=4.000000
+  scenario_10_2.json: steps=10 avg_legal_actions=14.000000 avg_ready_tasks=3.500000 avg_resources_per_ready_task=4.000000
+  scenario_10_3.json: steps=10 avg_legal_actions=11.200000 avg_ready_tasks=2.800000 avg_resources_per_ready_task=4.000000
+  scenario_10_4.json: steps=10 avg_legal_actions=8.000000 avg_ready_tasks=2.000000 avg_resources_per_ready_task=4.000000
+  scenario_15_0.json: steps=15 avg_legal_actions=14.133333 avg_ready_tasks=3.533333 avg_resources_per_ready_task=4.000000
+  scenario_15_1.json: steps=15 avg_legal_actions=12.266667 avg_ready_tasks=3.066667 avg_resources_per_ready_task=4.000000
+  scenario_15_2.json: steps=15 avg_legal_actions=9.866667 avg_ready_tasks=2.466667 avg_resources_per_ready_task=4.000000
+  scenario_15_3.json: steps=15 avg_legal_actions=12.800000 avg_ready_tasks=3.200000 avg_resources_per_ready_task=4.000000
+  scenario_15_4.json: steps=15 avg_legal_actions=9.600000 avg_ready_tasks=2.400000 avg_resources_per_ready_task=4.000000
+  scenario_20_0.json: steps=20 avg_legal_actions=12.800000 avg_ready_tasks=3.200000 avg_resources_per_ready_task=4.000000
+  scenario_20_1.json: steps=20 avg_legal_actions=10.200000 avg_ready_tasks=2.550000 avg_resources_per_ready_task=4.000000
+  scenario_20_2.json: steps=20 avg_legal_actions=14.600000 avg_ready_tasks=3.650000 avg_resources_per_ready_task=4.000000
+  scenario_20_3.json: steps=20 avg_legal_actions=15.000000 avg_ready_tasks=3.750000 avg_resources_per_ready_task=4.000000
+  scenario_20_4.json: steps=20 avg_legal_actions=10.600000 avg_ready_tasks=2.650000 avg_resources_per_ready_task=4.000000
+  scenario_25_0.json: steps=25 avg_legal_actions=11.680000 avg_ready_tasks=2.920000 avg_resources_per_ready_task=4.000000
+  scenario_25_1.json: steps=25 avg_legal_actions=13.600000 avg_ready_tasks=3.400000 avg_resources_per_ready_task=4.000000
+  scenario_25_2.json: steps=25 avg_legal_actions=13.440000 avg_ready_tasks=3.360000 avg_resources_per_ready_task=4.000000
+  scenario_25_3.json: steps=25 avg_legal_actions=14.240000 avg_ready_tasks=3.560000 avg_resources_per_ready_task=4.000000
+  scenario_25_4.json: steps=25 avg_legal_actions=12.160000 avg_ready_tasks=3.040000 avg_resources_per_ready_task=4.000000
+ACTION_SPACE_COMPLEXITY_AGGREGATE
+total_decision_steps=350
+avg_legal_actions_per_step=12.377143
+std_legal_actions_per_step=5.575000
+max_legal_actions_per_step=32
+avg_candidate_tasks_per_step=3.094286
+max_candidate_tasks_per_step=8
+avg_candidate_resources_per_ready_task=4.000000
+RESOURCE_SELECTION_STABILITY
+stochastic_rollouts_per_scenario=20
+tracked_scenario_task_pairs=350
+unstable_pairs_unique_resource_gt_1=310
+unstable_pair_ratio=0.885714
+avg_unique_resource_count=2.491429
+avg_resource_choice_majority_ratio=0.780571
+avg_resource_choice_entropy=0.537841
+avg_decision_step_span=6.697143
+top_unstable_pairs:
+  scenario=scenario_25_0.json task_id=5 unique_resources=4 majority_ratio=0.500000 entropy=1.168282 step_span=(min=16,max=24,unique=7) choices=[cloud_0=10, device_0=2, edge_0=6, edge_1=2]
+  scenario=scenario_10_3.json task_id=8 unique_resources=4 majority_ratio=0.600000 entropy=0.967260 step_span=(min=2,max=8,unique=7) choices=[cloud_0=12, device_0=1, edge_0=6, edge_1=1]
+  scenario=scenario_15_3.json task_id=11 unique_resources=4 majority_ratio=0.750000 entropy=0.799903 step_span=(min=9,max=14,unique=5) choices=[cloud_0=15, device_0=1, edge_0=3, edge_1=1]
+  scenario=scenario_15_3.json task_id=13 unique_resources=4 majority_ratio=0.800000 entropy=0.708347 step_span=(min=10,max=14,unique=5) choices=[cloud_0=16, device_0=2, edge_0=1, edge_1=1]
+  scenario=scenario_25_1.json task_id=18 unique_resources=4 majority_ratio=0.800000 entropy=0.708347 step_span=(min=20,max=24,unique=5) choices=[cloud_0=16, device_0=1, edge_0=1, edge_1=2]
+  scenario=scenario_20_1.json task_id=9 unique_resources=4 majority_ratio=0.850000 entropy=0.587501 step_span=(min=13,max=19,unique=4) choices=[cloud_0=17, device_0=1, edge_0=1, edge_1=1]
+  scenario=scenario_20_2.json task_id=0 unique_resources=4 majority_ratio=0.850000 entropy=0.587501 step_span=(min=12,max=17,unique=4) choices=[cloud_0=17, device_0=1, edge_0=1, edge_1=1]
+  scenario=scenario_25_1.json task_id=1 unique_resources=3 majority_ratio=0.350000 entropy=1.096067 step_span=(min=0,max=9,unique=10) choices=[cloud_0=7, edge_0=6, edge_1=7]
+  scenario=scenario_20_4.json task_id=13 unique_resources=3 majority_ratio=0.400000 entropy=1.088900 step_span=(min=0,max=11,unique=6) choices=[cloud_0=6, edge_0=6, edge_1=8]
+  scenario=scenario_25_1.json task_id=8 unique_resources=3 majority_ratio=0.400000 entropy=1.088900 step_span=(min=6,max=14,unique=8) choices=[cloud_0=6, edge_0=6, edge_1=8]

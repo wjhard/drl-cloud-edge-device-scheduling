@@ -2,6 +2,8 @@
 
 本目录保存具有复核价值、但不属于源代码、运行配置或正式文档的实验产物。
 
+归档日志中的本机用户目录已统一替换为 `<USER_HOME>`。该处理仅用于脱敏机器路径，不改动实验指标、随机种子、模型输出或求解器结论。
+
 ## `bestof_sweep_logs/`
 
 - `bestof_sweep_serial_times.tsv`：Residual/Ranked 策略 Best-of-N 串行推理扫描中，N=1、4、8、16、32、64、128 的总评测耗时记录。数值与同批 `bestof_sweep_n*_serial_output.log` 运行日志对应。
@@ -25,3 +27,11 @@
 - `manual_nothreads.sol`：文件名将其标记为 no-threads 诊断；文件头可确认它因超时停止并保存了当时的整数可行解。
 
 现有仓库没有保存生成这三个 `manual_*.sol` 文件的完整命令或场景编号，因此不能进一步确认其具体命令行来源，也不能仅凭文件名独立验证求解参数。它们作为 MILP/CBC 排查证据保留；自动生成的 `*-pulp.mps`、`*-pulp.mst` 和 `*-pulp.sol` 临时文件由 `.gitignore` 排除。
+
+## `diagnostic_logs/`
+
+保存技术报告直接引用的动作分布、BC 数据集、观测归一化和动作空间复杂度诊断输出。未被报告引用的本地调试日志仍由 `.gitignore` 排除。
+
+## `training_logs/`
+
+保存技术报告用于训练耗时对比的 GAT joint、MLP ranked 和 Residual 历史完整训练日志。

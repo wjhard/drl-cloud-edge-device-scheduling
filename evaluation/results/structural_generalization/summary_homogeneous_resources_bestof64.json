@@ -1,0 +1,82 @@
+{
+  "config_path": "evaluation/results/structural_generalization/generated_configs/homogeneous_resources.yaml",
+  "model_path": "training/checkpoints/ppo_mlp_residual",
+  "scenario_count": 5,
+  "num_samples": 64,
+  "sampling_deterministic_fallback": true,
+  "sampling_seed": 20260709,
+  "hybrid": {
+    "enabled": false,
+    "task_threshold": null,
+    "milp_timeout_seconds": null,
+    "requires_proven_optimal": null
+  },
+  "overall": {
+    "mean_ratio": 0.8795716956785828,
+    "std_ratio": 0.07148850152414657
+  },
+  "by_task_size": {
+    "8": {
+      "count": 1,
+      "mean_ratio": 0.9320276661998351,
+      "std_ratio": 0.0
+    },
+    "12": {
+      "count": 1,
+      "mean_ratio": 0.8694925747910007,
+      "std_ratio": 0.0
+    },
+    "16": {
+      "count": 1,
+      "mean_ratio": 0.9773667764330917,
+      "std_ratio": 0.0
+    },
+    "20": {
+      "count": 1,
+      "mean_ratio": 0.8501787819521045,
+      "std_ratio": 0.0
+    },
+    "25": {
+      "count": 1,
+      "mean_ratio": 0.7687926790168818,
+      "std_ratio": 0.0
+    }
+  },
+  "scenarios": [
+    {
+      "scenario": "scenario_12_1.json",
+      "num_tasks": 12,
+      "heft_makespan": 0.7091249620982351,
+      "rl_makespan": 0.6165788891433652,
+      "ratio": 0.8694925747910007
+    },
+    {
+      "scenario": "scenario_16_2.json",
+      "num_tasks": 16,
+      "heft_makespan": 0.94747099593301,
+      "rl_makespan": 0.9260266730588969,
+      "ratio": 0.9773667764330917
+    },
+    {
+      "scenario": "scenario_20_3.json",
+      "num_tasks": 20,
+      "heft_makespan": 1.2594252214554686,
+      "rl_makespan": 1.0707366007367698,
+      "ratio": 0.8501787819521045
+    },
+    {
+      "scenario": "scenario_25_4.json",
+      "num_tasks": 25,
+      "heft_makespan": 1.5363949541178834,
+      "rl_makespan": 1.1811691928043067,
+      "ratio": 0.7687926790168818
+    },
+    {
+      "scenario": "scenario_8_0.json",
+      "num_tasks": 8,
+      "heft_makespan": 0.5347210847932882,
+      "rl_makespan": 0.4983748447277325,
+      "ratio": 0.9320276661998351
+    }
+  ]
+}

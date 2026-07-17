@@ -1,0 +1,40 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.7, pytest-9.0.3, pluggy-1.6.0 -- <USER_HOME>\AppData\Local\Programs\Python\Python312\python.exe
+cachedir: .pytest_cache
+rootdir: <USER_HOME>\Desktop\����ϵͳ���´���\�������ǿ��ѧϰ����-��-���칹������Դ������ȷ���\project
+plugins: anyio-4.13.0
+collecting ... collected 19 items
+
+tests/test_env.py::test_dag_generator_no_cycle PASSED                    [  5%]
+tests/test_env.py::test_env_reset_and_step PASSED                        [ 10%]
+tests/test_env.py::test_heft_valid_schedule PASSED                       [ 15%]
+tests/test_env.py::test_action_mask_consistency PASSED                   [ 21%]
+tests/test_gat_features_extractor.py::test_gat_features_extractor_batched_forward_shape_and_finiteness PASSED [ 26%]
+tests/test_gat_scheduler_smoke.py::test_gat_rl_scheduler_smoke PASSED    [ 31%]
+tests/test_hybrid_scheduler.py::test_hybrid_uses_proven_milp_solution_for_small_dag PASSED [ 36%]
+tests/test_hybrid_scheduler.py::test_hybrid_falls_back_for_large_dag PASSED [ 42%]
+tests/test_hybrid_scheduler.py::test_hybrid_falls_back_when_milp_is_not_proven_optimal PASSED [ 47%]
+tests/test_milp_optimal_scheduler.py::test_milp_finds_known_optimal_parallel_schedule PASSED [ 52%]
+tests/test_milp_optimal_scheduler.py::test_milp_bound_parser_prefers_precise_progress_bound PASSED [ 57%]
+tests/test_residual_scheduling.py::test_residual_policy_delta_head_starts_at_zero PASSED [ 63%]
+tests/test_residual_scheduling.py::test_untrained_residual_policy_matches_heft_makespan PASSED [ 68%]
+tests/test_reward_shaping.py::test_relative_heft_reward_is_near_step_penalty_when_replaying_heft PASSED [ 73%]
+tests/test_rl_scheduler_interface.py::test_rl_scheduler_interface_smoke PASSED [ 78%]
+tests/test_scheduling_consistency.py::test_env_replay_matches_heft_makespan_for_same_assignment PASSED [ 84%]
+tests/test_scheduling_env_ranked.py::test_ranked_env_reset_and_step PASSED [ 89%]
+tests/test_scheduling_env_ranked.py::test_ranked_env_matches_heft_when_replaying_heft_task_order PASSED [ 94%]
+tests/test_structural_generalization.py::test_structural_scenarios_are_grouped_deep_and_resource_paired PASSED [100%]
+
+============================== warnings summary ===============================
+tests/test_hybrid_scheduler.py: 6 warnings
+tests/test_milp_optimal_scheduler.py: 9 warnings
+  <USER_HOME>\AppData\Local\Programs\Python\Python312\Lib\site-packages\pulp\pulp.py:318: DeprecationWarning: Constructing LpVariable(name, ...) directly is deprecated; in PuLP 4.0 use prob.add_variable(name, lowBound, upBound, cat=...). Variables are then attached to the model when created.
+    _v4_deprecation(msg, stacklevel=2)
+
+tests/test_hybrid_scheduler.py::test_hybrid_uses_proven_milp_solution_for_small_dag
+tests/test_milp_optimal_scheduler.py::test_milp_finds_known_optimal_parallel_schedule
+  <USER_HOME>\AppData\Local\Programs\Python\Python312\Lib\site-packages\pulp\apis\coin_api.py:70: DeprecationWarning: PULP_CBC_CMD is deprecated and will be removed in PuLP 4.0. Install CBC with `pip install pulp[cbc]` and use COIN_CMD instead.
+    v4_deprecation(PULP_CBC_CMD_DEPRECATION_MSG, stacklevel=stacklevel)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+====================== 19 passed, 17 warnings in 10.63s =======================

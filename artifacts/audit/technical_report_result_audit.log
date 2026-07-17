@@ -1,0 +1,392 @@
+TECHNICAL_REPORT_RESULT_AUDIT
+report: docs/��������.md
+tolerance: 1e-06 (absolute; displayed values may be rounded)
+
+[CONCRETE REPOSITORY PATH SCAN]
+PASS line 36: tracked path: evaluation/results/paired15/paired_comparison_summary.json
+PASS line 36: tracked path: evaluation/results/repeated_bestof64/repeated_bestof64_summary.json
+PASS line 36: tracked path: evaluation/results/milp_optimal_comparison.json
+PASS line 60: tracked path: env/resource_config.py
+PASS line 86: tracked path: training/configs/ppo_mlp_residual.yaml
+PASS line 86: tracked path: evaluation/generate_validation_scenarios.py
+PASS line 102: tracked path: evaluation/results/paired15/paired_comparison_summary.json
+PASS line 103: tracked path: evaluation/results/repeated_bestof64/repeated_bestof64_summary.json
+PASS line 104: tracked path: evaluation/results/summary_mlp_residual_bestof64.json
+PASS line 106: tracked path: evaluation/results/openeuler_validation/evaluate_bestof64_output.log
+PASS line 106: tracked path: evaluation/results/run_final_pipeline_openEuler_existing_checkpoint.log
+PASS line 106: tracked path: evaluation/results/openEuler_pytest_structural_final.log
+PASS line 145: tracked path: env/dag_generator.py
+PASS line 147: tracked path: env/resource_config.py
+PASS line 147: tracked path: configs/resource_default.yaml
+PASS line 156: tracked path: configs/resource_structural_homogeneous.yaml
+PASS line 160: tracked path: env/scheduling_env.py
+PASS line 173: tracked path: env/observation_normalizer.py
+PASS line 173: tracked path: env/normalization_stats.json
+PASS line 173: tracked path: artifacts/diagnostic_logs/bc_dataset_sanity_check_output.log
+PASS line 189: tracked path: env/scheduling_env_ranked.py
+PASS line 193: tracked path: env/scheduling_env_residual.py
+PASS line 197: tracked path: env/scheduling_utils.py
+PASS line 199: tracked path: tests/test_scheduling_consistency.py
+PASS line 199: tracked path: tests/test_scheduling_env_ranked.py
+PASS line 217: tracked path: baselines/heft_scheduler.py
+PASS line 218: tracked path: baselines/milp_optimal_scheduler.py
+PASS line 219: tracked path: baselines/hybrid_scheduler.py
+PASS line 220: tracked path: policies/rl_scheduler.py
+PASS line 224: tracked path: tests/test_hybrid_scheduler.py
+PASS line 228: tracked path: training/train_ppo.py
+PASS line 232: tracked path: tests/test_env.py
+PASS line 233: tracked path: tests/test_reward_shaping.py
+PASS line 234: tracked path: tests/test_scheduling_consistency.py
+PASS line 235: tracked path: tests/test_residual_scheduling.py
+PASS line 236: tracked path: tests/test_rl_scheduler_interface.py
+PASS line 251: tracked path: diagnostics/action_distribution_check.py
+PASS line 251: tracked path: artifacts/diagnostic_logs/diagnostics_action_distribution_output.log
+PASS line 253: tracked path: evaluation/results/summary.json
+PASS line 265: tracked path: tests/test_reward_shaping.py
+PASS line 267: tracked path: evaluation/results/summary_reward_shaped.json
+PASS line 267: tracked path: artifacts/diagnostic_logs/reward_shaped_action_distribution_output.log
+PASS line 271: tracked path: policies/gat_features_extractor.py
+PASS line 277: tracked path: evaluation/results/summary_gat_reward_shaped.json
+PASS line 278: tracked path: evaluation/results/summary_gat_lowent.json
+PASS line 280: tracked path: evaluation/results/summary_gat_ranked.json
+PASS line 280: tracked path: evaluation/results/summary_gat_ranked_bestof64.json
+PASS line 284: tracked path: artifacts/diagnostic_logs/bc_batch_mask_and_normalization_check_output.log
+PASS line 286: tracked path: artifacts/diagnostic_logs/mlp_bc_normalized_strength_test_80e_lr1e3_output.log
+PASS line 288: tracked path: evaluation/results/summary_mlp_normalized.json
+PASS line 288: tracked path: artifacts/diagnostic_logs/mlp_normalized_action_distribution_output.log
+PASS line 292: tracked path: diagnostics/action_space_complexity_check.py
+PASS line 292: tracked path: artifacts/diagnostic_logs/action_space_complexity_check_output.log
+PASS line 303: tracked path: evaluation/results/summary_mlp_ranked.json
+PASS line 307: tracked path: artifacts/ablation_scan_results/scan_final_summary_table.tsv
+PASS line 311: tracked path: artifacts/diagnostic_logs/bc_dataset_sanity_check_output.log
+PASS line 311: tracked path: artifacts/diagnostic_logs/bc_batch_mask_and_normalization_check_output.log
+PASS line 311: tracked path: artifacts/diagnostic_logs/scan_step1_ranked_bc_small_overfit.log
+PASS line 311: tracked path: artifacts/diagnostic_logs/scan_step1_ranked_bc_full_pretrain_only.log
+PASS line 319: tracked path: evaluation/results/summary_mlp_ranked.json
+PASS line 320: tracked path: evaluation/results/summary_mlp_ranked_bc.json
+PASS line 321: tracked path: evaluation/results/summary_mlp_ranked_with_rank.json
+PASS line 322: tracked path: evaluation/results/summary_mlp_ranked_curriculum.json
+PASS line 323: tracked path: evaluation/results/summary_mlp_ranked_lr1e-3_128.json
+PASS line 324: tracked path: evaluation/results/summary_mlp_ranked_lr1e-3_128_400k.json
+PASS line 325: tracked path: evaluation/results/summary_mlp_ranked_ensemble3_bestof8.json
+PASS line 326: tracked path: evaluation/results/summary_mlp_ranked_all_combined.json
+PASS line 328: tracked path: training/dag_curriculum.py
+PASS line 336: tracked path: policies/residual_ranking_policy.py
+PASS line 348: tracked path: tests/test_residual_scheduling.py
+PASS line 350: tracked path: evaluation/results/summary_mlp_residual.json
+PASS line 354: tracked path: policies/rl_scheduler.py
+PASS line 360: tracked path: evaluation/results/summary_mlp_residual_bestof1.json
+PASS line 361: tracked path: evaluation/results/summary_mlp_residual_bestof4.json
+PASS line 362: tracked path: evaluation/results/summary_mlp_residual_bestof8.json
+PASS line 363: tracked path: evaluation/results/summary_mlp_residual_bestof16.json
+PASS line 364: tracked path: evaluation/results/summary_mlp_residual_bestof32.json
+PASS line 365: tracked path: evaluation/results/summary_mlp_residual_bestof64.json
+PASS line 385: tracked path: evaluation/results/paired15/paired_comparison_summary.json
+PASS line 397: tracked path: evaluation/results/summary.json
+PASS line 398: tracked path: evaluation/results/summary_reward_shaped.json
+PASS line 399: tracked path: evaluation/results/summary_gat_reward_shaped.json
+PASS line 400: tracked path: evaluation/results/summary_gat_lowent.json
+PASS line 401: tracked path: evaluation/results/summary_mlp_normalized.json
+PASS line 402: tracked path: evaluation/results/summary_mlp_ranked.json
+PASS line 403: tracked path: evaluation/results/summary_mlp_ranked_lr1e-3_128.json
+PASS line 404: tracked path: evaluation/results/summary_gat_ranked.json
+PASS line 405: tracked path: evaluation/results/summary_mlp_ranked_ensemble3_bestof8.json
+PASS line 406: tracked path: evaluation/results/summary_mlp_residual.json
+PASS line 407: tracked path: evaluation/results/summary_mlp_residual_bestof16.json
+PASS line 408: tracked path: evaluation/results/summary_mlp_residual_bestof64.json
+PASS line 414: tracked path: evaluation/results/repeated_bestof64/repeated_bestof64_summary.json
+PASS line 429: tracked path: baselines/milp_optimal_scheduler.py
+PASS line 444: tracked path: evaluation/results/milp_optimal_comparison.json
+PASS line 448: tracked path: evaluation/results/summary_mlp_residual_bestof64.json
+PASS line 461: tracked path: training/configs/ppo_mlp_normalized_large.yaml
+PASS line 461: tracked path: evaluation/results/summary_mlp_normalized_large_small_eval.json
+PASS line 461: tracked path: evaluation/results/summary_mlp_normalized_large.json
+PASS line 467: tracked path: evaluation/generate_structural_generalization_scenarios.py
+PASS line 467: tracked path: evaluation/evaluate_structural_generalization.py
+PASS line 476: tracked path: evaluation/results/structural_generalization/summary_structural_generalization.json
+PASS line 489: tracked path: evaluation/results/openeuler_validation/environment_info.log
+PASS line 490: tracked path: evaluation/results/openeuler_validation/pip_freeze.txt
+PASS line 491: tracked path: evaluation/results/openeuler_validation/evaluate_bestof64_output.log
+PASS line 492: tracked path: evaluation/results/openEuler_pytest_structural_final.log
+PASS line 496: tracked path: evaluation/results/run_final_pipeline_fresh_clone_full_output.log
+PASS line 498: tracked path: evaluation/results/repeated_bestof64/repeated_bestof64_summary.json
+PASS line 498: tracked path: artifacts/training_logs/gat_full_train_20260707_133559_output.log
+PASS line 498: tracked path: artifacts/training_logs/mlp_ranked_train_output.log
+PASS line 506: tracked path: evaluation/results/openeuler_validation/pip_freeze.txt
+PASS line 548: tracked path: scripts/run_final_pipeline.sh
+PASS line 561: tracked path: training/checkpoints/ppo_mlp_residual.zip
+PASS line 567: tracked path: evaluation/results/run_final_pipeline_fresh_clone_full_output.log
+PASS line 576: tracked path: training/train_ppo.py
+PASS line 577: tracked path: training/configs/ppo_mlp_residual.yaml
+PASS line 580: tracked path: evaluation/generate_validation_scenarios.py
+PASS line 581: tracked path: training/configs/ppo_mlp_residual.yaml
+PASS line 584: tracked path: evaluation/evaluate.py
+PASS line 585: tracked path: training/configs/ppo_mlp_residual.yaml
+PASS line 589: tracked path: evaluation/evaluate_bestofn.py
+PASS line 590: tracked path: training/configs/ppo_mlp_residual.yaml
+PASS line 595: tracked path: evaluation/results/summary_mlp_residual_bestof64.json
+PASS line 618: tracked path: evaluation/evaluate.py
+PASS line 684: tracked path: scripts/run_final_pipeline.sh
+PASS line 684: tracked path: scripts/run_final_pipeline.ps1
+PASS line 699: tracked path: evaluation/results/paired15/paired_comparison_summary.json
+PASS line 699: tracked path: evaluation/results/repeated_bestof64/repeated_bestof64_summary.json
+PASS line 700: tracked path: evaluation/results/summary_reward_shaped.json
+PASS line 700: tracked path: artifacts/diagnostic_logs/reward_shaped_action_distribution_output.log
+PASS line 701: tracked path: artifacts/diagnostic_logs/mlp_normalized_action_distribution_output.log
+PASS line 703: tracked path: artifacts/training_logs/residual_train_ppo_mlp_residual.log
+PASS line 709: tracked path: evaluation/results/summary_mlp_residual_bestof64.json
+PASS line 710: tracked path: evaluation/results/paired15/paired_comparison_summary.json
+PASS line 711: tracked path: evaluation/results/repeated_bestof64/repeated_bestof64_summary.json
+PASS line 712: tracked path: evaluation/results/milp_optimal_comparison.json
+PASS line 713: tracked path: evaluation/results/structural_generalization/summary_structural_generalization.json
+PASS line 714: tracked path: artifacts/ablation_scan_results/scan_final_summary_table.tsv
+PASS line 715: tracked path: artifacts/diagnostic_logs/action_space_complexity_check_output.log
+PASS line 716: tracked path: artifacts/diagnostic_logs/bc_batch_mask_and_normalization_check_output.log
+PASS line 718: tracked path: evaluation/results/run_final_pipeline_fresh_clone_full_output.log
+PASS line 719: tracked path: evaluation/results/openEuler_pytest_structural_final.log
+
+[JSON PATH SCAN]
+PASS line 36: tracked result JSON: evaluation/results/paired15/paired_comparison_summary.json
+PASS line 36: tracked result JSON: evaluation/results/repeated_bestof64/repeated_bestof64_summary.json
+PASS line 36: tracked result JSON: evaluation/results/milp_optimal_comparison.json
+PASS line 102: tracked result JSON: evaluation/results/paired15/paired_comparison_summary.json
+PASS line 103: tracked result JSON: evaluation/results/repeated_bestof64/repeated_bestof64_summary.json
+PASS line 104: tracked result JSON: evaluation/results/summary_mlp_residual_bestof64.json
+PASS line 253: tracked result JSON: evaluation/results/summary.json
+PASS line 267: tracked result JSON: evaluation/results/summary_reward_shaped.json
+PASS line 277: tracked result JSON: evaluation/results/summary_gat_reward_shaped.json
+PASS line 278: tracked result JSON: evaluation/results/summary_gat_lowent.json
+PASS line 280: tracked result JSON: evaluation/results/summary_gat_ranked.json
+PASS line 280: tracked result JSON: evaluation/results/summary_gat_ranked_bestof64.json
+PASS line 288: tracked result JSON: evaluation/results/summary_mlp_normalized.json
+PASS line 303: tracked result JSON: evaluation/results/summary_mlp_ranked.json
+PASS line 319: tracked result JSON: evaluation/results/summary_mlp_ranked.json
+PASS line 320: tracked result JSON: evaluation/results/summary_mlp_ranked_bc.json
+PASS line 321: tracked result JSON: evaluation/results/summary_mlp_ranked_with_rank.json
+PASS line 322: tracked result JSON: evaluation/results/summary_mlp_ranked_curriculum.json
+PASS line 323: tracked result JSON: evaluation/results/summary_mlp_ranked_lr1e-3_128.json
+PASS line 324: tracked result JSON: evaluation/results/summary_mlp_ranked_lr1e-3_128_400k.json
+PASS line 325: tracked result JSON: evaluation/results/summary_mlp_ranked_ensemble3_bestof8.json
+PASS line 326: tracked result JSON: evaluation/results/summary_mlp_ranked_all_combined.json
+PASS line 350: tracked result JSON: evaluation/results/summary_mlp_residual.json
+PASS line 360: tracked result JSON: evaluation/results/summary_mlp_residual_bestof1.json
+PASS line 361: tracked result JSON: evaluation/results/summary_mlp_residual_bestof4.json
+PASS line 362: tracked result JSON: evaluation/results/summary_mlp_residual_bestof8.json
+PASS line 363: tracked result JSON: evaluation/results/summary_mlp_residual_bestof16.json
+PASS line 364: tracked result JSON: evaluation/results/summary_mlp_residual_bestof32.json
+PASS line 365: tracked result JSON: evaluation/results/summary_mlp_residual_bestof64.json
+PASS line 385: tracked result JSON: evaluation/results/paired15/paired_comparison_summary.json
+PASS line 397: tracked result JSON: evaluation/results/summary.json
+PASS line 398: tracked result JSON: evaluation/results/summary_reward_shaped.json
+PASS line 399: tracked result JSON: evaluation/results/summary_gat_reward_shaped.json
+PASS line 400: tracked result JSON: evaluation/results/summary_gat_lowent.json
+PASS line 401: tracked result JSON: evaluation/results/summary_mlp_normalized.json
+PASS line 402: tracked result JSON: evaluation/results/summary_mlp_ranked.json
+PASS line 403: tracked result JSON: evaluation/results/summary_mlp_ranked_lr1e-3_128.json
+PASS line 404: tracked result JSON: evaluation/results/summary_gat_ranked.json
+PASS line 405: tracked result JSON: evaluation/results/summary_mlp_ranked_ensemble3_bestof8.json
+PASS line 406: tracked result JSON: evaluation/results/summary_mlp_residual.json
+PASS line 407: tracked result JSON: evaluation/results/summary_mlp_residual_bestof16.json
+PASS line 408: tracked result JSON: evaluation/results/summary_mlp_residual_bestof64.json
+PASS line 414: tracked result JSON: evaluation/results/repeated_bestof64/repeated_bestof64_summary.json
+PASS line 444: tracked result JSON: evaluation/results/milp_optimal_comparison.json
+PASS line 448: tracked result JSON: evaluation/results/summary_mlp_residual_bestof64.json
+PASS line 461: tracked result JSON: evaluation/results/summary_mlp_normalized_large_small_eval.json
+PASS line 461: tracked result JSON: evaluation/results/summary_mlp_normalized_large.json
+PASS line 476: tracked result JSON: evaluation/results/structural_generalization/summary_structural_generalization.json
+PASS line 498: tracked result JSON: evaluation/results/repeated_bestof64/repeated_bestof64_summary.json
+PASS line 595: tracked result JSON: evaluation/results/summary_mlp_residual_bestof64.json
+PASS line 699: tracked result JSON: evaluation/results/paired15/paired_comparison_summary.json
+PASS line 699: tracked result JSON: evaluation/results/repeated_bestof64/repeated_bestof64_summary.json
+PASS line 700: tracked result JSON: evaluation/results/summary_reward_shaped.json
+PASS line 709: tracked result JSON: evaluation/results/summary_mlp_residual_bestof64.json
+PASS line 710: tracked result JSON: evaluation/results/paired15/paired_comparison_summary.json
+PASS line 711: tracked result JSON: evaluation/results/repeated_bestof64/repeated_bestof64_summary.json
+PASS line 712: tracked result JSON: evaluation/results/milp_optimal_comparison.json
+PASS line 713: tracked result JSON: evaluation/results/structural_generalization/summary_structural_generalization.json
+
+[NUMERIC CLAIMS]
+PASS line 102: overview paired mean: reported=0.951527, actual=0.951527363101, delta=3.63e-07, allowed=1e-06
+PASS line 102: overview paired std: reported=0.003777, actual=0.0037772319654, delta=2.32e-07, allowed=1e-06
+PASS line 102: overview paired wins: reported=18.2, actual=18.2, delta=0, allowed=0.05
+PASS line 103: overview repeated mean: reported=0.95457, actual=0.95456958931, delta=4.11e-07, allowed=1e-06
+PASS line 103: overview repeated std: reported=0.003842, actual=0.0038422865794, delta=2.87e-07, allowed=1e-06
+PASS line 103: overview repeated wins: reported=18, actual=18, delta=0, allowed=0.05
+PASS line 104: overview fixed mean: reported=0.945988, actual=0.945988472421, delta=4.72e-07, allowed=1e-06
+PASS line 104: overview fixed wins: reported=18, actual=18, delta=0, allowed=0.5
+PASS line 36: abstract paired mean: reported=0.951527, actual=0.951527363101, delta=3.63e-07, allowed=1e-06
+PASS line 36: abstract paired std: reported=0.003777, actual=0.0037772319654, delta=2.32e-07, allowed=1e-06
+PASS line 36: abstract paired wins: reported=18.2, actual=18.2, delta=0, allowed=0.05
+PASS line 36: abstract paired diff mean: reported=-0.007287, actual=-0.0072866240523, delta=3.76e-07, allowed=1e-06
+PASS line 36: abstract paired diff std: reported=0.003524, actual=0.00352449512946, delta=4.95e-07, allowed=1e-06
+PASS line 36: abstract t: reported=-8.0071, actual=-8.00709678069, delta=3.22e-06, allowed=5e-05
+PASS line 36: abstract p mantissa: reported=1.3554, actual=1.35539182519, delta=8.17e-06, allowed=5e-05
+PASS line 36: abstract repeated mean: reported=0.95457, actual=0.95456958931, delta=4.11e-07, allowed=1e-06
+PASS line 36: abstract repeated std: reported=0.003842, actual=0.0038422865794, delta=2.87e-07, allowed=1e-06
+PASS line 36: abstract repeated wins: reported=18, actual=18, delta=0, allowed=0.05
+PASS line 36: abstract MILP optimal count: reported=7, actual=7, delta=0, allowed=0.5
+PASS line 36: abstract MILP HEFT gap: reported=10.68, actual=10.6806897258, delta=0.00069, allowed=0.005
+PASS line 36: abstract MILP residual gap: reported=4.42, actual=4.41882196874, delta=0.00118, allowed=0.005
+PASS line 253: initial prose mean: reported=1.367762, actual=1.36776215722, delta=1.57e-07, allowed=1e-06
+PASS line 253: initial prose wins: reported=20, actual=20, delta=0, allowed=0.5
+PASS line 267: reward prose mean: reported=1.367762, actual=1.36776215722, delta=1.57e-07, allowed=1e-06
+PASS line 288: normalized prose mean: reported=1.29319, actual=1.29318979113, delta=2.09e-07, allowed=1e-06
+PASS line 303: ranked prose mean: reported=1.081277, actual=1.08127712692, delta=1.27e-07, allowed=1e-06
+PASS line 350: residual prose mean: reported=1.031197, actual=1.03119676115, delta=2.39e-07, allowed=1e-06
+PASS line 350: residual prose wins: reported=7, actual=7, delta=0, allowed=0.5
+PASS line 498: repeat prose time mean: reported=27.762, actual=27.76186924, delta=0.000131, allowed=0.0005
+PASS line 498: repeat prose time std: reported=1.178, actual=1.17847283597, delta=0.000473, allowed=0.0005
+PASS line 699: appendix paired mean: reported=0.951527, actual=0.951527363101, delta=3.63e-07, allowed=1e-06
+PASS line 699: appendix paired std: reported=0.003777, actual=0.0037772319654, delta=2.32e-07, allowed=1e-06
+PASS line 699: appendix paired wins: reported=18.2, actual=18.2, delta=0, allowed=0.05
+PASS line 699: appendix repeated mean: reported=0.95457, actual=0.95456958931, delta=4.11e-07, allowed=1e-06
+PASS line 699: appendix repeated std: reported=0.003842, actual=0.0038422865794, delta=2.87e-07, allowed=1e-06
+PASS line 699: appendix repeated wins: reported=18, actual=18, delta=0, allowed=0.05
+PASS line 277: `ppo_gat_reward_shaped.yaml` mean: reported=1.383719, actual=1.38371930205, delta=3.02e-07, allowed=1e-06
+PASS line 278: `ppo_gat_reward_shaped_lowent.yaml` mean: reported=1.332993, actual=1.33299284762, delta=1.52e-07, allowed=1e-06
+PASS line 319: | MLP ranked ���� | mean: reported=1.081277, actual=1.08127712692, delta=1.27e-07, allowed=1e-06
+PASS line 319: | MLP ranked ���� | wins: reported=0, actual=0, delta=0, allowed=0.5
+PASS line 320: | ranked + BC | mean: reported=1.118387, actual=1.11838745979, delta=4.6e-07, allowed=1e-06
+PASS line 320: | ranked + BC | wins: reported=0, actual=0, delta=0, allowed=0.5
+PASS line 321: | ranked + upward rank mean: reported=1.111498, actual=1.11149795378, delta=4.62e-08, allowed=1e-06
+PASS line 321: | ranked + upward rank wins: reported=2, actual=2, delta=0, allowed=0.5
+PASS line 322: | ranked + �γ�ѧϰ mean: reported=1.131471, actual=1.1314709965, delta=3.5e-09, allowed=1e-06
+PASS line 322: | ranked + �γ�ѧϰ wins: reported=0, actual=0, delta=0, allowed=0.5
+PASS line 323: | ranked��lr=0.001 mean: reported=1.076033, actual=1.07603257185, delta=4.28e-07, allowed=1e-06
+PASS line 323: | ranked��lr=0.001 wins: reported=4, actual=4, delta=0, allowed=0.5
+PASS line 324: | �������ų������ӳ�ѵ�� mean: reported=1.083945, actual=1.08394511881, delta=1.19e-07, allowed=1e-06
+PASS line 324: | �������ų������ӳ�ѵ�� wins: reported=3, actual=3, delta=0, allowed=0.5
+PASS line 325: | 3 ���� �� Best-of-8 mean: reported=0.99855, actual=0.998549507054, delta=4.93e-07, allowed=1e-06
+PASS line 325: | 3 ���� �� Best-of-8 wins: reported=10, actual=10, delta=0, allowed=0.5
+PASS line 326: | BC + rank ���� mean: reported=1.085535, actual=1.08553512118, delta=1.21e-07, allowed=1e-06
+PASS line 326: | BC + rank ���� wins: reported=1, actual=1, delta=0, allowed=0.5
+PASS line 397: | ���� MLP+raw reward mean: reported=1.367762, actual=1.36776215722, delta=1.57e-07, allowed=1e-06
+PASS line 397: | ���� MLP+raw reward wins: reported=0, actual=0, delta=0, allowed=0.5
+PASS line 398: | relative_heft ���� mean: reported=1.367762, actual=1.36776215722, delta=1.57e-07, allowed=1e-06
+PASS line 398: | relative_heft ���� wins: reported=0, actual=0, delta=0, allowed=0.5
+PASS line 399: | GAT��ent=0.03 mean: reported=1.383719, actual=1.38371930205, delta=3.02e-07, allowed=1e-06
+PASS line 399: | GAT��ent=0.03 wins: reported=0, actual=0, delta=0, allowed=0.5
+PASS line 400: | GAT��ent=0.01 mean: reported=1.332993, actual=1.33299284762, delta=1.52e-07, allowed=1e-06
+PASS line 400: | GAT��ent=0.01 wins: reported=0, actual=0, delta=0, allowed=0.5
+PASS line 401: | MLP + �۲��һ�� mean: reported=1.29319, actual=1.29318979113, delta=2.09e-07, allowed=1e-06
+PASS line 401: | MLP + �۲��һ�� wins: reported=0, actual=0, delta=0, allowed=0.5
+PASS line 402: | MLP ranked | mean: reported=1.081277, actual=1.08127712692, delta=1.27e-07, allowed=1e-06
+PASS line 402: | MLP ranked | wins: reported=0, actual=0, delta=0, allowed=0.5
+PASS line 403: | MLP ranked������ lr mean: reported=1.076033, actual=1.07603257185, delta=4.28e-07, allowed=1e-06
+PASS line 403: | MLP ranked������ lr wins: reported=4, actual=4, delta=0, allowed=0.5
+PASS line 404: | GAT ranked | mean: reported=1.087671, actual=1.08767098438, delta=1.56e-08, allowed=1e-06
+PASS line 404: | GAT ranked | wins: reported=3, actual=3, delta=0, allowed=0.5
+PASS line 405: | 3 ���Ӽ��ɣ�ÿģ�� mean: reported=0.99855, actual=0.998549507054, delta=4.93e-07, allowed=1e-06
+PASS line 405: | 3 ���Ӽ��ɣ�ÿģ�� wins: reported=10, actual=10, delta=0, allowed=0.5
+PASS line 406: | Residual deterministic mean: reported=1.031197, actual=1.03119676115, delta=2.39e-07, allowed=1e-06
+PASS line 406: | Residual deterministic wins: reported=7, actual=7, delta=0, allowed=0.5
+PASS line 407: | Residual Best-of-16 mean: reported=0.962761, actual=0.962760536502, delta=4.63e-07, allowed=1e-06
+PASS line 407: | Residual Best-of-16 wins: reported=18, actual=18, delta=0, allowed=0.5
+PASS line 408: | Residual Best-of-64���̶����ӣ� mean: reported=0.945988, actual=0.945988472421, delta=4.72e-07, allowed=1e-06
+PASS line 408: | Residual Best-of-64���̶����ӣ� wins: reported=18, actual=18, delta=0, allowed=0.5
+PASS line 360: Residual best-of-1 mean: reported=1.031197, actual=1.03119676115, delta=2.39e-07, allowed=1e-06
+PASS line 360: Residual best-of-1 wins: reported=7, actual=7, delta=0, allowed=0.5
+PASS line 361: Residual best-of-4 mean: reported=0.986336, actual=0.986335961073, delta=3.89e-08, allowed=1e-06
+PASS line 361: Residual best-of-4 wins: reported=13, actual=13, delta=0, allowed=0.5
+PASS line 362: Residual best-of-8 mean: reported=0.979657, actual=0.979657068655, delta=6.87e-08, allowed=1e-06
+PASS line 362: Residual best-of-8 wins: reported=15, actual=15, delta=0, allowed=0.5
+PASS line 363: Residual best-of-16 mean: reported=0.962761, actual=0.962760536502, delta=4.63e-07, allowed=1e-06
+PASS line 363: Residual best-of-16 wins: reported=18, actual=18, delta=0, allowed=0.5
+PASS line 364: Residual best-of-32 mean: reported=0.958466, actual=0.958466029532, delta=2.95e-08, allowed=1e-06
+PASS line 364: Residual best-of-32 wins: reported=17, actual=17, delta=0, allowed=0.5
+PASS line 365: Residual best-of-64 mean: reported=0.945988, actual=0.945988472421, delta=4.72e-07, allowed=1e-06
+PASS line 365: Residual best-of-64 wins: reported=18, actual=18, delta=0, allowed=0.5
+PASS line 418: repeat 1 mean: reported=0.951883, actual=0.951882641108, delta=3.59e-07, allowed=1e-06
+PASS line 418: repeat 1 wins: reported=19, actual=19, delta=0, allowed=0.5
+PASS line 418: repeat 1 time: reported=29.849, actual=29.8486877, delta=0.000312, allowed=0.0005
+PASS line 419: repeat 2 mean: reported=0.949414, actual=0.94941425632, delta=2.56e-07, allowed=1e-06
+PASS line 419: repeat 2 wins: reported=17, actual=17, delta=0, allowed=0.5
+PASS line 419: repeat 2 time: reported=26.999, actual=26.9993147, delta=0.000315, allowed=0.0005
+PASS line 420: repeat 3 mean: reported=0.955569, actual=0.955569144095, delta=1.44e-07, allowed=1e-06
+PASS line 420: repeat 3 wins: reported=18, actual=18, delta=0, allowed=0.5
+PASS line 420: repeat 3 time: reported=27.462, actual=27.4622171, delta=0.000217, allowed=0.0005
+PASS line 421: repeat 4 mean: reported=0.957341, actual=0.957340970346, delta=2.97e-08, allowed=1e-06
+PASS line 421: repeat 4 wins: reported=18, actual=18, delta=0, allowed=0.5
+PASS line 421: repeat 4 time: reported=27.204, actual=27.2038133, delta=0.000187, allowed=0.0005
+PASS line 422: repeat 5 mean: reported=0.958641, actual=0.958640934682, delta=6.53e-08, allowed=1e-06
+PASS line 422: repeat 5 wins: reported=18, actual=18, delta=0, allowed=0.5
+PASS line 422: repeat 5 time: reported=27.295, actual=27.2953134, delta=0.000313, allowed=0.0005
+PASS line 423: repeat mean: reported=0.95457, actual=0.95456958931, delta=4.11e-07, allowed=1e-06
+PASS line 423: repeat std: reported=0.003842, actual=0.0038422865794, delta=2.87e-07, allowed=1e-06
+PASS line 423: repeat win mean: reported=18, actual=18, delta=0, allowed=0.05
+PASS line 423: repeat win std: reported=0.707, actual=0.707106781187, delta=0.000107, allowed=0.0005
+PASS line 423: repeat time mean: reported=27.762, actual=27.76186924, delta=0.000131, allowed=0.0005
+PASS line 423: repeat time std: reported=1.178, actual=1.17847283597, delta=0.000473, allowed=0.0005
+PASS line 379: paired statistic 1: reported=0.951527, actual=0.951527363101, delta=3.63e-07, allowed=1e-06
+PASS line 379: paired statistic 2: reported=0.003777, actual=0.0037772319654, delta=2.32e-07, allowed=1e-06
+PASS line 380: paired statistic 3: reported=0.958814, actual=0.958813987153, delta=1.28e-08, allowed=1e-06
+PASS line 380: paired statistic 4: reported=0.003512, actual=0.00351155473767, delta=4.45e-07, allowed=1e-06
+PASS line 381: paired statistic 5: reported=-0.007287, actual=-0.0072866240523, delta=3.76e-07, allowed=1e-06
+PASS line 381: paired statistic 6: reported=0.003524, actual=0.00352449512946, delta=4.95e-07, allowed=1e-06
+PASS line 382: paired statistic 7: reported=-8.0071, actual=-8.00709678069, delta=3.22e-06, allowed=5e-05
+PASS line 383: paired statistic 8: reported=1.3554, actual=1.35539182519, delta=8.17e-06, allowed=5e-05
+PASS line 441: MILP HEFT ratio: reported=1.106807, actual=1.10680689726, delta=1.03e-07, allowed=1e-06
+PASS line 441: MILP HEFT gap: reported=10.68, actual=10.6806897258, delta=0.00069, allowed=0.005
+PASS line 442: MILP residual ratio: reported=1.044188, actual=1.04418821969, delta=2.2e-07, allowed=1e-06
+PASS line 442: MILP residual gap: reported=4.42, actual=4.41882196874, delta=0.00118, allowed=0.005
+PASS line 452: task 10 mean: reported=0.936277, actual=0.93627710049, delta=1e-07, allowed=1e-06
+PASS line 452: task 10 std: reported=0.059518, actual=0.0595182228326, delta=2.23e-07, allowed=1e-06
+PASS line 453: task 15 mean: reported=0.922549, actual=0.922549319973, delta=3.2e-07, allowed=1e-06
+PASS line 453: task 15 std: reported=0.031861, actual=0.0318609598236, delta=4.02e-08, allowed=1e-06
+PASS line 454: task 20 mean: reported=0.951396, actual=0.951396142523, delta=1.43e-07, allowed=1e-06
+PASS line 454: task 20 std: reported=0.016339, actual=0.0163394061976, delta=4.06e-07, allowed=1e-06
+PASS line 455: task 25 mean: reported=0.973731, actual=0.973731326695, delta=3.27e-07, allowed=1e-06
+PASS line 455: task 25 std: reported=0.028323, actual=0.0283231742402, delta=1.74e-07, allowed=1e-06
+PASS line 471: wide_parallel mean: reported=1.011915, actual=1.01191496763, delta=3.24e-08, allowed=1e-06
+PASS line 471: wide_parallel std: reported=0.018469, actual=0.0184691288848, delta=1.29e-07, allowed=1e-06
+PASS line 471: wide_parallel wins: reported=2, actual=2, delta=0, allowed=0.5
+PASS line 471: wide_parallel delta: reported=0.047829, actual=0.0478294864276, delta=4.86e-07, allowed=1e-06
+PASS line 472: deep_chain mean: reported=0.943597, actual=0.943597025353, delta=2.54e-08, allowed=1e-06
+PASS line 472: deep_chain std: reported=0.043357, actual=0.0433567292309, delta=2.71e-07, allowed=1e-06
+PASS line 472: deep_chain wins: reported=4, actual=4, delta=0, allowed=0.5
+PASS line 472: deep_chain delta: reported=-0.020488, actual=-0.020488455846, delta=4.56e-07, allowed=1e-06
+PASS line 473: homogeneous_resources mean: reported=0.879572, actual=0.879571695679, delta=3.04e-07, allowed=1e-06
+PASS line 473: homogeneous_resources std: reported=0.071489, actual=0.0714885015241, delta=4.98e-07, allowed=1e-06
+PASS line 473: homogeneous_resources wins: reported=5, actual=5, delta=0, allowed=0.5
+PASS line 473: homogeneous_resources delta: reported=-0.084514, actual=-0.0845137855201, delta=2.14e-07, allowed=1e-06
+PASS line 474: original_control mean: reported=0.964085, actual=0.964085481199, delta=4.81e-07, allowed=1e-06
+PASS line 474: original_control std: reported=0.040774, actual=0.0407735683471, delta=4.32e-07, allowed=1e-06
+PASS line 474: original_control wins: reported=4, actual=4, delta=0, allowed=0.5
+PASS line 474: original_control delta: reported=0, actual=0, delta=0, allowed=0.5
+PASS line 461: large model small-set mean: reported=1.336977, actual=1.33697721837, delta=2.18e-07, allowed=1e-06
+PASS line 461: large model large-set mean: reported=1.454469, actual=1.45446860387, delta=3.96e-07, allowed=1e-06
+PASS line 461: large task 30 mean: reported=1.445021, actual=1.44502134572, delta=3.46e-07, allowed=1e-06
+PASS line 461: large task 40 mean: reported=1.463182, actual=1.46318210148, delta=1.01e-07, allowed=1e-06
+PASS line 461: large task 50 mean: reported=1.349415, actual=1.34941521733, delta=2.17e-07, allowed=1e-06
+PASS line 461: large task 60 mean: reported=1.560256, actual=1.56025575095, delta=2.49e-07, allowed=1e-06
+
+[LOG-BACKED CLAIMS]
+PASS normalization dataset metadata: artifacts/diagnostic_logs/bc_dataset_sanity_check_output.log
+PASS initial action collapse: artifacts/diagnostic_logs/diagnostics_action_distribution_output.log
+PASS reward-shaped action collapse: artifacts/diagnostic_logs/reward_shaped_action_distribution_output.log
+PASS observation scale diagnostics: artifacts/diagnostic_logs/bc_batch_mask_and_normalization_check_output.log
+PASS batch mask and normalized overfit: artifacts/diagnostic_logs/bc_batch_mask_and_normalization_check_output.log
+PASS joint BC strength: artifacts/diagnostic_logs/mlp_bc_normalized_strength_test_80e_lr1e3_output.log
+PASS normalized action distribution: artifacts/diagnostic_logs/mlp_normalized_action_distribution_output.log
+PASS joint action-space complexity: artifacts/diagnostic_logs/action_space_complexity_check_output.log
+PASS BC chance level: artifacts/diagnostic_logs/bc_dataset_sanity_check_output.log
+PASS ranked small-set BC overfit: artifacts/diagnostic_logs/scan_step1_ranked_bc_small_overfit.log
+PASS ranked full-set BC accuracy: artifacts/diagnostic_logs/scan_step1_ranked_bc_full_pretrain_only.log
+PASS openEuler pytest result: evaluation/results/openEuler_pytest_structural_final.log
+PASS fresh-clone pipeline: evaluation/results/run_final_pipeline_fresh_clone_full_output.log
+PASS GAT historical training time: artifacts/training_logs/gat_full_train_20260707_133559_output.log
+PASS ranked historical training time: artifacts/training_logs/mlp_ranked_train_output.log
+PASS residual historical training time: artifacts/training_logs/residual_train_ppo_mlp_residual.log
+
+[TRACKED-TEXT PRIVACY SCAN]
+PASS no Windows or Linux user-home paths in tracked text files
+
+[SUMMARY]
+concrete_path_occurrences: 141
+wildcard_path_occurrences: 0
+json_path_occurrences: 58
+numeric_checks_passed: 153
+log_backed_checks_passed: 16
+privacy_path_hits: 0
+failures: 0
+All declared result claims, evidence paths, Git tracking checks, and privacy scans passed.

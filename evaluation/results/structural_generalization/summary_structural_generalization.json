@@ -1,0 +1,41 @@
+{
+  "config_path": "training/configs/ppo_mlp_residual.yaml",
+  "model_path": "training/checkpoints/ppo_mlp_residual",
+  "num_samples": 64,
+  "sampling_seed": 20260709,
+  "manifest_path": "evaluation/scenarios_structural/manifest.json",
+  "groups": {
+    "wide_parallel": {
+      "scenario_count": 5,
+      "mean_ratio": 1.0119149676262498,
+      "std_ratio": 0.01846912888482642,
+      "outperform_heft_count": 2,
+      "results_path": "evaluation/results/structural_generalization/summary_wide_parallel_bestof64.json",
+      "mean_ratio_delta_vs_control": 0.047829486427556245
+    },
+    "deep_chain": {
+      "scenario_count": 5,
+      "mean_ratio": 0.9435970253527106,
+      "std_ratio": 0.043356729230895494,
+      "outperform_heft_count": 4,
+      "results_path": "evaluation/results/structural_generalization/summary_deep_chain_bestof64.json",
+      "mean_ratio_delta_vs_control": -0.02048845584598291
+    },
+    "homogeneous_resources": {
+      "scenario_count": 5,
+      "mean_ratio": 0.8795716956785828,
+      "std_ratio": 0.07148850152414657,
+      "outperform_heft_count": 5,
+      "results_path": "evaluation/results/structural_generalization/summary_homogeneous_resources_bestof64.json",
+      "mean_ratio_delta_vs_control": -0.08451378552011068
+    },
+    "original_control": {
+      "scenario_count": 5,
+      "mean_ratio": 0.9640854811986935,
+      "std_ratio": 0.040773568347066226,
+      "outperform_heft_count": 4,
+      "results_path": "evaluation/results/structural_generalization/summary_original_control_bestof64.json",
+      "mean_ratio_delta_vs_control": 0.0
+    }
+  }
+}

@@ -1,0 +1,40 @@
+[evaluate:model:before_load] model_path_arg_abs=<USER_HOME>\Desktop\����ϵͳ���´���\�������ǿ��ѧϰ����-��-���칹������Դ������ȷ���\project\training\checkpoints\ppo_mlp_residual
+[evaluate:model:before_load] model_zip_abs=<USER_HOME>\Desktop\����ϵͳ���´���\�������ǿ��ѧϰ����-��-���칹������Դ������ȷ���\project\training\checkpoints\ppo_mlp_residual.zip
+[evaluate:model:before_load] model_zip_mtime_epoch=1783768585.968603
+[evaluate:model:before_load] model_zip_mtime_local=2026-07-11 19:16:25
+[evaluate:model:after_load] model_path_arg_abs=<USER_HOME>\Desktop\����ϵͳ���´���\�������ǿ��ѧϰ����-��-���칹������Դ������ȷ���\project\training\checkpoints\ppo_mlp_residual
+[evaluate:model:after_load] model_zip_abs=<USER_HOME>\Desktop\����ϵͳ���´���\�������ǿ��ѧϰ����-��-���칹������Դ������ȷ���\project\training\checkpoints\ppo_mlp_residual.zip
+[evaluate:model:after_load] model_zip_mtime_epoch=1783768585.968603
+[evaluate:model:after_load] model_zip_mtime_local=2026-07-11 19:16:25
+evaluation summary
+results_path: evaluation\results\repeated\summary_hybrid_residual_bestof16_run2.json
+overall mean_ratio=0.967979, std=0.045773
+overall hybrid_mean_ratio=0.955776, std=0.040562
+by task size:
+task_size | count | RL mean | RL std | Hybrid mean | Hybrid std
+       10 |     5 | 0.961499 | 0.079973 | 0.912687 | 0.046652
+       15 |     5 | 0.962644 | 0.023100 | 0.962644 | 0.023100
+       20 |     5 | 0.959304 | 0.022834 | 0.959304 | 0.022834
+       25 |     5 | 0.988467 | 0.019097 | 0.988467 | 0.019097
+scenario details:
+scenario | tasks | HEFT | RL | RL/HEFT | Hybrid | Hybrid/HEFT | method | reason
+scenario_10_0.json | 10 | 0.455228 | 0.409501 | 0.899550 | 0.390746 | 0.858350 | milp_optimal | milp_proven_optimal
+scenario_10_1.json | 10 | 0.508816 | 0.467752 | 0.919295 | 0.459559 | 0.903193 | milp_optimal | milp_proven_optimal
+scenario_10_2.json | 10 | 0.508400 | 0.478773 | 0.941725 | 0.450902 | 0.886905 | milp_optimal | milp_proven_optimal
+scenario_10_3.json | 10 | 0.357532 | 0.400110 | 1.119090 | 0.356545 | 0.997239 | milp_optimal | milp_proven_optimal
+scenario_10_4.json | 10 | 0.370706 | 0.343953 | 0.927833 | 0.340214 | 0.917746 | milp_optimal | milp_proven_optimal
+scenario_15_0.json | 15 | 0.605441 | 0.570333 | 0.942013 | 0.570333 | 0.942013 | residual_fallback | milp_not_proven_optimal
+scenario_15_1.json | 15 | 0.616758 | 0.574032 | 0.930726 | 0.574032 | 0.930726 | residual_fallback | milp_not_proven_optimal
+scenario_15_2.json | 15 | 0.629425 | 0.608986 | 0.967528 | 0.608986 | 0.967528 | residual_fallback | milp_not_proven_optimal
+scenario_15_3.json | 15 | 0.608997 | 0.597326 | 0.980835 | 0.597326 | 0.980835 | residual_fallback | milp_not_proven_optimal
+scenario_15_4.json | 15 | 0.575034 | 0.570503 | 0.992119 | 0.570503 | 0.992119 | residual_fallback | milp_not_proven_optimal
+scenario_20_0.json | 20 | 0.972424 | 0.935870 | 0.962410 | 0.935870 | 0.962410 | residual_fallback | task_count_above_threshold
+scenario_20_1.json | 20 | 0.768138 | 0.714290 | 0.929898 | 0.714290 | 0.929898 | residual_fallback | task_count_above_threshold
+scenario_20_2.json | 20 | 0.647500 | 0.620715 | 0.958633 | 0.620715 | 0.958633 | residual_fallback | task_count_above_threshold
+scenario_20_3.json | 20 | 0.868948 | 0.868034 | 0.998948 | 0.868034 | 0.998948 | residual_fallback | task_count_above_threshold
+scenario_20_4.json | 20 | 0.835922 | 0.791310 | 0.946632 | 0.791310 | 0.946632 | residual_fallback | task_count_above_threshold
+scenario_25_0.json | 25 | 1.039261 | 1.057555 | 1.017603 | 1.057555 | 1.017603 | residual_fallback | task_count_above_threshold
+scenario_25_1.json | 25 | 0.921302 | 0.884395 | 0.959940 | 0.884395 | 0.959940 | residual_fallback | task_count_above_threshold
+scenario_25_2.json | 25 | 1.000114 | 0.995684 | 0.995570 | 0.995684 | 0.995570 | residual_fallback | task_count_above_threshold
+scenario_25_3.json | 25 | 0.938205 | 0.929722 | 0.990958 | 0.929722 | 0.990958 | residual_fallback | task_count_above_threshold
+scenario_25_4.json | 25 | 1.072919 | 1.049601 | 0.978267 | 1.049601 | 0.978267 | residual_fallback | task_count_above_threshold

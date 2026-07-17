@@ -1,0 +1,102 @@
+Using cpu device
+Wrapping the env in a DummyVecEnv.
+BC_PRETRAIN_START
+dataset_path=<USER_HOME>\Desktop\����ϵͳ���´���\�������ǿ��ѧϰ����-��-���칹������Դ������ȷ���\project\training\bc_datasets\mlp_bc_dataset_normalized.npz
+samples=8038
+observation_shape=(8038, 1128)
+action_mask_shape=(8038, 120)
+dataset_num_dags=500
+dataset_seed_start=2000000
+dataset_seed_end=2000499
+epochs=80
+batch_size=64
+learning_rate=0.001
+bc_epoch=1 loss=2.313303 accuracy=0.173426
+bc_epoch=2 loss=2.255951 accuracy=0.170565
+bc_epoch=3 loss=2.229243 accuracy=0.186614
+bc_epoch=4 loss=2.193953 accuracy=0.202040
+bc_epoch=5 loss=2.144656 accuracy=0.229037
+bc_epoch=6 loss=2.088879 accuracy=0.256034
+bc_epoch=7 loss=2.031274 accuracy=0.275068
+bc_epoch=8 loss=1.965883 accuracy=0.310276
+bc_epoch=9 loss=1.900197 accuracy=0.334785
+bc_epoch=10 loss=1.827353 accuracy=0.363150
+bc_epoch=11 loss=1.754091 accuracy=0.394501
+bc_epoch=12 loss=1.696220 accuracy=0.416148
+bc_epoch=13 loss=1.623190 accuracy=0.446255
+bc_epoch=14 loss=1.570951 accuracy=0.469769
+bc_epoch=15 loss=1.512023 accuracy=0.486564
+bc_epoch=16 loss=1.448184 accuracy=0.518039
+bc_epoch=17 loss=1.384498 accuracy=0.541677
+bc_epoch=18 loss=1.328864 accuracy=0.567181
+bc_epoch=19 loss=1.267976 accuracy=0.590445
+bc_epoch=20 loss=1.209782 accuracy=0.606743
+bc_epoch=21 loss=1.153056 accuracy=0.630007
+bc_epoch=22 loss=1.099231 accuracy=0.654392
+bc_epoch=23 loss=1.051076 accuracy=0.677905
+bc_epoch=24 loss=1.003334 accuracy=0.692336
+bc_epoch=25 loss=0.951164 accuracy=0.714730
+bc_epoch=26 loss=0.903634 accuracy=0.737124
+bc_epoch=27 loss=0.862564 accuracy=0.748072
+bc_epoch=28 loss=0.813683 accuracy=0.770590
+bc_epoch=29 loss=0.768544 accuracy=0.783901
+bc_epoch=30 loss=0.732502 accuracy=0.801816
+bc_epoch=31 loss=0.689609 accuracy=0.815875
+bc_epoch=32 loss=0.650343 accuracy=0.827942
+bc_epoch=33 loss=0.611301 accuracy=0.846355
+bc_epoch=34 loss=0.573200 accuracy=0.856681
+bc_epoch=35 loss=0.546556 accuracy=0.867753
+bc_epoch=36 loss=0.512814 accuracy=0.887161
+bc_epoch=37 loss=0.482441 accuracy=0.892137
+bc_epoch=38 loss=0.457895 accuracy=0.898482
+bc_epoch=39 loss=0.433100 accuracy=0.906942
+bc_epoch=40 loss=0.412996 accuracy=0.915402
+bc_epoch=41 loss=0.382386 accuracy=0.923488
+bc_epoch=42 loss=0.362638 accuracy=0.928962
+bc_epoch=43 loss=0.333033 accuracy=0.937920
+bc_epoch=44 loss=0.317802 accuracy=0.941155
+bc_epoch=45 loss=0.300312 accuracy=0.944762
+bc_epoch=46 loss=0.279122 accuracy=0.954591
+bc_epoch=47 loss=0.265191 accuracy=0.957577
+bc_epoch=48 loss=0.260578 accuracy=0.957328
+bc_epoch=49 loss=0.235242 accuracy=0.965041
+bc_epoch=50 loss=0.226909 accuracy=0.968525
+bc_epoch=51 loss=0.214125 accuracy=0.969271
+bc_epoch=52 loss=0.203914 accuracy=0.972879
+bc_epoch=53 loss=0.195645 accuracy=0.972381
+bc_epoch=54 loss=0.185484 accuracy=0.977731
+bc_epoch=55 loss=0.179690 accuracy=0.978104
+bc_epoch=56 loss=0.163229 accuracy=0.978477
+bc_epoch=57 loss=0.164321 accuracy=0.981712
+bc_epoch=58 loss=0.163578 accuracy=0.979721
+bc_epoch=59 loss=0.149771 accuracy=0.982334
+bc_epoch=60 loss=0.146870 accuracy=0.982583
+bc_epoch=61 loss=0.140310 accuracy=0.984200
+bc_epoch=62 loss=0.130129 accuracy=0.985444
+bc_epoch=63 loss=0.136558 accuracy=0.982085
+bc_epoch=64 loss=0.120426 accuracy=0.986937
+bc_epoch=65 loss=0.121625 accuracy=0.988928
+bc_epoch=66 loss=0.114186 accuracy=0.989425
+bc_epoch=67 loss=0.118167 accuracy=0.987559
+bc_epoch=68 loss=0.117435 accuracy=0.985320
+bc_epoch=69 loss=0.119696 accuracy=0.986688
+bc_epoch=70 loss=0.108557 accuracy=0.988306
+bc_epoch=71 loss=0.114423 accuracy=0.986688
+bc_epoch=72 loss=0.110449 accuracy=0.987684
+bc_epoch=73 loss=0.102911 accuracy=0.988430
+bc_epoch=74 loss=0.100967 accuracy=0.989301
+bc_epoch=75 loss=0.103900 accuracy=0.988306
+bc_epoch=76 loss=0.101296 accuracy=0.989301
+bc_epoch=77 loss=0.095480 accuracy=0.991043
+bc_epoch=78 loss=0.091452 accuracy=0.991043
+bc_epoch=79 loss=0.089999 accuracy=0.986937
+bc_epoch=80 loss=0.092583 accuracy=0.988803
+BC_PRETRAIN_DONE
+BC_STRENGTH_TEST_SUMMARY
+first_loss=2.313303
+last_loss=0.092583
+best_loss=0.089999
+first_accuracy=0.173426
+last_accuracy=0.988803
+best_epoch=77
+best_accuracy=0.991043

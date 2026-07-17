@@ -1,0 +1,175 @@
+{
+  "config_path": "training\\configs\\ppo_mlp_ranked_seed456.yaml",
+  "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed456",
+  "scenario_count": 20,
+  "num_samples": 1,
+  "sampling_deterministic_fallback": true,
+  "overall": {
+    "mean_ratio": 1.101665798041479,
+    "std_ratio": 0.05731208277666366
+  },
+  "by_task_size": {
+    "10": {
+      "count": 5,
+      "mean_ratio": 1.0868422560800424,
+      "std_ratio": 0.05319453935316906
+    },
+    "15": {
+      "count": 5,
+      "mean_ratio": 1.0738065316859813,
+      "std_ratio": 0.03973188419977174
+    },
+    "20": {
+      "count": 5,
+      "mean_ratio": 1.104297016889886,
+      "std_ratio": 0.05020693278830328
+    },
+    "25": {
+      "count": 5,
+      "mean_ratio": 1.1417173875100062,
+      "std_ratio": 0.06002293178440022
+    }
+  },
+  "scenarios": [
+    {
+      "scenario": "scenario_10_0.json",
+      "num_tasks": 10,
+      "heft_makespan": 0.4552284363452672,
+      "rl_makespan": 0.5133214489549704,
+      "ratio": 1.1276128817349247
+    },
+    {
+      "scenario": "scenario_10_1.json",
+      "num_tasks": 10,
+      "heft_makespan": 0.5088156337709009,
+      "rl_makespan": 0.5165450510043954,
+      "ratio": 1.0151909979184617
+    },
+    {
+      "scenario": "scenario_10_2.json",
+      "num_tasks": 10,
+      "heft_makespan": 0.5084000846273409,
+      "rl_makespan": 0.5765158209092069,
+      "ratio": 1.133980576206621
+    },
+    {
+      "scenario": "scenario_10_3.json",
+      "num_tasks": 10,
+      "heft_makespan": 0.3575317979596756,
+      "rl_makespan": 0.4035473080433315,
+      "ratio": 1.1287032659647402
+    },
+    {
+      "scenario": "scenario_10_4.json",
+      "num_tasks": 10,
+      "heft_makespan": 0.3707058369601609,
+      "rl_makespan": 0.3813538277823526,
+      "ratio": 1.0287235585754644
+    },
+    {
+      "scenario": "scenario_15_0.json",
+      "num_tasks": 15,
+      "heft_makespan": 0.6054409838212004,
+      "rl_makespan": 0.6152412742833202,
+      "ratio": 1.016187028503201
+    },
+    {
+      "scenario": "scenario_15_1.json",
+      "num_tasks": 15,
+      "heft_makespan": 0.6167576868599802,
+      "rl_makespan": 0.690403580750081,
+      "ratio": 1.1194081491955856
+    },
+    {
+      "scenario": "scenario_15_2.json",
+      "num_tasks": 15,
+      "heft_makespan": 0.6294246370418829,
+      "rl_makespan": 0.6850078754045558,
+      "ratio": 1.088308011939123
+    },
+    {
+      "scenario": "scenario_15_3.json",
+      "num_tasks": 15,
+      "heft_makespan": 0.6089972186041921,
+      "rl_makespan": 0.6737520509930226,
+      "ratio": 1.1063302596639886
+    },
+    {
+      "scenario": "scenario_15_4.json",
+      "num_tasks": 15,
+      "heft_makespan": 0.5750342951613558,
+      "rl_makespan": 0.5973451710350978,
+      "ratio": 1.0387992091280076
+    },
+    {
+      "scenario": "scenario_20_0.json",
+      "num_tasks": 20,
+      "heft_makespan": 0.9724235579213067,
+      "rl_makespan": 1.148604372177727,
+      "ratio": 1.1811770321906143
+    },
+    {
+      "scenario": "scenario_20_1.json",
+      "num_tasks": 20,
+      "heft_makespan": 0.7681376680144106,
+      "rl_makespan": 0.8591874131596275,
+      "ratio": 1.1185331079786454
+    },
+    {
+      "scenario": "scenario_20_2.json",
+      "num_tasks": 20,
+      "heft_makespan": 0.6474996876100765,
+      "rl_makespan": 0.6807575636552967,
+      "ratio": 1.0513635399083745
+    },
+    {
+      "scenario": "scenario_20_3.json",
+      "num_tasks": 20,
+      "heft_makespan": 0.86894815180045,
+      "rl_makespan": 0.9764141518996411,
+      "ratio": 1.1236736620896457
+    },
+    {
+      "scenario": "scenario_20_4.json",
+      "num_tasks": 20,
+      "heft_makespan": 0.8359221176853918,
+      "rl_makespan": 0.8749912301897208,
+      "ratio": 1.04673774228215
+    },
+    {
+      "scenario": "scenario_25_0.json",
+      "num_tasks": 25,
+      "heft_makespan": 1.039261202106066,
+      "rl_makespan": 1.2018529187536244,
+      "ratio": 1.156449327963043
+    },
+    {
+      "scenario": "scenario_25_1.json",
+      "num_tasks": 25,
+      "heft_makespan": 0.921302144217215,
+      "rl_makespan": 1.0501744568605647,
+      "ratio": 1.1398806172896148
+    },
+    {
+      "scenario": "scenario_25_2.json",
+      "num_tasks": 25,
+      "heft_makespan": 1.000114438569326,
+      "rl_makespan": 1.1735343852038205,
+      "ratio": 1.1734001029747891
+    },
+    {
+      "scenario": "scenario_25_3.json",
+      "num_tasks": 25,
+      "heft_makespan": 0.9382051467178703,
+      "rl_makespan": 0.9668746674883467,
+      "ratio": 1.0305578378788172
+    },
+    {
+      "scenario": "scenario_25_4.json",
+      "num_tasks": 25,
+      "heft_makespan": 1.0729189030491886,
+      "rl_makespan": 1.2964068928304218,
+      "ratio": 1.2082990514437673
+    }
+  ]
+}

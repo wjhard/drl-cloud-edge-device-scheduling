@@ -1,0 +1,91 @@
+Using cpu device
+BC_BATCH_MASK_AND_NORMALIZATION_CHECK
+dataset_path=<USER_HOME>\Desktop\����ϵͳ���´���\�������ǿ��ѧϰ����-��-���칹������Դ������ȷ���\project\training\bc_datasets\mlp_bc_dataset.npz
+config_path=<USER_HOME>\Desktop\����ϵͳ���´���\�������ǿ��ѧϰ����-��-���칹������Դ������ȷ���\project\training\configs\ppo_mlp_bc_warmstart.yaml
+samples=8038
+observation_shape=(8038, 1128)
+action_mask_shape=(8038, 120)
+CHECK_A_BATCH_MASK_CROSS_CONTAMINATION
+selected_indices=[2610, 1682, 6407]
+batch_results:
+  sample_index=2610 legal_action_count=4 expert_action=2 batch_log_prob=-1.381400108337 single_log_prob=-1.381400108337 abs_diff=0.000000000000e+00 consistent=True
+  sample_index=1682 legal_action_count=20 expert_action=9 batch_log_prob=-3.001401901245 single_log_prob=-3.001401901245 abs_diff=0.000000000000e+00 consistent=True
+  sample_index=6407 legal_action_count=44 expert_action=4 batch_log_prob=-3.778823614120 single_log_prob=-3.778823614120 abs_diff=0.000000000000e+00 consistent=True
+max_abs_diff=0.000000000000e+00
+all_consistent=True
+CHECK_B_OBSERVATION_SCALE_STATS
+task_valid_mask: min=0.000000, max=1.000000, mean=0.593614, std=0.491158
+task_adjacency: min=0.000000, max=1.000000, mean=0.121616, std=0.326842
+ready_task_node_ids: min=0.000000, max=24.000000, mean=1.267380, std=3.829739
+task_features.task_valid_flag: min=0.000000, max=1.000000, mean=0.593614, std=0.491158
+task_features.task_id_normalized: min=0.000000, max=0.827586, mean=0.186733, std=0.224900
+task_features.task_computation_cost: min=0.000000, max=9.998241, mean=3.262762, std=3.363654
+task_features.task_out_degree: min=0.000000, max=15.000000, mean=1.527432, std=2.366680
+task_features.task_successor_cost_sum: min=0.000000, max=82.284714, mean=8.445923, std=13.434884
+resource_features.resource_available_time: min=0.000000, max=1.227514, mean=0.217819, std=0.251198
+resource_features.resource_tier_encoding: min=1.000000, max=3.000000, mean=2.000000, std=0.707107
+resource_features.resource_compute_power: min=5.000000, max=100.000000, mean=40.000000, std=35.881750
+resource_features.resource_bandwidth: min=20.000000, max=1000.000000, mean=342.500000, std=385.251541
+global_features.global_completed_fraction: min=0.000000, max=0.960000, mean=0.468898, std=0.288260
+global_features.global_current_makespan: min=0.000000, max=1.227514, mean=0.383005, std=0.248241
+flat_observation_all_values: min=0.000000, max=1000.000000, mean=1.884310, std=30.936210
+flat_feature_means: min=0.000000, max=1000.000000, mean=1.884309, std=30.859081
+flat_feature_stds: min=0.000000, max=15.427339, mean=0.661435, std=2.080561
+flat_features_with_std_lt_1e-8=361
+normalized_overfit_subset_dag_task_counts=[25, 9, 11, 25, 23]
+Using cpu device
+CHECK_C_NORMALIZED_93_SAMPLE_OVERFIT
+subset_samples=93
+epochs=200
+batch_size=32
+learning_rate=0.001
+previous_without_normalization_first_accuracy=0.215054
+previous_without_normalization_last_accuracy=0.247312
+previous_without_normalization_best_accuracy=0.279570
+normalized_bc_epoch=1 loss=2.871857 accuracy=0.215054
+normalized_bc_epoch=2 loss=2.736766 accuracy=0.215054
+normalized_bc_epoch=3 loss=2.601186 accuracy=0.215054
+normalized_bc_epoch=4 loss=2.470707 accuracy=0.193548
+normalized_bc_epoch=5 loss=2.380386 accuracy=0.279570
+normalized_bc_epoch=6 loss=2.307689 accuracy=0.268817
+normalized_bc_epoch=7 loss=2.265087 accuracy=0.258065
+normalized_bc_epoch=8 loss=2.232107 accuracy=0.247312
+normalized_bc_epoch=9 loss=2.201002 accuracy=0.258065
+normalized_bc_epoch=10 loss=2.181871 accuracy=0.258065
+normalized_bc_epoch=20 loss=2.059738 accuracy=0.236559
+normalized_bc_epoch=30 loss=1.976984 accuracy=0.279570
+normalized_bc_epoch=40 loss=1.892973 accuracy=0.344086
+normalized_bc_epoch=50 loss=1.784390 accuracy=0.376344
+normalized_bc_epoch=60 loss=1.688981 accuracy=0.365591
+normalized_bc_epoch=70 loss=1.632665 accuracy=0.376344
+normalized_bc_epoch=80 loss=1.491085 accuracy=0.473118
+normalized_bc_epoch=90 loss=1.382862 accuracy=0.559140
+normalized_bc_epoch=100 loss=1.275258 accuracy=0.591398
+normalized_bc_epoch=110 loss=1.174078 accuracy=0.612903
+normalized_bc_epoch=120 loss=1.076055 accuracy=0.666667
+normalized_bc_epoch=130 loss=0.991110 accuracy=0.720430
+normalized_bc_epoch=140 loss=0.908937 accuracy=0.774194
+normalized_bc_epoch=150 loss=0.819493 accuracy=0.774194
+normalized_bc_epoch=160 loss=0.751976 accuracy=0.795699
+normalized_bc_epoch=170 loss=0.694081 accuracy=0.838710
+normalized_bc_epoch=180 loss=0.621984 accuracy=0.881720
+normalized_bc_epoch=190 loss=0.578386 accuracy=0.860215
+normalized_bc_epoch=191 loss=0.567552 accuracy=0.870968
+normalized_bc_epoch=192 loss=0.563985 accuracy=0.860215
+normalized_bc_epoch=193 loss=0.559931 accuracy=0.881720
+normalized_bc_epoch=194 loss=0.551329 accuracy=0.849462
+normalized_bc_epoch=195 loss=0.549011 accuracy=0.860215
+normalized_bc_epoch=196 loss=0.536340 accuracy=0.903226
+normalized_bc_epoch=197 loss=0.540914 accuracy=0.881720
+normalized_bc_epoch=198 loss=0.528634 accuracy=0.870968
+normalized_bc_epoch=199 loss=0.531516 accuracy=0.870968
+normalized_bc_epoch=200 loss=0.517652 accuracy=0.870968
+CHECK_C_NORMALIZED_OVERFIT_RESULT
+first_loss=2.871857
+last_loss=0.517652
+best_loss=0.517652
+first_accuracy=0.215054
+last_accuracy=0.870968
+best_accuracy=0.903226
+best_accuracy_epoch=196
+reached_90_percent_accuracy=True

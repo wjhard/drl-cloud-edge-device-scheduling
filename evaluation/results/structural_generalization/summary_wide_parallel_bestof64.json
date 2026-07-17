@@ -1,0 +1,82 @@
+{
+  "config_path": "evaluation/results/structural_generalization/generated_configs/wide_parallel.yaml",
+  "model_path": "training/checkpoints/ppo_mlp_residual",
+  "scenario_count": 5,
+  "num_samples": 64,
+  "sampling_deterministic_fallback": true,
+  "sampling_seed": 20260709,
+  "hybrid": {
+    "enabled": false,
+    "task_threshold": null,
+    "milp_timeout_seconds": null,
+    "requires_proven_optimal": null
+  },
+  "overall": {
+    "mean_ratio": 1.0119149676262498,
+    "std_ratio": 0.01846912888482642
+  },
+  "by_task_size": {
+    "8": {
+      "count": 1,
+      "mean_ratio": 0.985753176025955,
+      "std_ratio": 0.0
+    },
+    "12": {
+      "count": 1,
+      "mean_ratio": 1.0353025991680775,
+      "std_ratio": 0.0
+    },
+    "16": {
+      "count": 1,
+      "mean_ratio": 1.0087206621920315,
+      "std_ratio": 0.0
+    },
+    "20": {
+      "count": 1,
+      "mean_ratio": 0.99996420652304,
+      "std_ratio": 0.0
+    },
+    "25": {
+      "count": 1,
+      "mean_ratio": 1.0298341942221447,
+      "std_ratio": 0.0
+    }
+  },
+  "scenarios": [
+    {
+      "scenario": "scenario_12_1.json",
+      "num_tasks": 12,
+      "heft_makespan": 0.5292047778445996,
+      "rl_makespan": 0.5478870819946791,
+      "ratio": 1.0353025991680775
+    },
+    {
+      "scenario": "scenario_16_2.json",
+      "num_tasks": 16,
+      "heft_makespan": 0.6113392287613597,
+      "rl_makespan": 0.6166705116601245,
+      "ratio": 1.0087206621920315
+    },
+    {
+      "scenario": "scenario_20_3.json",
+      "num_tasks": 20,
+      "heft_makespan": 0.739197169817207,
+      "rl_makespan": 0.7391707113803402,
+      "ratio": 0.99996420652304
+    },
+    {
+      "scenario": "scenario_25_4.json",
+      "num_tasks": 25,
+      "heft_makespan": 0.7651512962728843,
+      "rl_makespan": 0.7879789686552152,
+      "ratio": 1.0298341942221447
+    },
+    {
+      "scenario": "scenario_8_0.json",
+      "num_tasks": 8,
+      "heft_makespan": 0.33239342402248095,
+      "rl_makespan": 0.32765787342030256,
+      "ratio": 0.985753176025955
+    }
+  ]
+}

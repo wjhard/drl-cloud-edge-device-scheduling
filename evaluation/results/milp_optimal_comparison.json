@@ -1,0 +1,933 @@
+{
+    "config_path":  "training/configs/ppo_mlp_residual.yaml",
+    "rl_summary_path":  "evaluation/results/summary_mlp_residual_bestof16.json",
+    "time_limit_seconds_per_scenario":  300.0,
+    "threads":  null,
+    "task_sizes":  [
+                       10,
+                       15
+                   ],
+    "scenarios":  [
+                      {
+                          "scenario":  "scenario_10_0.json",
+                          "num_tasks":  10,
+                          "milp_status":  "optimal",
+                          "milp_proven_optimal":  true,
+                          "milp_makespan":  0.3907455113200658,
+                          "milp_best_bound":  0.3907455113200658,
+                          "milp_relative_gap":  0.0,
+                          "milp_solve_time_seconds":  1.714689700000008,
+                          "heft_makespan":  0.4552284363452672,
+                          "residual_bestof16_makespan":  0.39074550726016205,
+                          "heft_over_milp_optimal":  1.1650253762541176,
+                          "residual_bestof16_over_milp_optimal":  0.9999999896098518,
+                          "solver_log":  "evaluation\\results\\milp_solver_logs\\scenario_10_0.log",
+                          "milp_schedule":  {
+                                                "0":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.045727755,
+                                                          "finish_time":  0.1257275926732737
+                                                      },
+                                                "1":  {
+                                                          "resource_id":  "edge_1",
+                                                          "start_time":  0.0,
+                                                          "finish_time":  0.0856156188658462
+                                                      },
+                                                "2":  {
+                                                          "resource_id":  "edge_0",
+                                                          "start_time":  0.0,
+                                                          "finish_time":  0.13015749747582228
+                                                      },
+                                                "3":  {
+                                                          "resource_id":  "edge_0",
+                                                          "start_time":  0.1301575,
+                                                          "finish_time":  0.21494309947452822
+                                                      },
+                                                "4":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.12572759,
+                                                          "finish_time":  0.21299220369092906
+                                                      },
+                                                "5":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.0,
+                                                          "finish_time":  0.04572775517371891
+                                                      },
+                                                "6":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.29319091,
+                                                          "finish_time":  0.3907455113200658
+                                                      },
+                                                "7":  {
+                                                          "resource_id":  "edge_0",
+                                                          "start_time":  0.21802588,
+                                                          "finish_time":  0.37970849210101365
+                                                      },
+                                                "8":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.21299221,
+                                                          "finish_time":  0.29319090940217457
+                                                      },
+                                                "9":  {
+                                                          "resource_id":  "edge_1",
+                                                          "start_time":  0.10717771,
+                                                          "finish_time":  0.3303135251406155
+                                                      }
+                                            },
+                          "milp_optimum_interval":  {
+                                                        "lower":  0.3907455113200658,
+                                                        "upper":  0.39074550726016211
+                                                    },
+                          "heft_over_optimum_interval":  {
+                                                             "lower":  1.1650253883589037,
+                                                             "upper":  1.1650253762541176
+                                                         },
+                          "residual_bestof16_over_optimum_interval":  {
+                                                                          "lower":  1,
+                                                                          "upper":  0.999999989609852
+                                                                      }
+                      },
+                      {
+                          "scenario":  "scenario_10_1.json",
+                          "num_tasks":  10,
+                          "milp_status":  "optimal",
+                          "milp_proven_optimal":  true,
+                          "milp_makespan":  0.45955866745099877,
+                          "milp_best_bound":  0.45955866745099877,
+                          "milp_relative_gap":  0.0,
+                          "milp_solve_time_seconds":  1.5090565000000424,
+                          "heft_makespan":  0.5088156337709009,
+                          "residual_bestof16_makespan":  0.46775171885799394,
+                          "heft_over_milp_optimal":  1.107183195114374,
+                          "residual_bestof16_over_milp_optimal":  1.017828085916514,
+                          "solver_log":  "evaluation\\results\\milp_solver_logs\\scenario_10_1.log",
+                          "milp_schedule":  {
+                                                "0":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.32978866,
+                                                          "finish_time":  0.37085257491290696
+                                                      },
+                                                "1":  {
+                                                          "resource_id":  "edge_0",
+                                                          "start_time":  0.0,
+                                                          "finish_time":  0.3111286501856326
+                                                      },
+                                                "2":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.23402117,
+                                                          "finish_time":  0.3028029388040332
+                                                      },
+                                                "3":  {
+                                                          "resource_id":  "edge_1",
+                                                          "start_time":  0.23042428,
+                                                          "finish_time":  0.43493143853667177
+                                                      },
+                                                "4":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.37085257,
+                                                          "finish_time":  0.45955866745099877
+                                                      },
+                                                "5":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.19095013,
+                                                          "finish_time":  0.20804604439290025
+                                                      },
+                                                "6":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.20804604,
+                                                          "finish_time":  0.234021167846405
+                                                      },
+                                                "7":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.093612721,
+                                                          "finish_time":  0.19095012932466138
+                                                      },
+                                                "8":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.0,
+                                                          "finish_time":  0.09361272137620583
+                                                      },
+                                                "9":  {
+                                                          "resource_id":  "edge_1",
+                                                          "start_time":  0.0,
+                                                          "finish_time":  0.1875718727421836
+                                                      }
+                                            },
+                          "milp_optimum_interval":  {
+                                                        "lower":  0.45955866745099883,
+                                                        "upper":  0.45955866745099883
+                                                    },
+                          "heft_over_optimum_interval":  {
+                                                             "lower":  1.1071831951143738,
+                                                             "upper":  1.1071831951143738
+                                                         },
+                          "residual_bestof16_over_optimum_interval":  {
+                                                                          "lower":  1.0178280859165141,
+                                                                          "upper":  1.0178280859165141
+                                                                      }
+                      },
+                      {
+                          "scenario":  "scenario_10_2.json",
+                          "num_tasks":  10,
+                          "milp_status":  "optimal",
+                          "milp_proven_optimal":  true,
+                          "milp_makespan":  0.4509024842469219,
+                          "milp_best_bound":  0.4509024842469219,
+                          "milp_relative_gap":  0.0,
+                          "milp_solve_time_seconds":  2.7464780999999903,
+                          "heft_makespan":  0.5084000846273409,
+                          "residual_bestof16_makespan":  0.4787728669898848,
+                          "heft_over_milp_optimal":  1.1275167079117983,
+                          "residual_bestof16_over_milp_optimal":  1.061810222202503,
+                          "solver_log":  "evaluation\\results\\milp_solver_logs\\scenario_10_2.log",
+                          "milp_schedule":  {
+                                                "0":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.071427668,
+                                                          "finish_time":  0.14457545701284835
+                                                      },
+                                                "1":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.14457546,
+                                                          "finish_time":  0.22100280196332517
+                                                      },
+                                                "2":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.2210028,
+                                                          "finish_time":  0.319745975324893
+                                                      },
+                                                "3":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.41675765,
+                                                          "finish_time":  0.44855646085993417
+                                                      },
+                                                "4":  {
+                                                          "resource_id":  "edge_1",
+                                                          "start_time":  0.17400657,
+                                                          "finish_time":  0.45047040074974776
+                                                      },
+                                                "5":  {
+                                                          "resource_id":  "edge_0",
+                                                          "start_time":  0.0,
+                                                          "finish_time":  0.14542769899273372
+                                                      },
+                                                "6":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.0,
+                                                          "finish_time":  0.07142766794544476
+                                                      },
+                                                "7":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.34583441,
+                                                          "finish_time":  0.4167576463578108
+                                                      },
+                                                "8":  {
+                                                          "resource_id":  "edge_0",
+                                                          "start_time":  0.1454277,
+                                                          "finish_time":  0.4509024842469219
+                                                      },
+                                                "9":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.31974597,
+                                                          "finish_time":  0.34583440874894217
+                                                      }
+                                            },
+                          "milp_optimum_interval":  {
+                                                        "lower":  0.45090248424692192,
+                                                        "upper":  0.45090248424692192
+                                                    },
+                          "heft_over_optimum_interval":  {
+                                                             "lower":  1.1275167079117983,
+                                                             "upper":  1.1275167079117983
+                                                         },
+                          "residual_bestof16_over_optimum_interval":  {
+                                                                          "lower":  1.061810222202503,
+                                                                          "upper":  1.061810222202503
+                                                                      }
+                      },
+                      {
+                          "scenario":  "scenario_10_3.json",
+                          "num_tasks":  10,
+                          "milp_status":  "optimal",
+                          "milp_proven_optimal":  true,
+                          "milp_makespan":  0.356544541233769,
+                          "milp_best_bound":  0.356544541233769,
+                          "milp_relative_gap":  0.0,
+                          "milp_solve_time_seconds":  0.4753867000000582,
+                          "heft_makespan":  0.3575317979596756,
+                          "residual_bestof16_makespan":  0.36099760897861227,
+                          "heft_over_milp_optimal":  1.0027689576244538,
+                          "residual_bestof16_over_milp_optimal":  1.0124895131739617,
+                          "solver_log":  "evaluation\\results\\milp_solver_logs\\scenario_10_3.log",
+                          "milp_schedule":  {
+                                                "0":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.28537578,
+                                                          "finish_time":  0.34228549415935633
+                                                      },
+                                                "1":  {
+                                                          "resource_id":  "edge_0",
+                                                          "start_time":  0.0,
+                                                          "finish_time":  0.17171290543906037
+                                                      },
+                                                "2":  {
+                                                          "resource_id":  "edge_0",
+                                                          "start_time":  0.19331691,
+                                                          "finish_time":  0.356544541233769
+                                                      },
+                                                "3":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.061143413,
+                                                          "finish_time":  0.1605560728501601
+                                                      },
+                                                "4":  {
+                                                          "resource_id":  "edge_1",
+                                                          "start_time":  0.18143214,
+                                                          "finish_time":  0.3031209530803027
+                                                      },
+                                                "5":  {
+                                                          "resource_id":  "edge_1",
+                                                          "start_time":  0.30312096,
+                                                          "finish_time":  0.3492335869041722
+                                                      },
+                                                "6":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.0,
+                                                          "finish_time":  0.06114341338013703
+                                                      },
+                                                "7":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.19990657,
+                                                          "finish_time":  0.28537578269188035
+                                                      },
+                                                "8":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.34228549,
+                                                          "finish_time":  0.35457901538313863
+                                                      },
+                                                "9":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.16055607,
+                                                          "finish_time":  0.1999065632085284
+                                                      }
+                                            },
+                          "milp_optimum_interval":  {
+                                                        "lower":  0.356544541233769,
+                                                        "upper":  0.356544541233769
+                                                    },
+                          "heft_over_optimum_interval":  {
+                                                             "lower":  1.0027689576244538,
+                                                             "upper":  1.0027689576244538
+                                                         },
+                          "residual_bestof16_over_optimum_interval":  {
+                                                                          "lower":  1.0124895131739615,
+                                                                          "upper":  1.0124895131739615
+                                                                      }
+                      },
+                      {
+                          "scenario":  "scenario_10_4.json",
+                          "num_tasks":  10,
+                          "milp_status":  "optimal",
+                          "milp_proven_optimal":  true,
+                          "milp_makespan":  0.3402137499047329,
+                          "milp_best_bound":  0.3402137499047329,
+                          "milp_relative_gap":  0.0,
+                          "milp_solve_time_seconds":  4.761241199999972,
+                          "heft_makespan":  0.3707058369601609,
+                          "residual_bestof16_makespan":  0.34395302989962745,
+                          "heft_over_milp_optimal":  1.0896262630889153,
+                          "residual_bestof16_over_milp_optimal":  1.0109909725751578,
+                          "solver_log":  "evaluation\\results\\milp_solver_logs\\scenario_10_4.log",
+                          "milp_schedule":  {
+                                                "0":  {
+                                                          "resource_id":  "edge_0",
+                                                          "start_time":  0.25461795,
+                                                          "finish_time":  0.3362023083125494
+                                                      },
+                                                "1":  {
+                                                          "resource_id":  "edge_0",
+                                                          "start_time":  0.15740115,
+                                                          "finish_time":  0.2536407152867075
+                                                      },
+                                                "2":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.0,
+                                                          "finish_time":  0.03263804167864207
+                                                      },
+                                                "3":  {
+                                                          "resource_id":  "edge_1",
+                                                          "start_time":  0.12153587,
+                                                          "finish_time":  0.3402137499047329
+                                                      },
+                                                "4":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.17285893,
+                                                          "finish_time":  0.2386305910371589
+                                                      },
+                                                "5":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.23863059,
+                                                          "finish_time":  0.3345317212700147
+                                                      },
+                                                "6":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.12893306,
+                                                          "finish_time":  0.17285892848203663
+                                                      },
+                                                "7":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.075257578,
+                                                          "finish_time":  0.12893306047686004
+                                                      },
+                                                "8":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.032638042,
+                                                          "finish_time":  0.07525757835717477
+                                                      },
+                                                "9":  {
+                                                          "resource_id":  "edge_0",
+                                                          "start_time":  0.0,
+                                                          "finish_time":  0.12405054046768749
+                                                      }
+                                            },
+                          "milp_optimum_interval":  {
+                                                        "lower":  0.34021374990473291,
+                                                        "upper":  0.34021374990473291
+                                                    },
+                          "heft_over_optimum_interval":  {
+                                                             "lower":  1.0896262630889153,
+                                                             "upper":  1.0896262630889153
+                                                         },
+                          "residual_bestof16_over_optimum_interval":  {
+                                                                          "lower":  1.0109909725751578,
+                                                                          "upper":  1.0109909725751578
+                                                                      }
+                      },
+                      {
+                          "scenario":  "scenario_15_0.json",
+                          "num_tasks":  15,
+                          "milp_status":  "feasible_not_proven_optimal",
+                          "milp_proven_optimal":  false,
+                          "milp_makespan":  0.5393301198199125,
+                          "milp_best_bound":  0.50431234,
+                          "milp_relative_gap":  0.064928285169026476,
+                          "milp_solve_time_seconds":  300.2798891000001,
+                          "heft_makespan":  0.6054409838212004,
+                          "residual_bestof16_makespan":  0.570273497797338,
+                          "heft_over_milp_optimal":  null,
+                          "residual_bestof16_over_milp_optimal":  null,
+                          "solver_log":  "evaluation\\results\\milp_solver_logs\\scenario_15_0.log",
+                          "milp_schedule":  {
+                                                "0":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.42739184,
+                                                          "finish_time":  0.4428831393095717
+                                                      },
+                                                "1":  {
+                                                          "resource_id":  "edge_1",
+                                                          "start_time":  0.26003773,
+                                                          "finish_time":  0.49952036984590764
+                                                      },
+                                                "2":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.33070196,
+                                                          "finish_time":  0.42739183671442776
+                                                      },
+                                                "3":  {
+                                                          "resource_id":  "edge_0",
+                                                          "start_time":  0.0,
+                                                          "finish_time":  0.1676646466052603
+                                                      },
+                                                "4":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.069181666,
+                                                          "finish_time":  0.10085751029981925
+                                                      },
+                                                "5":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.0,
+                                                          "finish_time":  0.06918166641586075
+                                                      },
+                                                "6":  {
+                                                          "resource_id":  "edge_1",
+                                                          "start_time":  0.0,
+                                                          "finish_time":  0.2600377317606027
+                                                      },
+                                                "7":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.10085751,
+                                                          "finish_time":  0.18262690396747855
+                                                      },
+                                                "8":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.44288313,
+                                                          "finish_time":  0.5393301198199125
+                                                      },
+                                                "9":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.23369285,
+                                                          "finish_time":  0.26133286403982803
+                                                      },
+                                                "10":  {
+                                                           "resource_id":  "edge_0",
+                                                           "start_time":  0.16766465,
+                                                           "finish_time":  0.47522791822585475
+                                                       },
+                                                "11":  {
+                                                           "resource_id":  "cloud_0",
+                                                           "start_time":  0.26133286,
+                                                           "finish_time":  0.28644742608867046
+                                                       },
+                                                "12":  {
+                                                           "resource_id":  "edge_0",
+                                                           "start_time":  0.47522791,
+                                                           "finish_time":  0.5382417377562396
+                                                       },
+                                                "13":  {
+                                                           "resource_id":  "cloud_0",
+                                                           "start_time":  0.1826269,
+                                                           "finish_time":  0.23369284094073553
+                                                       },
+                                                "14":  {
+                                                           "resource_id":  "cloud_0",
+                                                           "start_time":  0.28644743,
+                                                           "finish_time":  0.3307019627199492
+                                                       }
+                                            },
+                          "milp_optimum_interval":  {
+                                                        "lower":  0.50431234,
+                                                        "upper":  0.53933011981991252
+                                                    },
+                          "heft_over_optimum_interval":  {
+                                                             "lower":  1.1225795882183678,
+                                                             "upper":  1.2005277995402617
+                                                         },
+                          "residual_bestof16_over_optimum_interval":  {
+                                                                          "lower":  1.057373724997517,
+                                                                          "upper":  1.1307942569823655
+                                                                      }
+                      },
+                      {
+                          "scenario":  "scenario_15_1.json",
+                          "num_tasks":  15,
+                          "milp_status":  "optimal",
+                          "milp_proven_optimal":  true,
+                          "milp_makespan":  0.529232537464376,
+                          "milp_best_bound":  0.529232537464376,
+                          "milp_relative_gap":  0.0,
+                          "milp_solve_time_seconds":  14.371249900000066,
+                          "heft_makespan":  0.6167576868599802,
+                          "residual_bestof16_makespan":  0.6026651845663851,
+                          "heft_over_milp_optimal":  1.1653812704240538,
+                          "residual_bestof16_over_milp_optimal":  1.1387530847098606,
+                          "solver_log":  "evaluation\\results\\milp_solver_logs\\scenario_15_1.log",
+                          "milp_schedule":  {
+                                                "0":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.20629648,
+                                                          "finish_time":  0.2669362792395458
+                                                      },
+                                                "1":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.51871449,
+                                                          "finish_time":  0.529232537464376
+                                                      },
+                                                "2":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.45724155,
+                                                          "finish_time":  0.5187144896105855
+                                                      },
+                                                "3":  {
+                                                          "resource_id":  "edge_1",
+                                                          "start_time":  0.22004225,
+                                                          "finish_time":  0.42475047937732435
+                                                      },
+                                                "4":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.081489347,
+                                                          "finish_time":  0.09702798764957535
+                                                      },
+                                                "5":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.33351367,
+                                                          "finish_time":  0.4328994911748235
+                                                      },
+                                                "6":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.0,
+                                                          "finish_time":  0.08148934731016039
+                                                      },
+                                                "7":  {
+                                                          "resource_id":  "edge_0",
+                                                          "start_time":  0.22359423,
+                                                          "finish_time":  0.5138911034134592
+                                                      },
+                                                "8":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.26693627,
+                                                          "finish_time":  0.33351366513873015
+                                                      },
+                                                "9":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.097027988,
+                                                          "finish_time":  0.1632077382780724
+                                                      },
+                                                "10":  {
+                                                           "resource_id":  "edge_1",
+                                                           "start_time":  0.0,
+                                                           "finish_time":  0.19324910345278212
+                                                       },
+                                                "11":  {
+                                                           "resource_id":  "cloud_0",
+                                                           "start_time":  0.16320774,
+                                                           "finish_time":  0.20629647693274572
+                                                       },
+                                                "12":  {
+                                                           "resource_id":  "cloud_0",
+                                                           "start_time":  0.43289949,
+                                                           "finish_time":  0.45724155167419483
+                                                       },
+                                                "13":  {
+                                                           "resource_id":  "edge_1",
+                                                           "start_time":  0.42475048,
+                                                           "finish_time":  0.5174076419391154
+                                                       },
+                                                "14":  {
+                                                           "resource_id":  "edge_0",
+                                                           "start_time":  0.0,
+                                                           "finish_time":  0.21314912536583866
+                                                       }
+                                            },
+                          "milp_optimum_interval":  {
+                                                        "lower":  0.529232537464376,
+                                                        "upper":  0.529232537464376
+                                                    },
+                          "heft_over_optimum_interval":  {
+                                                             "lower":  1.1653812704240538,
+                                                             "upper":  1.1653812704240538
+                                                         },
+                          "residual_bestof16_over_optimum_interval":  {
+                                                                          "lower":  1.1387530847098606,
+                                                                          "upper":  1.1387530847098606
+                                                                      }
+                      },
+                      {
+                          "scenario":  "scenario_15_2.json",
+                          "num_tasks":  15,
+                          "milp_status":  "feasible_not_proven_optimal",
+                          "milp_proven_optimal":  false,
+                          "milp_makespan":  0.5625744296441574,
+                          "milp_best_bound":  0.55087644,
+                          "milp_relative_gap":  0.020793674628184992,
+                          "milp_solve_time_seconds":  300.1247681000002,
+                          "heft_makespan":  0.6294246370418829,
+                          "residual_bestof16_makespan":  0.6186082528105287,
+                          "heft_over_milp_optimal":  null,
+                          "residual_bestof16_over_milp_optimal":  null,
+                          "solver_log":  "evaluation\\results\\milp_solver_logs\\scenario_15_2.log",
+                          "milp_schedule":  {
+                                                "0":  {
+                                                          "resource_id":  "edge_0",
+                                                          "start_time":  0.16682277,
+                                                          "finish_time":  0.264098361365793
+                                                      },
+                                                "1":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.18499998,
+                                                          "finish_time":  0.2559777288324003
+                                                      },
+                                                "2":  {
+                                                          "resource_id":  "edge_0",
+                                                          "start_time":  0.26409836,
+                                                          "finish_time":  0.5233255809891293
+                                                      },
+                                                "3":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.25597773,
+                                                          "finish_time":  0.35248735115786134
+                                                      },
+                                                "4":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.045743025,
+                                                          "finish_time":  0.08024196838127032
+                                                      },
+                                                "5":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.080241968,
+                                                          "finish_time":  0.11683367344455517
+                                                      },
+                                                "6":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.35248735,
+                                                          "finish_time":  0.4518821304486321
+                                                      },
+                                                "7":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.11683367,
+                                                          "finish_time":  0.18499997840793414
+                                                      },
+                                                "8":  {
+                                                          "resource_id":  "edge_1",
+                                                          "start_time":  0.27983452,
+                                                          "finish_time":  0.5091514798142269
+                                                      },
+                                                "9":  {
+                                                          "resource_id":  "edge_0",
+                                                          "start_time":  0.0,
+                                                          "finish_time":  0.15900406498718483
+                                                      },
+                                                "10":  {
+                                                           "resource_id":  "edge_1",
+                                                           "start_time":  0.50915148,
+                                                           "finish_time":  0.5565489202176027
+                                                       },
+                                                "11":  {
+                                                           "resource_id":  "cloud_0",
+                                                           "start_time":  0.45188213,
+                                                           "finish_time":  0.5161967820667301
+                                                       },
+                                                "12":  {
+                                                           "resource_id":  "edge_1",
+                                                           "start_time":  0.0,
+                                                           "finish_time":  0.279834517269883
+                                                       },
+                                                "13":  {
+                                                           "resource_id":  "cloud_0",
+                                                           "start_time":  0.0,
+                                                           "finish_time":  0.04574302506956009
+                                                       },
+                                                "14":  {
+                                                           "resource_id":  "cloud_0",
+                                                           "start_time":  0.51619678,
+                                                           "finish_time":  0.5625744296441574
+                                                       }
+                                            },
+                          "milp_optimum_interval":  {
+                                                        "lower":  0.55087644,
+                                                        "upper":  0.56257442964415738
+                                                    },
+                          "heft_over_optimum_interval":  {
+                                                             "lower":  1.1188290897615272,
+                                                             "upper":  1.1425876863455675
+                                                         },
+                          "residual_bestof16_over_optimum_interval":  {
+                                                                          "lower":  1.0996025062884818,
+                                                                          "upper":  1.1229528218896576
+                                                                      }
+                      },
+                      {
+                          "scenario":  "scenario_15_3.json",
+                          "num_tasks":  15,
+                          "milp_status":  "feasible_not_proven_optimal",
+                          "milp_proven_optimal":  false,
+                          "milp_makespan":  0.5651502830747699,
+                          "milp_best_bound":  0.55200091,
+                          "milp_relative_gap":  0.023267037934103375,
+                          "milp_solve_time_seconds":  300.12686370000006,
+                          "heft_makespan":  0.6089972186041921,
+                          "residual_bestof16_makespan":  0.5913463126673694,
+                          "heft_over_milp_optimal":  null,
+                          "residual_bestof16_over_milp_optimal":  null,
+                          "solver_log":  "evaluation\\results\\milp_solver_logs\\scenario_15_3.log",
+                          "milp_schedule":  {
+                                                "0":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.37459296,
+                                                          "finish_time":  0.42794544812155355
+                                                      },
+                                                "1":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.26718696,
+                                                          "finish_time":  0.3560411219096371
+                                                      },
+                                                "2":  {
+                                                          "resource_id":  "edge_0",
+                                                          "start_time":  0.0,
+                                                          "finish_time":  0.2936989131315025
+                                                      },
+                                                "3":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.20354931,
+                                                          "finish_time":  0.2671869570517728
+                                                      },
+                                                "4":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.0,
+                                                          "finish_time":  0.07566289376473831
+                                                      },
+                                                "5":  {
+                                                          "resource_id":  "edge_0",
+                                                          "start_time":  0.29369891,
+                                                          "finish_time":  0.3377584964649989
+                                                      },
+                                                "6":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.14692663,
+                                                          "finish_time":  0.2035493150259266
+                                                      },
+                                                "7":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.4872244,
+                                                          "finish_time":  0.5604450756834348
+                                                      },
+                                                "8":  {
+                                                          "resource_id":  "edge_0",
+                                                          "start_time":  0.3377585,
+                                                          "finish_time":  0.5455031651106637
+                                                      },
+                                                "9":  {
+                                                          "resource_id":  "edge_1",
+                                                          "start_time":  0.0,
+                                                          "finish_time":  0.2884139613855082
+                                                      },
+                                                "10":  {
+                                                           "resource_id":  "cloud_0",
+                                                           "start_time":  0.075662894,
+                                                           "finish_time":  0.14692662589753647
+                                                       },
+                                                "11":  {
+                                                           "resource_id":  "edge_1",
+                                                           "start_time":  0.51676852,
+                                                           "finish_time":  0.5651502830747699
+                                                       },
+                                                "12":  {
+                                                           "resource_id":  "cloud_0",
+                                                           "start_time":  0.35604112,
+                                                           "finish_time":  0.37459296476392945
+                                                       },
+                                                "13":  {
+                                                           "resource_id":  "cloud_0",
+                                                           "start_time":  0.42794545,
+                                                           "finish_time":  0.4872243993554997
+                                                       },
+                                                "14":  {
+                                                           "resource_id":  "edge_1",
+                                                           "start_time":  0.28841396,
+                                                           "finish_time":  0.5167685139000469
+                                                       }
+                                            },
+                          "milp_optimum_interval":  {
+                                                        "lower":  0.55200091,
+                                                        "upper":  0.56515028307476989
+                                                    },
+                          "heft_over_optimum_interval":  {
+                                                             "lower":  1.0775845590855366,
+                                                             "upper":  1.1032540120344949
+                                                         },
+                          "residual_bestof16_over_optimum_interval":  {
+                                                                          "lower":  1.0463523249958873,
+                                                                          "upper":  1.0712777858778701
+                                                                      }
+                      },
+                      {
+                          "scenario":  "scenario_15_4.json",
+                          "num_tasks":  15,
+                          "milp_status":  "optimal",
+                          "milp_proven_optimal":  true,
+                          "milp_makespan":  0.5274834984845621,
+                          "milp_best_bound":  0.5274834984845621,
+                          "milp_relative_gap":  0.0,
+                          "milp_solve_time_seconds":  193.9264174,
+                          "heft_makespan":  0.5750342951613558,
+                          "residual_bestof16_makespan":  0.5630599762555959,
+                          "heft_over_milp_optimal":  1.0901465103901926,
+                          "residual_bestof16_over_milp_optimal":  1.067445669624251,
+                          "solver_log":  "evaluation\\results\\milp_solver_logs\\scenario_15_4.log",
+                          "milp_schedule":  {
+                                                "0":  {
+                                                          "resource_id":  "edge_0",
+                                                          "start_time":  0.13447558,
+                                                          "finish_time":  0.3391714137294357
+                                                      },
+                                                "1":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.28578021,
+                                                          "finish_time":  0.30308652313431733
+                                                      },
+                                                "2":  {
+                                                          "resource_id":  "edge_1",
+                                                          "start_time":  0.14622944,
+                                                          "finish_time":  0.40062002771434596
+                                                      },
+                                                "3":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.46828145,
+                                                          "finish_time":  0.5228590343528212
+                                                      },
+                                                "4":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.30308652,
+                                                          "finish_time":  0.3733876899977077
+                                                      },
+                                                "5":  {
+                                                          "resource_id":  "edge_1",
+                                                          "start_time":  0.40062002,
+                                                          "finish_time":  0.5274834984845621
+                                                      },
+                                                "6":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.37338769,
+                                                          "finish_time":  0.46828145338762056
+                                                      },
+                                                "7":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.0,
+                                                          "finish_time":  0.07417083202493256
+                                                      },
+                                                "8":  {
+                                                          "resource_id":  "cloud_0",
+                                                          "start_time":  0.074170832,
+                                                          "finish_time":  0.16952925436339922
+                                                      },
+                                                "9":  {
+                                                          "resource_id":  "edge_1",
+                                                          "start_time":  0.0,
+                                                          "finish_time":  0.14622943638609745
+                                                      },
+                                                "10":  {
+                                                           "resource_id":  "cloud_0",
+                                                           "start_time":  0.20954619,
+                                                           "finish_time":  0.28578021025838474
+                                                       },
+                                                "11":  {
+                                                           "resource_id":  "edge_0",
+                                                           "start_time":  0.0,
+                                                           "finish_time":  0.13447557580601327
+                                                       },
+                                                "12":  {
+                                                           "resource_id":  "cloud_0",
+                                                           "start_time":  0.16952925,
+                                                           "finish_time":  0.20954618301999176
+                                                       },
+                                                "13":  {
+                                                           "resource_id":  "edge_0",
+                                                           "start_time":  0.44210702,
+                                                           "finish_time":  0.5263783918176961
+                                                       },
+                                                "14":  {
+                                                           "resource_id":  "edge_0",
+                                                           "start_time":  0.33917141,
+                                                           "finish_time":  0.44210702242970107
+                                                       }
+                                            },
+                          "milp_optimum_interval":  {
+                                                        "lower":  0.52748349848456211,
+                                                        "upper":  0.52748349848456211
+                                                    },
+                          "heft_over_optimum_interval":  {
+                                                             "lower":  1.0901465103901926,
+                                                             "upper":  1.0901465103901926
+                                                         },
+                          "residual_bestof16_over_optimum_interval":  {
+                                                                          "lower":  1.0674456696242509,
+                                                                          "upper":  1.0674456696242509
+                                                                      }
+                      }
+                  ],
+    "totals":  {
+                   "scenario_count":  10,
+                   "proven_optimal_count":  7,
+                   "feasible_not_proven_optimal_count":  3,
+                   "no_feasible_solution_count":  0
+               }
+}

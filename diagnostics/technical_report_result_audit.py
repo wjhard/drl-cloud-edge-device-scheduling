@@ -1,8 +1,9 @@
-"""Audit numeric claims in docs/技术报告.md against result JSON files.
+"""Audit evidence paths and numeric claims in docs/技术报告.md.
 
 The audit is intentionally declarative: every result-bearing table/paragraph has
-an anchor and a JSON-backed extractor.  In addition, every concrete result JSON
-path in the report is scanned for existence, and wildcard paths are rejected.
+an anchor and a JSON-backed extractor. Concrete repository-relative paths must
+exist and be tracked by Git. Selected log-backed claims are checked against their
+original text, and tracked text files are scanned for private user-home paths.
 """
 
 from __future__ import annotations
@@ -10,6 +11,7 @@ from __future__ import annotations
 import json
 import math
 import re
+import subprocess
 import sys
 from dataclasses import dataclass
 from pathlib import Path
@@ -20,6 +22,16 @@ from typing import Callable
 ROOT = Path(__file__).resolve().parents[1]
 REPORT = ROOT / "docs" / "技术报告.md"
 JSON_PATH_RE = re.compile(r"evaluation/results/[A-Za-z0-9_./*+-]+\.json")
+REPO_PATH_RE = re.compile(
+    r"(?<![A-Za-z0-9_:/.-])"
+    r"((?:[A-Za-z0-9_.+-]+/)+[A-Za-z0-9_.*+-]+\."
+    r"(?:json|log|tsv|yaml|yml|py|sh|ps1|zip|npz|csv|png|docx|pdf|sol|txt))"
+)
+PRIVATE_PATH_RE = re.compile(
+    r"(?:[A-Za-z]:[\\/]Users[\\/][^\\/\s]+|/" + r"home/[^/\s]+)",
+    re.IGNORECASE,
+)
+TEXT_SUFFIXES = {".json", ".log", ".md", ".py", ".ps1", ".sh", ".sol", ".tsv", ".txt", ".yaml", ".yml"}
 FLOAT_RE = r"[-+]?\d+(?:\.\d+)?(?:[eE][-+]?\d+)?"
 TOLERANCE = 1e-6
 
@@ -34,6 +46,33 @@ class Check:
     group: int = 1
     tolerance: float = TOLERANCE
     section: str | None = None
+
+
+@dataclass(frozen=True)
+class TextEvidenceCheck:
+    label: str
+    report_pattern: str
+    source: str
+    source_patterns: tuple[str, ...]
+
+
+def tracked_files() -> set[str]:
+    output = subprocess.check_output(
+        ["git", "-c", "core.quotepath=false", "ls-files", "-z"],
+        cwd=ROOT,
+    )
+    return {item.decode("utf-8").replace("\\", "/") for item in output.split(b"\0") if item}
+
+
+def read_text_file(path: Path) -> str:
+    """Read repository evidence while preserving legacy UTF-16 logs."""
+    data = path.read_bytes()
+    if data.startswith((b"\xff\xfe", b"\xfe\xff")):
+        return data.decode("utf-16", errors="replace")
+    try:
+        return data.decode("utf-8-sig")
+    except UnicodeDecodeError:
+        return data.decode("utf-16", errors="replace")
 
 
 def load_json(relative_path: str) -> dict:
@@ -337,17 +376,172 @@ def build_checks() -> list[Check]:
     return checks
 
 
+def build_text_evidence_checks() -> list[TextEvidenceCheck]:
+    diagnostic = "artifacts/diagnostic_logs"
+    training = "artifacts/training_logs"
+    return [
+        TextEvidenceCheck(
+            "normalization dataset metadata",
+            r"500 个 DAG、8038 个决策样本",
+            f"{diagnostic}/bc_dataset_sanity_check_output.log",
+            (r"samples=8038", r'"num_dags": 500'),
+        ),
+        TextEvidenceCheck(
+            "initial action collapse",
+            r"10 个诊断 DAG 的 180 个任务全部分配给 `cloud_0`",
+            f"{diagnostic}/diagnostics_action_distribution_output.log",
+            (r"cloud_0: count=180, ratio=1\.000000", r"total_scheduled_tasks=180"),
+        ),
+        TextEvidenceCheck(
+            "reward-shaped action collapse",
+            r"`cloud_0=100%`",
+            f"{diagnostic}/reward_shaped_action_distribution_output.log",
+            (r"cloud_0: count=180, ratio=1\.000000",),
+        ),
+        TextEvidenceCheck(
+            "observation scale diagnostics",
+            r"8038 个样本.*9\.998.*82\.285.*1000.*30\.936",
+            f"{diagnostic}/bc_batch_mask_and_normalization_check_output.log",
+            (
+                r"samples=8038",
+                r"task_computation_cost:.*max=9\.998241",
+                r"task_successor_cost_sum:.*max=82\.284714",
+                r"resource_bandwidth:.*max=1000\.000000",
+                r"flat_observation_all_values:.*std=30\.936210",
+            ),
+        ),
+        TextEvidenceCheck(
+            "batch mask and normalized overfit",
+            r"合法动作数分别为 4、20、44.*27\.957%.*90\.323%",
+            f"{diagnostic}/bc_batch_mask_and_normalization_check_output.log",
+            (
+                r"legal_action_count=4.*abs_diff=0\.000000000000e\+00",
+                r"legal_action_count=20.*abs_diff=0\.000000000000e\+00",
+                r"legal_action_count=44.*abs_diff=0\.000000000000e\+00",
+                r"previous_without_normalization_best_accuracy=0\.279570",
+                r"best_accuracy=0\.903226",
+            ),
+        ),
+        TextEvidenceCheck(
+            "joint BC strength",
+            r"80 epochs.*99\.104%",
+            f"{diagnostic}/mlp_bc_normalized_strength_test_80e_lr1e3_output.log",
+            (r"best_accuracy=0\.991043",),
+        ),
+        TextEvidenceCheck(
+            "normalized action distribution",
+            r"`cloud_0` 占比由 100% 降至 \*\*91\.11%\*\*",
+            f"{diagnostic}/mlp_normalized_action_distribution_output.log",
+            (r"cloud_0: count=164, ratio=0\.911111", r"total_scheduled_tasks=180"),
+        ),
+        TextEvidenceCheck(
+            "joint action-space complexity",
+            r"350 个决策步骤.*12\.377.*3\.094.*4 个资源.*32.*310.*88\.5714%.*2\.491",
+            f"{diagnostic}/action_space_complexity_check_output.log",
+            (
+                r"total_decision_steps=350",
+                r"avg_legal_actions_per_step=12\.377143",
+                r"avg_candidate_tasks_per_step=3\.094286",
+                r"avg_candidate_resources_per_ready_task=4\.000000",
+                r"max_legal_actions_per_step=32",
+                r"unstable_pairs_unique_resource_gt_1=310",
+                r"unstable_pair_ratio=0\.885714",
+                r"avg_unique_resource_count=2\.491429",
+            ),
+        ),
+        TextEvidenceCheck(
+            "BC chance level",
+            r"16\.7%～17\.2%.*7\.54%",
+            f"{diagnostic}/bc_dataset_sanity_check_output.log",
+            (
+                r"expected_uniform_random_accuracy_all_mean_inverse=0\.075411",
+                r"reference_bc_accuracy_observed_previous_run=0\.166708_to_0\.172431",
+            ),
+        ),
+        TextEvidenceCheck(
+            "ranked small-set BC overfit",
+            r"ranked 专属小数据集在 200 epochs 达到 100%",
+            f"{diagnostic}/scan_step1_ranked_bc_small_overfit.log",
+            (r"best_accuracy=1\.000000",),
+        ),
+        TextEvidenceCheck(
+            "ranked full-set BC accuracy",
+            r"完整 ranked 数据集在 80 epochs 达到 \*\*98\.967%\*\*",
+            f"{diagnostic}/scan_step1_ranked_bc_full_pretrain_only.log",
+            (r"best_accuracy=0\.989674",),
+        ),
+        TextEvidenceCheck(
+            "openEuler pytest result",
+            r"19 passed, 17 warnings in 5\.33s",
+            "evaluation/results/openEuler_pytest_structural_final.log",
+            (r"19 passed, 17 warnings in 5\.33s",),
+        ),
+        TextEvidenceCheck(
+            "fresh-clone pipeline",
+            r"200704 个 PPO rollout 步.*489\.71 秒.*20 个场景",
+            "evaluation/results/run_final_pipeline_fresh_clone_full_output.log",
+            (
+                r"total_timesteps\s+\| 200704",
+                r"training elapsed seconds: 489\.71",
+                r"generated 20 validation scenarios",
+                r"FINAL_PIPELINE_COMPLETE",
+            ),
+        ),
+        TextEvidenceCheck(
+            "GAT historical training time",
+            r"GAT joint 的 200k 历史训练耗时为 1941\.22 秒",
+            f"{training}/gat_full_train_20260707_133559_output.log",
+            (r"total_timesteps\s+\| 200704", r"training elapsed seconds: 1941\.22"),
+        ),
+        TextEvidenceCheck(
+            "ranked historical training time",
+            r"MLP ranked 为 413\.70 秒",
+            f"{training}/mlp_ranked_train_output.log",
+            (r"total_timesteps\s+\| 200704", r"training elapsed seconds: 413\.70"),
+        ),
+        TextEvidenceCheck(
+            "residual historical training time",
+            r"记录 925\.23 秒",
+            f"{training}/residual_train_ppo_mlp_residual.log",
+            (r"total_timesteps\s+\| 200704", r"training elapsed seconds: 925\.23"),
+        ),
+    ]
+
+
 def main() -> int:
     text = REPORT.read_text(encoding="utf-8")
     lines = text.splitlines()
+    tracked = tracked_files()
     failures: list[str] = []
     passed = 0
 
     print("TECHNICAL_REPORT_RESULT_AUDIT")
-    print(f"report: {REPORT}")
+    print(f"report: {REPORT.relative_to(ROOT).as_posix()}")
     print(f"tolerance: {TOLERANCE} (absolute; displayed values may be rounded)")
+    print("\n[CONCRETE REPOSITORY PATH SCAN]")
+    path_occurrences: list[tuple[int, str]] = []
+    wildcard_occurrences: list[tuple[int, str]] = []
+    for line_number, line in enumerate(lines, 1):
+        for match in REPO_PATH_RE.finditer(line):
+            path = match.group(1)
+            if "*" in path:
+                wildcard_occurrences.append((line_number, path))
+                print(f"INFO line {line_number}: wildcard pattern (not a concrete evidence path): {path}")
+                continue
+            path_occurrences.append((line_number, path))
+            if not (ROOT / path).is_file():
+                message = f"line {line_number}: missing repository path: {path}"
+                failures.append(message)
+                print(f"FAIL {message}")
+            elif path not in tracked:
+                message = f"line {line_number}: path exists locally but is not tracked by Git: {path}"
+                failures.append(message)
+                print(f"FAIL {message}")
+            else:
+                print(f"PASS line {line_number}: tracked path: {path}")
+
     print("\n[JSON PATH SCAN]")
-    occurrences = []
+    occurrences: list[tuple[int, str]] = []
     for line_number, line in enumerate(lines, 1):
         for match in JSON_PATH_RE.finditer(line):
             path = match.group(0)
@@ -360,8 +554,12 @@ def main() -> int:
                 message = f"line {line_number}: missing result JSON: {path}"
                 failures.append(message)
                 print(f"FAIL {message}")
+            elif path not in tracked:
+                message = f"line {line_number}: result JSON exists locally but is not tracked by Git: {path}"
+                failures.append(message)
+                print(f"FAIL {message}")
             else:
-                print(f"PASS line {line_number}: {path}")
+                print(f"PASS line {line_number}: tracked result JSON: {path}")
 
     print("\n[NUMERIC CLAIMS]")
     cache: dict[str, dict] = {}
@@ -425,16 +623,73 @@ def main() -> int:
             failures.append(message)
             print(f"FAIL {message}")
 
+    print("\n[LOG-BACKED CLAIMS]")
+    text_checks = build_text_evidence_checks()
+    text_checks_passed = 0
+    for check in text_checks:
+        if not re.search(check.report_pattern, text):
+            message = f"{check.label}: report claim pattern not found: {check.report_pattern!r}"
+            failures.append(message)
+            print(f"FAIL {message}")
+            continue
+        source_path = ROOT / check.source
+        if not source_path.is_file():
+            message = f"{check.label}: missing evidence file: {check.source}"
+            failures.append(message)
+            print(f"FAIL {message}")
+            continue
+        if check.source not in tracked:
+            message = f"{check.label}: evidence file is not tracked by Git: {check.source}"
+            failures.append(message)
+            print(f"FAIL {message}")
+            continue
+        source_text = read_text_file(source_path)
+        missing_patterns = [
+            pattern for pattern in check.source_patterns
+            if not re.search(pattern, source_text, re.MULTILINE)
+        ]
+        if missing_patterns:
+            message = f"{check.label}: evidence patterns missing from {check.source}: {missing_patterns}"
+            failures.append(message)
+            print(f"FAIL {message}")
+            continue
+        text_checks_passed += 1
+        print(f"PASS {check.label}: {check.source}")
+
+    print("\n[TRACKED-TEXT PRIVACY SCAN]")
+    privacy_hits = 0
+    for relative_path in sorted(tracked):
+        path = ROOT / relative_path
+        if path.suffix.lower() not in TEXT_SUFFIXES or not path.is_file():
+            continue
+        content = read_text_file(path)
+        for line_number, line in enumerate(content.splitlines(), 1):
+            match = PRIVATE_PATH_RE.search(line)
+            if match:
+                privacy_hits += 1
+                message = (
+                    f"private user-home path in tracked text: {relative_path}:{line_number}: "
+                    f"{match.group(0)}"
+                )
+                failures.append(message)
+                print(f"FAIL {message}")
+    if privacy_hits == 0:
+        print("PASS no Windows or Linux user-home paths in tracked text files")
+
     print("\n[SUMMARY]")
+    print(f"concrete_path_occurrences: {len(path_occurrences)}")
+    print(f"wildcard_path_occurrences: {len(wildcard_occurrences)}")
     print(f"json_path_occurrences: {len(occurrences)}")
     print(f"numeric_checks_passed: {passed}")
+    print(f"log_backed_checks_passed: {text_checks_passed}")
+    print(f"privacy_path_hits: {privacy_hits}")
     print(f"failures: {len(failures)}")
     if failures:
         print("\n[MISMATCHES / UNRESOLVED]")
         for item in failures:
             print(f"- {item}")
         return 1
-    print("All declared result claims and concrete JSON paths passed.")
+    print("All declared result claims, evidence paths, Git tracking checks, and privacy scans passed.")
     return 0
 
 

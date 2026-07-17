@@ -1,0 +1,55 @@
+{
+    "repeat_count":  5,
+    "scenario_count":  20,
+    "standard_deviation":  "sample standard deviation (n-1)",
+    "configurations":  [
+                           {
+                               "name":  "Residual best-of-16",
+                               "mean_ratio":  {
+                                                  "mean":  0.96993179201593416,
+                                                  "sample_std":  0.0063722367538506961,
+                                                  "min":  0.963234866219742,
+                                                  "max":  0.97854087147293123
+                                              },
+                               "better_than_heft_count":  {
+                                                              "mean":  16.4,
+                                                              "sample_std":  1.6733200530681511,
+                                                              "min":  14,
+                                                              "max":  18
+                                                          },
+                               "source":  "evaluation/results/repeated/repeated_evaluation_summary.json"
+                           },
+                           {
+                               "name":  "Hybrid + Residual best-of-16",
+                               "mean_ratio":  {
+                                                  "mean":  0.95856081626135958,
+                                                  "sample_std":  0.0031063792638007909,
+                                                  "min":  0.95577555955684923,
+                                                  "max":  0.96287362544572341
+                                              },
+                               "better_than_heft_count":  {
+                                                              "mean":  17.4,
+                                                              "sample_std":  1.6733200530681511,
+                                                              "min":  15,
+                                                              "max":  19
+                                                          },
+                               "source":  "evaluation/results/repeated/repeated_evaluation_summary.json"
+                           },
+                           {
+                               "name":  "Residual best-of-64",
+                               "mean_ratio":  {
+                                                  "mean":  0.95456958931011349,
+                                                  "sample_std":  0.0038422865793996592,
+                                                  "min":  0.94941425632007925,
+                                                  "max":  0.9586409346823116
+                                              },
+                               "better_than_heft_count":  {
+                                                              "mean":  18,
+                                                              "sample_std":  0.70710678118654757,
+                                                              "min":  17,
+                                                              "max":  19
+                                                          },
+                               "source":  "evaluation/results/repeated_bestof64/repeated_bestof64_summary.json"
+                           }
+                       ]
+}

@@ -1,0 +1,601 @@
+{
+  "config_path": "training\\configs\\ppo_mlp_ranked.yaml",
+  "model_paths": [
+    "training\\checkpoints\\ppo_mlp_ranked_seed123",
+    "training\\checkpoints\\ppo_mlp_ranked_seed456",
+    "training\\checkpoints\\ppo_mlp_ranked_seed789"
+  ],
+  "scenario_count": 20,
+  "num_samples_per_model": 8,
+  "deterministic_fallback": false,
+  "elapsed_seconds": 8.223738900000171,
+  "overall": {
+    "mean_ratio": 0.9985495070543541,
+    "std_ratio": 0.044527492892566384,
+    "better_than_heft_count": 10
+  },
+  "by_task_size": {
+    "10": {
+      "count": 5,
+      "mean_ratio": 0.9713335197031036,
+      "std_ratio": 0.06500710851609266
+    },
+    "15": {
+      "count": 5,
+      "mean_ratio": 0.9979978972804909,
+      "std_ratio": 0.019711779916371838
+    },
+    "20": {
+      "count": 5,
+      "mean_ratio": 1.0137996244482856,
+      "std_ratio": 0.023196847985568734
+    },
+    "25": {
+      "count": 5,
+      "mean_ratio": 1.011066986785536,
+      "std_ratio": 0.04059495894116411
+    }
+  },
+  "scenarios": [
+    {
+      "scenario": "scenario_10_0.json",
+      "num_tasks": 10,
+      "heft_makespan": 0.4552284363452672,
+      "rl_makespan": 0.4231579626707709,
+      "ratio": 0.9295508120451146,
+      "best_model_index": 0,
+      "model_candidates": [
+        {
+          "model_index": 0,
+          "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed123",
+          "makespan": 0.4231579626707709,
+          "ratio": 0.9295508120451146
+        },
+        {
+          "model_index": 1,
+          "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed456",
+          "makespan": 0.4350032463509013,
+          "ratio": 0.9555713387398626
+        },
+        {
+          "model_index": 2,
+          "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed789",
+          "makespan": 0.43925029089046613,
+          "ratio": 0.9649008186239876
+        }
+      ]
+    },
+    {
+      "scenario": "scenario_10_1.json",
+      "num_tasks": 10,
+      "heft_makespan": 0.5088156337709009,
+      "rl_makespan": 0.462370006900757,
+      "ratio": 0.9087181607885569,
+      "best_model_index": 1,
+      "model_candidates": [
+        {
+          "model_index": 0,
+          "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed123",
+          "makespan": 0.5088156337709009,
+          "ratio": 1.0
+        },
+        {
+          "model_index": 1,
+          "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed456",
+          "makespan": 0.462370006900757,
+          "ratio": 0.9087181607885569
+        },
+        {
+          "model_index": 2,
+          "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed789",
+          "makespan": 0.522320894653505,
+          "ratio": 1.026542543086805
+        }
+      ]
+    },
+    {
+      "scenario": "scenario_10_2.json",
+      "num_tasks": 10,
+      "heft_makespan": 0.5084000846273409,
+      "rl_makespan": 0.4844832391008768,
+      "ratio": 0.952956645268863,
+      "best_model_index": 2,
+      "model_candidates": [
+        {
+          "model_index": 0,
+          "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed123",
+          "makespan": 0.5160421950647862,
+          "ratio": 1.0150316860058097
+        },
+        {
+          "model_index": 1,
+          "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed456",
+          "makespan": 0.510571677849819,
+          "ratio": 1.004271425769077
+        },
+        {
+          "model_index": 2,
+          "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed789",
+          "makespan": 0.4844832391008768,
+          "ratio": 0.952956645268863
+        }
+      ]
+    },
+    {
+      "scenario": "scenario_10_3.json",
+      "num_tasks": 10,
+      "heft_makespan": 0.3575317979596756,
+      "rl_makespan": 0.3912537826601929,
+      "ratio": 1.0943188407099964,
+      "best_model_index": 2,
+      "model_candidates": [
+        {
+          "model_index": 0,
+          "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed123",
+          "makespan": 0.45374999578541747,
+          "ratio": 1.269117875318586
+        },
+        {
+          "model_index": 1,
+          "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed456",
+          "makespan": 0.40024752661288987,
+          "ratio": 1.1194739290238793
+        },
+        {
+          "model_index": 2,
+          "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed789",
+          "makespan": 0.3912537826601929,
+          "ratio": 1.0943188407099964
+        }
+      ]
+    },
+    {
+      "scenario": "scenario_10_4.json",
+      "num_tasks": 10,
+      "heft_makespan": 0.3707058369601609,
+      "rl_makespan": 0.36000101629497505,
+      "ratio": 0.971123139702987,
+      "best_model_index": 0,
+      "model_candidates": [
+        {
+          "model_index": 0,
+          "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed123",
+          "makespan": 0.36000101629497505,
+          "ratio": 0.971123139702987
+        },
+        {
+          "model_index": 1,
+          "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed456",
+          "makespan": 0.3813538277823526,
+          "ratio": 1.0287235585754644
+        },
+        {
+          "model_index": 2,
+          "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed789",
+          "makespan": 0.40991032667920524,
+          "ratio": 1.1057563324077295
+        }
+      ]
+    },
+    {
+      "scenario": "scenario_15_0.json",
+      "num_tasks": 15,
+      "heft_makespan": 0.6054409838212004,
+      "rl_makespan": 0.5937598823397711,
+      "ratio": 0.9807064572872077,
+      "best_model_index": 0,
+      "model_candidates": [
+        {
+          "model_index": 0,
+          "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed123",
+          "makespan": 0.5937598823397711,
+          "ratio": 0.9807064572872077
+        },
+        {
+          "model_index": 1,
+          "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed456",
+          "makespan": 0.6232238853074169,
+          "ratio": 1.0293718165129504
+        },
+        {
+          "model_index": 2,
+          "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed789",
+          "makespan": 0.6273082922233264,
+          "ratio": 1.0361179850496938
+        }
+      ]
+    },
+    {
+      "scenario": "scenario_15_1.json",
+      "num_tasks": 15,
+      "heft_makespan": 0.6167576868599802,
+      "rl_makespan": 0.5983731998649742,
+      "ratio": 0.9701917180982297,
+      "best_model_index": 2,
+      "model_candidates": [
+        {
+          "model_index": 0,
+          "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed123",
+          "makespan": 0.6076995735699342,
+          "ratio": 0.9853133353940631
+        },
+        {
+          "model_index": 1,
+          "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed456",
+          "makespan": 0.5994382592251961,
+          "ratio": 0.9719185864987588
+        },
+        {
+          "model_index": 2,
+          "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed789",
+          "makespan": 0.5983731998649742,
+          "ratio": 0.9701917180982297
+        }
+      ]
+    },
+    {
+      "scenario": "scenario_15_2.json",
+      "num_tasks": 15,
+      "heft_makespan": 0.6294246370418829,
+      "rl_makespan": 0.6335487389803097,
+      "ratio": 1.00655217748992,
+      "best_model_index": 0,
+      "model_candidates": [
+        {
+          "model_index": 0,
+          "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed123",
+          "makespan": 0.6335487389803097,
+          "ratio": 1.00655217748992
+        },
+        {
+          "model_index": 1,
+          "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed456",
+          "makespan": 0.6482864008791778,
+          "ratio": 1.029966675479911
+        },
+        {
+          "model_index": 2,
+          "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed789",
+          "makespan": 0.6335487389803097,
+          "ratio": 1.00655217748992
+        }
+      ]
+    },
+    {
+      "scenario": "scenario_15_3.json",
+      "num_tasks": 15,
+      "heft_makespan": 0.6089972186041921,
+      "rl_makespan": 0.6140009204252802,
+      "ratio": 1.008216296673007,
+      "best_model_index": 2,
+      "model_candidates": [
+        {
+          "model_index": 0,
+          "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed123",
+          "makespan": 0.6537277695162208,
+          "ratio": 1.0734495159346542
+        },
+        {
+          "model_index": 1,
+          "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed456",
+          "makespan": 0.6394472995192314,
+          "ratio": 1.050000361224687
+        },
+        {
+          "model_index": 2,
+          "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed789",
+          "makespan": 0.6140009204252802,
+          "ratio": 1.008216296673007
+        }
+      ]
+    },
+    {
+      "scenario": "scenario_15_4.json",
+      "num_tasks": 15,
+      "heft_makespan": 0.5750342951613558,
+      "rl_makespan": 0.5890207605080724,
+      "ratio": 1.0243228368540904,
+      "best_model_index": 2,
+      "model_candidates": [
+        {
+          "model_index": 0,
+          "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed123",
+          "makespan": 0.6131074424828075,
+          "ratio": 1.0662102202282877
+        },
+        {
+          "model_index": 1,
+          "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed456",
+          "makespan": 0.6163816899557982,
+          "ratio": 1.0719042240477852
+        },
+        {
+          "model_index": 2,
+          "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed789",
+          "makespan": 0.5890207605080724,
+          "ratio": 1.0243228368540904
+        }
+      ]
+    },
+    {
+      "scenario": "scenario_20_0.json",
+      "num_tasks": 20,
+      "heft_makespan": 0.9724235579213067,
+      "rl_makespan": 0.9954053443865774,
+      "ratio": 1.0236335147149227,
+      "best_model_index": 1,
+      "model_candidates": [
+        {
+          "model_index": 0,
+          "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed123",
+          "makespan": 1.0520591630772334,
+          "ratio": 1.081893948894203
+        },
+        {
+          "model_index": 1,
+          "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed456",
+          "makespan": 0.9954053443865774,
+          "ratio": 1.0236335147149227
+        },
+        {
+          "model_index": 2,
+          "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed789",
+          "makespan": 1.0359991512032263,
+          "ratio": 1.065378499691864
+        }
+      ]
+    },
+    {
+      "scenario": "scenario_20_1.json",
+      "num_tasks": 20,
+      "heft_makespan": 0.7681376680144106,
+      "rl_makespan": 0.7699443013963616,
+      "ratio": 1.0023519656139517,
+      "best_model_index": 0,
+      "model_candidates": [
+        {
+          "model_index": 0,
+          "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed123",
+          "makespan": 0.7699443013963616,
+          "ratio": 1.0023519656139517
+        },
+        {
+          "model_index": 1,
+          "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed456",
+          "makespan": 0.7840143579248245,
+          "ratio": 1.0206690682823225
+        },
+        {
+          "model_index": 2,
+          "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed789",
+          "makespan": 0.8050667761355886,
+          "ratio": 1.048076158296777
+        }
+      ]
+    },
+    {
+      "scenario": "scenario_20_2.json",
+      "num_tasks": 20,
+      "heft_makespan": 0.6474996876100765,
+      "rl_makespan": 0.6537514311744258,
+      "ratio": 1.009655207074191,
+      "best_model_index": 1,
+      "model_candidates": [
+        {
+          "model_index": 0,
+          "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed123",
+          "makespan": 0.6740814245021095,
+          "ratio": 1.0410528953151257
+        },
+        {
+          "model_index": 1,
+          "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed456",
+          "makespan": 0.6537514311744258,
+          "ratio": 1.009655207074191
+        },
+        {
+          "model_index": 2,
+          "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed789",
+          "makespan": 0.7106962181027578,
+          "ratio": 1.0976008663817893
+        }
+      ]
+    },
+    {
+      "scenario": "scenario_20_3.json",
+      "num_tasks": 20,
+      "heft_makespan": 0.86894815180045,
+      "rl_makespan": 0.913723405364621,
+      "ratio": 1.0515281072540372,
+      "best_model_index": 1,
+      "model_candidates": [
+        {
+          "model_index": 0,
+          "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed123",
+          "makespan": 0.9151637593509515,
+          "ratio": 1.0531856906016122
+        },
+        {
+          "model_index": 1,
+          "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed456",
+          "makespan": 0.913723405364621,
+          "ratio": 1.0515281072540372
+        },
+        {
+          "model_index": 2,
+          "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed789",
+          "makespan": 0.9464008065992103,
+          "ratio": 1.0891338046329684
+        }
+      ]
+    },
+    {
+      "scenario": "scenario_20_4.json",
+      "num_tasks": 20,
+      "heft_makespan": 0.8359221176853918,
+      "rl_makespan": 0.8207328507199133,
+      "ratio": 0.9818293275843251,
+      "best_model_index": 1,
+      "model_candidates": [
+        {
+          "model_index": 0,
+          "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed123",
+          "makespan": 0.8484186851340709,
+          "ratio": 1.0149494398871526
+        },
+        {
+          "model_index": 1,
+          "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed456",
+          "makespan": 0.8207328507199133,
+          "ratio": 0.9818293275843251
+        },
+        {
+          "model_index": 2,
+          "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed789",
+          "makespan": 0.8859018376328138,
+          "ratio": 1.059789924073085
+        }
+      ]
+    },
+    {
+      "scenario": "scenario_25_0.json",
+      "num_tasks": 25,
+      "heft_makespan": 1.039261202106066,
+      "rl_makespan": 1.1175000680702392,
+      "ratio": 1.0752831586569591,
+      "best_model_index": 1,
+      "model_candidates": [
+        {
+          "model_index": 0,
+          "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed123",
+          "makespan": 1.1191897947428386,
+          "ratio": 1.0769090508476569
+        },
+        {
+          "model_index": 1,
+          "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed456",
+          "makespan": 1.1175000680702392,
+          "ratio": 1.0752831586569591
+        },
+        {
+          "model_index": 2,
+          "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed789",
+          "makespan": 1.1382671715517172,
+          "ratio": 1.0952657226547236
+        }
+      ]
+    },
+    {
+      "scenario": "scenario_25_1.json",
+      "num_tasks": 25,
+      "heft_makespan": 0.921302144217215,
+      "rl_makespan": 0.9064031779326511,
+      "ratio": 0.983828360350531,
+      "best_model_index": 2,
+      "model_candidates": [
+        {
+          "model_index": 0,
+          "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed123",
+          "makespan": 0.9167214240074398,
+          "ratio": 0.9950279935431311
+        },
+        {
+          "model_index": 1,
+          "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed456",
+          "makespan": 0.9653634219100947,
+          "ratio": 1.0478250028716871
+        },
+        {
+          "model_index": 2,
+          "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed789",
+          "makespan": 0.9064031779326511,
+          "ratio": 0.983828360350531
+        }
+      ]
+    },
+    {
+      "scenario": "scenario_25_2.json",
+      "num_tasks": 25,
+      "heft_makespan": 1.000114438569326,
+      "rl_makespan": 1.042910664948997,
+      "ratio": 1.0427913294011548,
+      "best_model_index": 0,
+      "model_candidates": [
+        {
+          "model_index": 0,
+          "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed123",
+          "makespan": 1.042910664948997,
+          "ratio": 1.0427913294011548
+        },
+        {
+          "model_index": 1,
+          "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed456",
+          "makespan": 1.077685247989664,
+          "ratio": 1.077561933343652
+        },
+        {
+          "model_index": 2,
+          "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed789",
+          "makespan": 1.0901051608375192,
+          "ratio": 1.0899804250370846
+        }
+      ]
+    },
+    {
+      "scenario": "scenario_25_3.json",
+      "num_tasks": 25,
+      "heft_makespan": 0.9382051467178703,
+      "rl_makespan": 0.9145208810021271,
+      "ratio": 0.9747557708475615,
+      "best_model_index": 1,
+      "model_candidates": [
+        {
+          "model_index": 0,
+          "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed123",
+          "makespan": 0.960737699074249,
+          "ratio": 1.024016658227899
+        },
+        {
+          "model_index": 1,
+          "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed456",
+          "makespan": 0.9145208810021271,
+          "ratio": 0.9747557708475615
+        },
+        {
+          "model_index": 2,
+          "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed789",
+          "makespan": 0.9439878737689937,
+          "ratio": 1.0061636061914105
+        }
+      ]
+    },
+    {
+      "scenario": "scenario_25_4.json",
+      "num_tasks": 25,
+      "heft_makespan": 1.0729189030491886,
+      "rl_makespan": 1.0500403179775397,
+      "ratio": 0.9786763146714734,
+      "best_model_index": 1,
+      "model_candidates": [
+        {
+          "model_index": 0,
+          "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed123",
+          "makespan": 1.056573859118075,
+          "ratio": 0.984765816051277
+        },
+        {
+          "model_index": 1,
+          "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed456",
+          "makespan": 1.0500403179775397,
+          "ratio": 0.9786763146714734
+        },
+        {
+          "model_index": 2,
+          "model_path": "training\\checkpoints\\ppo_mlp_ranked_seed789",
+          "makespan": 1.0570572863804664,
+          "ratio": 0.9852163880945296
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,110 @@
+{
+    "model_path":  "training/checkpoints/ppo_mlp_residual",
+    "scenario_count":  20,
+    "repeat_count":  5,
+    "num_samples":  16,
+    "hybrid_task_threshold":  15,
+    "hybrid_milp_timeout_seconds":  10,
+    "seed_source":  "OS cryptographic entropy; independent seed recorded per run",
+    "standard_deviation":  "sample standard deviation (n-1)",
+    "runs":  [
+                 {
+                     "run":  1,
+                     "entropy_seed":  447377315,
+                     "elapsed_seconds":  79.7033951,
+                     "bestof16_mean_ratio":  0.97854087147293123,
+                     "bestof16_better_than_heft_count":  16,
+                     "hybrid_mean_ratio":  0.96287362544572341,
+                     "hybrid_better_than_heft_count":  17,
+                     "hybrid_milp_optimal_count":  5,
+                     "hybrid_milp_timeout_fallback_count":  5,
+                     "hybrid_large_dag_fallback_count":  10,
+                     "result_path":  "evaluation/results/repeated/summary_hybrid_residual_bestof16_run1.json",
+                     "log_path":  "evaluation/results/repeated/hybrid_residual_bestof16_run1.log"
+                 },
+                 {
+                     "run":  2,
+                     "entropy_seed":  1383495036,
+                     "elapsed_seconds":  79.87980499999999,
+                     "bestof16_mean_ratio":  0.96797855569801683,
+                     "bestof16_better_than_heft_count":  18,
+                     "hybrid_mean_ratio":  0.95577555955684923,
+                     "hybrid_better_than_heft_count":  19,
+                     "hybrid_milp_optimal_count":  5,
+                     "hybrid_milp_timeout_fallback_count":  5,
+                     "hybrid_large_dag_fallback_count":  10,
+                     "result_path":  "evaluation/results/repeated/summary_hybrid_residual_bestof16_run2.json",
+                     "log_path":  "evaluation/results/repeated/hybrid_residual_bestof16_run2.log"
+                 },
+                 {
+                     "run":  3,
+                     "entropy_seed":  899661321,
+                     "elapsed_seconds":  80.2311213,
+                     "bestof16_mean_ratio":  0.963234866219742,
+                     "bestof16_better_than_heft_count":  16,
+                     "hybrid_mean_ratio":  0.95614031414533562,
+                     "hybrid_better_than_heft_count":  17,
+                     "hybrid_milp_optimal_count":  5,
+                     "hybrid_milp_timeout_fallback_count":  5,
+                     "hybrid_large_dag_fallback_count":  10,
+                     "result_path":  "evaluation/results/repeated/summary_hybrid_residual_bestof16_run3.json",
+                     "log_path":  "evaluation/results/repeated/hybrid_residual_bestof16_run3.log"
+                 },
+                 {
+                     "run":  4,
+                     "entropy_seed":  1580188249,
+                     "elapsed_seconds":  79.7823555,
+                     "bestof16_mean_ratio":  0.9744043309167,
+                     "bestof16_better_than_heft_count":  14,
+                     "hybrid_mean_ratio":  0.960736869139477,
+                     "hybrid_better_than_heft_count":  15,
+                     "hybrid_milp_optimal_count":  5,
+                     "hybrid_milp_timeout_fallback_count":  5,
+                     "hybrid_large_dag_fallback_count":  10,
+                     "result_path":  "evaluation/results/repeated/summary_hybrid_residual_bestof16_run4.json",
+                     "log_path":  "evaluation/results/repeated/hybrid_residual_bestof16_run4.log"
+                 },
+                 {
+                     "run":  5,
+                     "entropy_seed":  1528210608,
+                     "elapsed_seconds":  79.6612708,
+                     "bestof16_mean_ratio":  0.96550033577228078,
+                     "bestof16_better_than_heft_count":  18,
+                     "hybrid_mean_ratio":  0.957277713019413,
+                     "hybrid_better_than_heft_count":  19,
+                     "hybrid_milp_optimal_count":  5,
+                     "hybrid_milp_timeout_fallback_count":  5,
+                     "hybrid_large_dag_fallback_count":  10,
+                     "result_path":  "evaluation/results/repeated/summary_hybrid_residual_bestof16_run5.json",
+                     "log_path":  "evaluation/results/repeated/hybrid_residual_bestof16_run5.log"
+                 }
+             ],
+    "statistics":  {
+                       "bestof16_mean_ratio":  {
+                                                   "mean":  0.96993179201593416,
+                                                   "sample_std":  0.0063722367538506961,
+                                                   "min":  0.963234866219742,
+                                                   "max":  0.97854087147293123
+                                               },
+                       "bestof16_better_than_heft_count":  {
+                                                               "mean":  16.4,
+                                                               "sample_std":  1.6733200530681511,
+                                                               "min":  14,
+                                                               "max":  18
+                                                           },
+                       "hybrid_mean_ratio":  {
+                                                 "mean":  0.95856081626135958,
+                                                 "sample_std":  0.0031063792638007909,
+                                                 "min":  0.95577555955684923,
+                                                 "max":  0.96287362544572341
+                                             },
+                       "hybrid_better_than_heft_count":  {
+                                                             "mean":  17.4,
+                                                             "sample_std":  1.6733200530681511,
+                                                             "min":  15,
+                                                             "max":  19
+                                                         },
+                       "hybrid_std_reduction_fraction":  0.51251352016642682,
+                       "paired_mean_ratio_improvement":  0.011370975754574509
+                   }
+}

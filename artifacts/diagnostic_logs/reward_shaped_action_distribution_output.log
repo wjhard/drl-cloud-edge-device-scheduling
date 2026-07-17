@@ -1,0 +1,22 @@
+ACTION_DISTRIBUTION_CHECK
+model_path_arg_abs=<USER_HOME>\Desktop\����ϵͳ���´���\�������ǿ��ѧϰ����-��-���칹������Դ������ȷ���\project\training\checkpoints\ppo_mlp_reward_shaped
+model_zip_abs=<USER_HOME>\Desktop\����ϵͳ���´���\�������ǿ��ѧϰ����-��-���칹������Դ������ȷ���\project\training\checkpoints\ppo_mlp_reward_shaped.zip
+model_zip_size_bytes=1139387
+model_zip_mtime_epoch=1783062560.483743
+per_dag_distribution:
+  dag_index=0 seed=424200 task_size=10 total_tasks=10 cloud_0=10, edge_0=0, edge_1=0, device_0=0
+  dag_index=1 seed=424201 task_size=12 total_tasks=12 cloud_0=12, edge_0=0, edge_1=0, device_0=0
+  dag_index=2 seed=424202 task_size=14 total_tasks=14 cloud_0=14, edge_0=0, edge_1=0, device_0=0
+  dag_index=3 seed=424203 task_size=15 total_tasks=15 cloud_0=15, edge_0=0, edge_1=0, device_0=0
+  dag_index=4 seed=424204 task_size=17 total_tasks=17 cloud_0=17, edge_0=0, edge_1=0, device_0=0
+  dag_index=5 seed=424205 task_size=19 total_tasks=19 cloud_0=19, edge_0=0, edge_1=0, device_0=0
+  dag_index=6 seed=424206 task_size=21 total_tasks=21 cloud_0=21, edge_0=0, edge_1=0, device_0=0
+  dag_index=7 seed=424207 task_size=23 total_tasks=23 cloud_0=23, edge_0=0, edge_1=0, device_0=0
+  dag_index=8 seed=424208 task_size=24 total_tasks=24 cloud_0=24, edge_0=0, edge_1=0, device_0=0
+  dag_index=9 seed=424209 task_size=25 total_tasks=25 cloud_0=25, edge_0=0, edge_1=0, device_0=0
+aggregate_distribution:
+  cloud_0: count=180, ratio=1.000000
+  edge_0: count=0, ratio=0.000000
+  edge_1: count=0, ratio=0.000000
+  device_0: count=0, ratio=0.000000
+total_scheduled_tasks=180
