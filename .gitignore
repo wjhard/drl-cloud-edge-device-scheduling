@@ -19,3 +19,8 @@ training/bc_datasets/
 *_meta.txt
 *_audit_report.txt
 experiment_logs/
+
+# PuLP/CBC scratch files retained by keepFiles=True
+*-pulp.mps
+*-pulp.mst
+*-pulp.sol
