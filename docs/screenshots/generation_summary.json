@@ -1,22 +1,19 @@
 {
   "input": "docs/技术报告.md",
-  "template": null,
+  "template": "docs/references/操作系统开源创新大赛项目说明书_官方模板.docx",
   "output_docx": "docs/技术报告.docx",
   "output_pdf": "docs/技术报告.pdf",
-  "page_count": 39,
-  "table_count": 15,
-  "page_map": {
-    "01_封面": 1,
-    "02_目录": 2,
-    "03_正文表格": 7,
-    "04_附录": 37
-  },
+  "page_count": 31,
+  "data_table_count": 14,
+  "code_block_table_count": 11,
+  "word_table_object_count": 25,
+  "figure_count": 5,
+  "docx_size_bytes": 453164,
+  "pdf_size_bytes": 1068097,
   "screenshots": [
     "docs/screenshots/01_封面_第1页.png",
     "docs/screenshots/02_目录_第2页.png",
-    "docs/screenshots/03_正文表格_第7页.png",
-    "docs/screenshots/04_附录_第37页.png"
-  ],
-  "docx_size_bytes": 76346,
-  "pdf_size_bytes": 748553
+    "docs/screenshots/03_技术演进_第13页.png",
+    "docs/screenshots/04_实验结果_第20页.png"
+  ]
 }

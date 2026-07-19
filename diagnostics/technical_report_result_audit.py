@@ -508,7 +508,7 @@ def build_text_evidence_checks() -> list[TextEvidenceCheck]:
     ]
 
 
-def main() -> int:
+def _legacy_main() -> int:
     text = REPORT.read_text(encoding="utf-8")
     lines = text.splitlines()
     tracked = tracked_files()
@@ -691,6 +691,23 @@ def main() -> int:
         return 1
     print("All declared result claims, evidence paths, Git tracking checks, and privacy scans passed.")
     return 0
+
+
+def main() -> int:
+    if "--report" in sys.argv:
+        index = sys.argv.index("--report")
+        if index + 1 >= len(sys.argv):
+            print("--report requires a path", file=sys.stderr)
+            return 2
+        report_path = (ROOT / sys.argv[index + 1]).resolve()
+        if report_path.name in {"技术报告.md", "技术报告_v2.md"}:
+            from technical_report_v2_audit import audit_report_v2
+
+            return audit_report_v2(report_path)
+        if report_path != REPORT.resolve():
+            print(f"unsupported report layout: {report_path}", file=sys.stderr)
+            return 2
+    return _legacy_main()
 
 
 if __name__ == "__main__":

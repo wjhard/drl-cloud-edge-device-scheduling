@@ -1,0 +1,158 @@
+﻿TECHNICAL_REPORT_CURRENT_AUDIT
+report: docs/技术报告.md
+
+[REPOSITORY PATHS]
+PASS path exists: artifacts/diagnostic_logs/bc_batch_mask_and_normalization_check_output.log
+PASS path exists: artifacts/diagnostic_logs/diagnostics_action_distribution_output.log
+PASS path exists: baselines/heft_scheduler.py
+PASS path exists: baselines/hybrid_scheduler.py
+PASS path exists: baselines/milp_optimal_scheduler.py
+PASS path exists: configs/resource_default.yaml
+PASS path exists: diagnostics/bc_dataset_sanity_check.py
+PASS path exists: diagnostics/technical_report_result_audit.py
+PASS path exists: docs/references/操作系统开源创新大赛项目说明书_官方模板.docx
+PASS path exists: env/dag_generator.py
+PASS path exists: env/normalization_stats.json
+PASS path exists: env/observation_normalizer.py
+PASS path exists: env/resource_config.py
+PASS path exists: env/scheduling_env.py
+PASS path exists: env/scheduling_env_ranked.py
+PASS path exists: env/scheduling_env_residual.py
+PASS path exists: env/scheduling_utils.py
+PASS path exists: evaluation/analyze_residual_lns_direct_repeats.py
+PASS path exists: evaluation/evaluate.py
+PASS path exists: evaluation/evaluate_bestofn.py
+PASS path exists: evaluation/evaluate_residual_lns.py
+PASS path exists: evaluation/results/autonomous_exploration/compute_matched_sampling/paired_comparison_summary.json
+PASS path exists: evaluation/results/autonomous_exploration/direction2_lns/direct_vs_residual_paired_summary.json
+PASS path exists: evaluation/results/autonomous_exploration/direction3_gumbel_beam/paired_repeats_summary.json
+PASS path exists: evaluation/results/milp_optimal_comparison.json
+PASS path exists: evaluation/results/openEuler_pytest_structural_final.log
+PASS path exists: evaluation/results/openeuler_validation/environment_info.log
+PASS path exists: evaluation/results/openeuler_validation/evaluate_bestof64_output.log
+PASS path exists: evaluation/results/openeuler_validation/pip_freeze.txt
+PASS path exists: evaluation/results/openeuler_validation/pytest_output.log
+PASS path exists: evaluation/results/run_final_pipeline_fresh_clone_full_output.log
+PASS path exists: evaluation/results/structural_generalization/summary_structural_generalization.json
+PASS path exists: evaluation/results/summary.json
+PASS path exists: evaluation/results/summary_gat_ranked.json
+PASS path exists: evaluation/results/summary_mlp_normalized.json
+PASS path exists: evaluation/results/summary_mlp_normalized_large.json
+PASS path exists: evaluation/results/summary_mlp_normalized_large_small_eval.json
+PASS path exists: evaluation/results/summary_mlp_ranked.json
+PASS path exists: evaluation/results/summary_mlp_ranked_bc.json
+PASS path exists: evaluation/results/summary_mlp_ranked_curriculum.json
+PASS path exists: evaluation/results/summary_mlp_ranked_with_rank.json
+PASS path exists: evaluation/results/summary_mlp_residual.json
+PASS path exists: evaluation/results/summary_mlp_residual_bestof64.json
+PASS path exists: evaluation/results/summary_reward_shaped.json
+PASS path exists: policies/residual_local_search_scheduler.py
+PASS path exists: policies/residual_ranking_policy.py
+PASS path exists: policies/rl_scheduler.py
+PASS path exists: requirements.txt
+PASS path exists: scheduler_interface.py
+PASS path exists: scripts/generate_report_docx.py
+PASS path exists: tests/test_env.py
+PASS path exists: tests/test_gat_features_extractor.py
+PASS path exists: tests/test_milp_optimal_scheduler.py
+PASS path exists: tests/test_residual_local_search_scheduler.py
+PASS path exists: tests/test_residual_scheduling.py
+PASS path exists: tests/test_reward_shaping.py
+PASS path exists: tests/test_scheduling_consistency.py
+PASS path exists: tests/test_scheduling_env_ranked.py
+PASS path exists: training/behavior_cloning.py
+PASS path exists: training/checkpoints/ppo_mlp_residual.zip
+PASS path exists: training/configs/ppo_mlp_residual.yaml
+PASS path exists: training/train_ppo.py
+
+[DIRECT FINAL RESULT]
+PASS residual mean: 0.950814
+PASS residual std: 0.003358
+PASS LNS mean: 0.920890
+PASS LNS std: 0.001729
+PASS paired diff: -0.029925
+PASS paired diff std: 0.003080
+PASS t statistic: -21.722925
+PASS p mantissa: 2.656851
+PASS elapsed mean: 54.401734
+PASS run 1 residual: 0.949533
+PASS run 1 LNS: 0.921490
+PASS run 1 diff: -0.028043
+PASS run 1 elapsed: 52.563326
+PASS run 2 residual: 0.948910
+PASS run 2 LNS: 0.919837
+PASS run 2 diff: -0.029073
+PASS run 2 elapsed: 56.751589
+PASS run 3 residual: 0.956776
+PASS run 3 LNS: 0.922358
+PASS run 3 diff: -0.034419
+PASS run 3 elapsed: 56.427768
+PASS run 4 residual: 0.948961
+PASS run 4 LNS: 0.922360
+PASS run 4 diff: -0.026600
+PASS run 4 elapsed: 54.006265
+PASS run 5 residual: 0.949891
+PASS run 5 LNS: 0.918404
+PASS run 5 diff: -0.031487
+PASS run 5 elapsed: 52.259721
+
+[COMPUTE-MATCHED RESULT]
+PASS Best128 mean: 0.942048
+PASS Best128 std: 0.002063
+PASS compute diff: -0.021158
+PASS compute diff std: 0.001148
+PASS sampling elapsed: 56.801547
+PASS LNS elapsed: 54.401734
+PASS elapsed ratio: 1.044113
+PASS compute t: -41.210742
+PASS compute p mantissa: 2.072081
+
+[EVOLUTION AND ABLATIONS]
+PASS initial: 1.367762
+PASS relative reward: 1.367762
+PASS normalized: 1.293190
+PASS ranked: 1.081277
+PASS residual: 1.031197
+PASS fixed Best64: 0.945988
+PASS GAT ranked: 1.087671
+PASS ranked BC: 1.118387
+PASS rank feature: 1.111498
+PASS curriculum: 1.131471
+PASS large: 1.454469
+PASS large small eval: 1.336977
+
+[STRUCTURAL GENERALIZATION]
+PASS wide_parallel mean: 1.011915
+PASS wide_parallel std: 0.018469
+PASS wide_parallel delta: 0.047829
+PASS deep_chain mean: 0.943597
+PASS deep_chain std: 0.043357
+PASS deep_chain delta: -0.020488
+PASS homogeneous_resources mean: 0.879572
+PASS homogeneous_resources std: 0.071489
+PASS homogeneous_resources delta: -0.084514
+PASS original_control mean: 0.964085
+PASS original_control std: 0.040774
+PASS original_control delta: 0.000000
+
+[MILP]
+PASS MILP proven count: 7 个已证明最优
+PASS MILP HEFT ratio: 1.106807
+PASS MILP residual ratio: 1.044188
+
+[REFERENCES]
+PASS verified reference: https://doi.org/10.1109/71.993206
+PASS verified reference: https://openreview.net/forum?id=WL8FlAugqQ
+PASS verified reference: https://arxiv.org/abs/2309.15517
+PASS verified reference: https://doi.org/10.1287/trsc.1050.0135
+PASS verified reference: https://openreview.net/forum?id=nO5caZwFwYu
+PASS verified reference: https://www.jmlr.org/papers/v22/20-303.html
+PASS verified reference: https://www.dhs.tsinghua.edu.cn/wp-content/uploads/2023/12/2024031107044595.pdf
+
+[PRIVACY]
+PASS no user-home path in report
+
+[SUMMARY]
+paths_checked: 62
+failures: 0
+All current-report evidence paths, numeric claims, references, and privacy checks passed.

@@ -1,21 +1,14 @@
-"""Generate the technical report DOCX through the native Microsoft Word COM API.
-
-This script deliberately does not use python-docx. Microsoft Word creates,
-paginates, updates, saves, and exports the document itself through pywin32.
-"""
+"""Build docs/技术报告.docx with native Microsoft Word COM automation."""
 
 from __future__ import annotations
 
 import argparse
 import json
 import re
-import sys
 import time
-import xml.etree.ElementTree as ET
 import zipfile
-from dataclasses import dataclass
 from pathlib import Path
-from typing import Iterable
+from xml.etree import ElementTree as ET
 
 import pythoncom
 import win32com.client
@@ -24,795 +17,512 @@ import win32com.client
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_INPUT = ROOT / "docs" / "技术报告.md"
 DEFAULT_OUTPUT = ROOT / "docs" / "技术报告.docx"
-DEFAULT_PDF = ROOT / "docs" / "技术报告.pdf"
-DEFAULT_SCREENSHOTS = ROOT / "docs" / "screenshots"
+DEFAULT_TEMPLATE = ROOT / "docs" / "references" / "操作系统开源创新大赛项目说明书_官方模板.docx"
 
-# Word constants are kept local so the script does not depend on makepy output.
-WD_ALIGN_PARAGRAPH_LEFT = 0
-WD_ALIGN_PARAGRAPH_CENTER = 1
-WD_ALIGN_PARAGRAPH_RIGHT = 2
-WD_ALIGN_PARAGRAPH_JUSTIFY = 3
-WD_ALIGN_VERTICAL_TOP = 0
-WD_ALIGN_VERTICAL_CENTER = 1
-WD_AUTOFIT_WINDOW = 2
+WD_ALIGN_LEFT = 0
+WD_ALIGN_CENTER = 1
+WD_ALIGN_RIGHT = 2
+WD_ALIGN_JUSTIFY = 3
+WD_BREAK_PAGE = 7
 WD_BREAK_SECTION_NEXT_PAGE = 2
 WD_COLLAPSE_END = 0
-WD_COLOR_AUTOMATIC = -16777216
-WD_EXPORT_FORMAT_PDF = 17
-WD_FORMAT_DOCX = 12
-WD_LINE_SPACE_1PT5 = 1
-WD_PAGE_NUMBER_STYLE_ARABIC = 0
-WD_PAGE_NUMBER_STYLE_LOWERCASE_ROMAN = 2
+WD_FORMAT_DOCX = 16
+WD_EXPORT_PDF = 17
+WD_ORIENT_PORTRAIT = 0
 WD_PAPER_A4 = 7
-WD_PREFERRED_WIDTH_POINTS = 3
-WD_ROW_HEIGHT_AUTO = 0
+WD_LINE_SPACE_1PT5 = 1
 WD_STATISTIC_PAGES = 2
+WD_STYLE_NORMAL = -1
 WD_STYLE_HEADING_1 = -2
 WD_STYLE_HEADING_2 = -3
 WD_STYLE_HEADING_3 = -4
-WD_STYLE_NORMAL = -1
 WD_TEXTURE_NONE = 0
+WD_COLOR_AUTOMATIC = -16777216
+WD_ROW_HEIGHT_AUTO = 0
+WD_AUTOFIT_WINDOW = 2
+WD_PAGE_NUMBER_ARABIC = 0
+WD_PAGE_NUMBER_LOWERCASE_ROMAN = 2
 
 
 def rgb(red: int, green: int, blue: int) -> int:
     return red + green * 256 + blue * 65536
 
 
-@dataclass
-class InlineSpan:
-    start: int
-    end: int
-    kind: str
-    value: str | None = None
-
-
-@dataclass
-class BuildState:
-    markdown_tables: list[object]
-    heading_pages: dict[str, int]
-
-
-def clean_markdown_text(text: str) -> tuple[str, list[InlineSpan]]:
-    """Strip common inline Markdown while retaining formatting span offsets."""
-    output: list[str] = []
-    spans: list[InlineSpan] = []
-    index = 0
-    patterns = [
-        ("link", re.compile(r"\[([^\]]+)\]\((https?://[^)]+)\)")),
-        ("bold", re.compile(r"\*\*([^*]+)\*\*")),
-        ("code", re.compile(r"`([^`]+)`")),
-        ("italic", re.compile(r"(?<!\*)\*([^*]+)\*(?!\*)")),
-    ]
-
-    while index < len(text):
-        candidates = []
-        for kind, pattern in patterns:
-            match = pattern.search(text, index)
-            if match:
-                candidates.append((match.start(), kind, match))
-        if not candidates:
-            output.append(text[index:])
-            break
-        _, kind, match = min(candidates, key=lambda item: item[0])
-        output.append(text[index : match.start()])
-        start = sum(len(part) for part in output)
-        label = match.group(1)
-        output.append(label)
-        end = start + len(label)
-        value = match.group(2) if kind == "link" else None
-        spans.append(InlineSpan(start, end, kind, value))
-        index = match.end()
-
-    plain = "".join(output)
-    plain = plain.replace("\\_", "_").replace("\\*", "*")
-    return plain, spans
-
-
-def split_table_row(line: str) -> list[str]:
-    line = line.strip()
-    if line.startswith("|"):
-        line = line[1:]
-    if line.endswith("|"):
-        line = line[:-1]
-    cells = re.split(r"(?<!\\)\|", line)
-    return [cell.strip().replace("\\|", "|") for cell in cells]
-
-
-def is_table_separator(cells: Iterable[str]) -> bool:
-    cells = list(cells)
-    return bool(cells) and all(re.fullmatch(r":?-{3,}:?", cell.strip()) for cell in cells)
-
-
 def end_range(doc):
     return doc.Range(doc.Content.End - 1, doc.Content.End - 1)
 
 
-def set_font(font, east_asia: str, ascii_font: str, size: float, bold: bool | None = None):
+def set_font(font, east_asia: str, ascii_name: str, size: float, bold: bool = False) -> None:
+    font.Name = ascii_name
+    font.NameAscii = ascii_name
     font.NameFarEast = east_asia
-    font.NameAscii = ascii_font
-    font.NameOther = ascii_font
-    font.Name = ascii_font
+    font.NameOther = ascii_name
     font.Size = size
-    if bold is not None:
-        font.Bold = -1 if bold else 0
-
-
-def apply_inline_spans(doc, paragraph_start: int, spans: list[InlineSpan]) -> None:
-    for span in spans:
-        if span.end <= span.start:
-            continue
-        target = doc.Range(paragraph_start + span.start, paragraph_start + span.end)
-        if span.kind == "bold":
-            target.Font.Bold = -1
-        elif span.kind == "italic":
-            target.Font.Italic = -1
-        elif span.kind == "code":
-            set_font(target.Font, "等线", "Consolas", 9.5)
-            target.Shading.Texture = WD_TEXTURE_NONE
-            target.Shading.BackgroundPatternColor = rgb(242, 242, 242)
-        elif span.kind == "link" and span.value:
-            doc.Hyperlinks.Add(Anchor=target, Address=span.value, TextToDisplay=target.Text)
+    font.Bold = -1 if bold else 0
 
 
 def add_paragraph(
     doc,
-    markdown_text: str,
+    text: str = "",
     *,
-    style_id: int = WD_STYLE_NORMAL,
-    alignment: int = WD_ALIGN_PARAGRAPH_JUSTIFY,
-    first_line_indent: float = 24.0,
-    left_indent: float = 0.0,
-    space_before: float = 0.0,
-    space_after: float = 6.0,
-    line_spacing_rule: int = WD_LINE_SPACE_1PT5,
-    east_asia_font: str = "宋体",
-    ascii_font: str = "Consolas",
-    size: float = 12.0,
-    bold: bool | None = None,
+    style=None,
+    alignment: int = WD_ALIGN_JUSTIFY,
+    first_line: float = 24,
+    space_before: float = 0,
+    space_after: float = 6,
     keep_with_next: bool = False,
+    east_asia_font: str = "宋体",
+    ascii_font: str = "Times New Roman",
+    size: float = 12,
+    bold: bool = False,
 ):
-    plain, spans = clean_markdown_text(markdown_text)
-    start = doc.Content.End - 1
-    insertion = doc.Range(start, start)
-    insertion.Text = plain + "\r"
-    paragraph = doc.Range(start, start + len(plain) + 1).Paragraphs.Item(1)
-    try:
-        paragraph.Range.Style = doc.Styles.Item(style_id)
-    except Exception:
-        pass
-    paragraph.Alignment = alignment
-    paragraph.Format.FirstLineIndent = first_line_indent
-    paragraph.Format.LeftIndent = left_indent
-    paragraph.Format.RightIndent = 0
-    paragraph.Format.SpaceBefore = space_before
-    paragraph.Format.SpaceAfter = space_after
-    paragraph.Format.LineSpacingRule = line_spacing_rule
-    paragraph.Format.KeepWithNext = -1 if keep_with_next else 0
+    rng = end_range(doc)
+    start = int(rng.Start)
+    rng.InsertAfter(text + "\r")
+    paragraph = doc.Range(start, start + max(1, len(text))).Paragraphs.Item(1)
+    paragraph.Range.Style = WD_STYLE_NORMAL if style is None else style
+    fmt = paragraph.Format
+    fmt.Alignment = alignment
+    fmt.FirstLineIndent = first_line
+    fmt.SpaceBefore = space_before
+    fmt.SpaceAfter = space_after
+    fmt.LineSpacingRule = WD_LINE_SPACE_1PT5
+    fmt.KeepWithNext = -1 if keep_with_next else 0
     set_font(paragraph.Range.Font, east_asia_font, ascii_font, size, bold)
-    apply_inline_spans(doc, start, spans)
+    trailing = doc.Paragraphs.Item(doc.Paragraphs.Count)
+    if int(trailing.Range.Start) > int(paragraph.Range.Start):
+        trailing.Range.Style = WD_STYLE_NORMAL
+        trailing.Format.OutlineLevel = 10
+        trailing.Range.ListFormat.RemoveNumbers()
     return paragraph
 
 
-def add_heading(doc, text: str, level: int):
-    settings = {
-        1: (WD_STYLE_HEADING_1, 16.0, 14.0, 8.0),
-        2: (WD_STYLE_HEADING_2, 14.0, 12.0, 6.0),
-        3: (WD_STYLE_HEADING_3, 12.0, 9.0, 4.0),
-    }
-    style_id, size, before, after = settings[level]
+def add_heading(doc, text: str, level: int) -> None:
+    styles = {1: WD_STYLE_HEADING_1, 2: WD_STYLE_HEADING_2, 3: WD_STYLE_HEADING_3}
     paragraph = add_paragraph(
         doc,
         text,
-        style_id=style_id,
-        alignment=WD_ALIGN_PARAGRAPH_LEFT,
-        first_line_indent=0,
-        space_before=before,
-        space_after=after,
-        line_spacing_rule=0,
+        style=styles[level],
+        alignment=WD_ALIGN_LEFT,
+        first_line=0,
+        space_before=10 if level > 1 else 0,
+        space_after=8,
+        keep_with_next=True,
         east_asia_font="黑体",
         ascii_font="Arial",
-        size=size,
+        size={1: 16, 2: 14, 3: 12}[level],
         bold=True,
-        keep_with_next=True,
     )
-    if level == 1:
-        paragraph.Format.PageBreakBefore = -1
-    return paragraph
+    paragraph.Range.ListFormat.RemoveNumbers()
+    paragraph.Format.OutlineLevel = level
 
 
-def add_list_item(doc, text: str, level: int, ordered: bool, marker: str):
-    prefix = f"{marker} " if ordered else "• "
-    return add_paragraph(
-        doc,
-        prefix + text,
-        alignment=WD_ALIGN_PARAGRAPH_LEFT,
-        first_line_indent=-14,
-        left_indent=24 + level * 18,
-        space_after=3,
-    )
+def clean_inline(text: str) -> str:
+    text = re.sub(r"!\[([^]]*)\]\([^)]+\)", r"\1", text)
+    text = re.sub(r"\[([^]]+)\]\(([^)]+)\)", r"\1（\2）", text)
+    text = text.replace("**", "").replace("__", "")
+    text = text.replace("`", "")
+    return text
 
 
-def add_equation(doc, lines: list[str]):
-    expression = " ".join(line.strip() for line in lines if line.strip())
-    expression = expression.rstrip("。").replace("\\qquad", "    ")
-    expression = expression.replace("\\left", "").replace("\\right", "")
-    expression = re.sub(r"\\frac\{([^{}]+)\}\{([^{}]+)\}", r"(\1)/(\2)", expression)
-    replacements = {
-        "\\max": "max",
-        "\\min": "min",
-        "\\sum": "Σ",
-        "\\in": "∈",
-        "\\times": "×",
-        "\\theta": "θ",
-        "\\pi": "π",
-        "\\alpha": "α",
-        "\\beta": "β",
-        "\\Delta": "Δ",
-        "\\widehat": "",
-        "\\_": "_",
-    }
-    for source, target in replacements.items():
-        expression = expression.replace(source, target)
-    paragraph = add_paragraph(
-        doc,
-        expression,
-        alignment=WD_ALIGN_PARAGRAPH_CENTER,
-        first_line_indent=0,
-        space_before=6,
-        space_after=6,
-        line_spacing_rule=0,
-        east_asia_font="宋体",
-        ascii_font="Cambria Math",
-        size=11.5,
-    )
-    return paragraph
+def split_table_row(line: str) -> list[str]:
+    cells = [clean_inline(cell.strip()) for cell in line.strip().strip("|").split("|")]
+    return ["−" + cell[1:] if re.fullmatch(r"-\d+(?:\.\d+)?", cell) else cell for cell in cells]
+
+
+def is_separator(cells: list[str]) -> bool:
+    return bool(cells) and all(re.fullmatch(r":?-{3,}:?", cell.replace(" ", "")) for cell in cells)
 
 
 def style_table(table, header: bool = True) -> None:
+    table.Range.Style = WD_STYLE_NORMAL
     table.Borders.Enable = 1
-    table.AllowAutoFit = True
-    table.AutoFitBehavior(WD_AUTOFIT_WINDOW)
-    table.Rows.Alignment = WD_ALIGN_PARAGRAPH_CENTER
-    table.Rows.AllowBreakAcrossPages = False
-    table.TopPadding = 3
-    table.BottomPadding = 3
-    table.LeftPadding = 4
-    table.RightPadding = 4
-    table.Range.ParagraphFormat.SpaceAfter = 0
+    table.Range.Font.NameFarEast = "宋体"
+    table.Range.Font.Name = "Times New Roman"
+    table.Range.Font.Size = 9.5
+    table.Range.ParagraphFormat.FirstLineIndent = 0
+    table.Range.ParagraphFormat.SpaceAfter = 2
     table.Range.ParagraphFormat.LineSpacingRule = 0
-    set_font(table.Range.Font, "宋体", "Consolas", 9.5)
+    table.Rows.AllowBreakAcrossPages = True
+    table.AutoFitBehavior(WD_AUTOFIT_WINDOW)
     if header:
-        header_range = table.Rows.Item(1).Range
-        table.Rows.Item(1).HeadingFormat = -1
-        header_range.Bold = -1
-        header_range.Shading.Texture = WD_TEXTURE_NONE
-        header_range.Shading.ForegroundPatternColor = WD_COLOR_AUTOMATIC
-        header_range.Shading.BackgroundPatternColor = rgb(221, 235, 247)
-        header_range.Font.Color = rgb(31, 78, 121)
+        row = table.Rows.Item(1)
+        row.Range.Bold = -1
+        row.Range.Font.NameFarEast = "黑体"
+        row.Range.Shading.Texture = WD_TEXTURE_NONE
+        row.Range.Shading.ForegroundPatternColor = WD_COLOR_AUTOMATIC
+        row.Range.Shading.BackgroundPatternColor = rgb(221, 230, 242)
+        row.HeadingFormat = True
+    for index in range(2 if header else 1, table.Rows.Count + 1):
+        if index % 2 == 0:
+            table.Rows.Item(index).Range.Shading.BackgroundPatternColor = rgb(247, 249, 252)
 
 
-def set_table_column_widths(table, rows: list[list[str]]) -> None:
+def add_table(doc, rows: list[list[str]]) -> None:
     column_count = max(len(row) for row in rows)
-    usable_width = 440.0
-    minimum_width = 48.0 if column_count <= 6 else 36.0
-    weights = []
-    for column_index in range(column_count):
-        widths = []
-        for row in rows:
-            raw = row[column_index] if column_index < len(row) else ""
-            plain, _ = clean_markdown_text(raw)
-            widths.append(sum(2 if ord(char) > 127 else 1 for char in plain))
-        weights.append(min(45.0, max(8.0, float(max(widths, default=8)))))
-    extra_width = max(0.0, usable_width - minimum_width * column_count)
-    weight_total = sum(weights) or 1.0
-    table.AllowAutoFit = False
-    for column_index, weight in enumerate(weights, 1):
-        width = minimum_width + extra_width * weight / weight_total
-        column = table.Columns.Item(column_index)
-        column.PreferredWidthType = WD_PREFERRED_WIDTH_POINTS
-        column.PreferredWidth = width
-
-
-def add_markdown_table(doc, rows: list[list[str]]):
-    if not rows:
-        return None
-    column_count = max(len(row) for row in rows)
-    insertion = end_range(doc)
-    table = doc.Tables.Add(insertion, len(rows), column_count)
+    table = doc.Tables.Add(end_range(doc), len(rows), column_count)
     for row_index, row in enumerate(rows, 1):
         for column_index in range(1, column_count + 1):
-            raw = row[column_index - 1] if column_index <= len(row) else ""
-            plain, spans = clean_markdown_text(raw)
-            cell_range = table.Cell(row_index, column_index).Range
-            cell_range.Text = plain
-            cell_start = cell_range.Start
-            apply_inline_spans(doc, cell_start, spans)
-    style_table(table, header=True)
-    set_table_column_widths(table, rows)
-    end = table.Range.End
-    doc.Range(end, end).InsertAfter("\r")
-    return table
+            table.Cell(row_index, column_index).Range.Text = row[column_index - 1] if column_index <= len(row) else ""
+    style_table(table)
+    header = rows[0]
+    if column_count >= 7 and any("Best-of-64" in cell for cell in header):
+        # Keep dense repeated-evaluation values on one line without widening the page.
+        table.Range.Font.Size = 8.5
+    width_map = {
+        "阶段": [68, 96, 58, 96, 122],
+        "赛题环节": [62, 112, 136, 130],
+        "不变量": [92, 130, 218],
+        "场景组": [88, 82, 90, 78, 102],
+        "重复": [43, 68, 66, 78, 60, 55, 70],
+    }
+    widths = width_map.get(header[0])
+    if widths and len(widths) == column_count:
+        table.AllowAutoFit = False
+        for index, width in enumerate(widths, 1):
+            table.Columns.Item(index).Width = width
+    doc.Range(table.Range.End, table.Range.End).InsertAfter("\r")
 
 
 def add_code_block(doc, code: str, language: str) -> None:
-    insertion = end_range(doc)
-    table = doc.Tables.Add(insertion, 1, 1)
-    cell = table.Cell(1, 1)
-    label = f"[{language}]\r" if language and language.lower() != "text" else ""
-    cell.Range.Text = label + code.rstrip() + "\r"
+    table = doc.Tables.Add(end_range(doc), 1, 1)
+    prefix = f"[{language}]\r" if language else ""
+    table.Cell(1, 1).Range.Text = prefix + code.rstrip() + "\r"
+    table.Range.Style = WD_STYLE_NORMAL
     table.Borders.Enable = 1
-    table.Rows.AllowBreakAcrossPages = False
     table.TopPadding = 6
     table.BottomPadding = 6
     table.LeftPadding = 8
     table.RightPadding = 8
     table.Range.Shading.Texture = WD_TEXTURE_NONE
-    table.Range.Shading.ForegroundPatternColor = WD_COLOR_AUTOMATIC
     table.Range.Shading.BackgroundPatternColor = rgb(242, 242, 242)
-    set_font(table.Range.Font, "等线", "Consolas", 9.0)
+    set_font(table.Range.Font, "等线", "Consolas", 9)
+    table.Range.ParagraphFormat.FirstLineIndent = 0
     table.Range.ParagraphFormat.SpaceAfter = 0
-    table.Range.ParagraphFormat.LineSpacingRule = 0
-    if label:
-        label_range = doc.Range(cell.Range.Start, cell.Range.Start + len(label.rstrip()))
-        label_range.Font.Bold = -1
-        label_range.Font.Color = rgb(89, 89, 89)
-    end = table.Range.End
-    doc.Range(end, end).InsertAfter("\r")
+    doc.Range(table.Range.End, table.Range.End).InsertAfter("\r")
+
+
+def add_figure(doc, alt_text: str, relative_path: str, figure_number: int) -> None:
+    path = ROOT / relative_path
+    if not path.is_file():
+        raise FileNotFoundError(f"figure not found: {relative_path}")
+    paragraph = add_paragraph(doc, "", alignment=WD_ALIGN_CENTER, first_line=0, space_before=6, space_after=2)
+    shape = doc.InlineShapes.AddPicture(str(path.resolve()), False, True, paragraph.Range)
+    max_width = 440.0
+    if shape.Width > max_width:
+        ratio = max_width / float(shape.Width)
+        shape.Width = max_width
+        shape.Height = float(shape.Height) * ratio
+    caption_text = re.sub(r"^图\s*\d+\s*", "", alt_text).strip()
+    add_paragraph(
+        doc,
+        f"图 {figure_number}  {caption_text}",
+        alignment=WD_ALIGN_CENTER,
+        first_line=0,
+        space_after=8,
+        east_asia_font="宋体",
+        ascii_font="Times New Roman",
+        size=9,
+    )
+
+
+def add_list_item(doc, text: str, numbered: bool) -> None:
+    paragraph = add_paragraph(doc, clean_inline(text), alignment=WD_ALIGN_LEFT, first_line=0, space_after=2)
+    paragraph.Format.LeftIndent = 24
+    paragraph.Format.FirstLineIndent = -18
+    if numbered:
+        paragraph.Range.ListFormat.ApplyNumberDefault()
+    else:
+        paragraph.Range.ListFormat.ApplyBulletDefault()
 
 
 def configure_styles(doc) -> None:
     normal = doc.Styles.Item(WD_STYLE_NORMAL)
-    set_font(normal.Font, "宋体", "Consolas", 12.0)
-    normal.ParagraphFormat.Alignment = WD_ALIGN_PARAGRAPH_JUSTIFY
+    set_font(normal.Font, "宋体", "Times New Roman", 12)
+    normal.ParagraphFormat.Alignment = WD_ALIGN_JUSTIFY
     normal.ParagraphFormat.FirstLineIndent = 24
     normal.ParagraphFormat.SpaceAfter = 6
     normal.ParagraphFormat.LineSpacingRule = WD_LINE_SPACE_1PT5
-
-    for style_id, size in ((WD_STYLE_HEADING_1, 16), (WD_STYLE_HEADING_2, 14), (WD_STYLE_HEADING_3, 12)):
+    normal.ParagraphFormat.OutlineLevel = 10
+    for style_id, size, color in (
+        (WD_STYLE_HEADING_1, 16, rgb(31, 78, 121)),
+        (WD_STYLE_HEADING_2, 14, rgb(31, 78, 121)),
+        (WD_STYLE_HEADING_3, 12, rgb(55, 55, 55)),
+    ):
         style = doc.Styles.Item(style_id)
         set_font(style.Font, "黑体", "Arial", size, True)
-        style.Font.Color = rgb(31, 78, 121)
-        style.ParagraphFormat.KeepWithNext = -1
+        style.Font.Color = color
         style.ParagraphFormat.FirstLineIndent = 0
+        style.ParagraphFormat.KeepWithNext = -1
+        style.ParagraphFormat.PageBreakBefore = -1 if style_id == WD_STYLE_HEADING_1 else 0
+        style.ParagraphFormat.OutlineLevel = {-2: 1, -3: 2, -4: 3}[style_id]
 
 
 def configure_page_setup(doc) -> None:
     for section in doc.Sections:
         setup = section.PageSetup
         setup.PaperSize = WD_PAPER_A4
+        setup.Orientation = WD_ORIENT_PORTRAIT
         setup.TopMargin = 72
-        setup.BottomMargin = 72
+        setup.BottomMargin = 68
         setup.LeftMargin = 79.2
-        setup.RightMargin = 72
-        setup.HeaderDistance = 36
-        setup.FooterDistance = 36
+        setup.RightMargin = 68
+        setup.HeaderDistance = 32
+        setup.FooterDistance = 32
 
 
 def add_cover(doc) -> None:
-    doc.Sections.Item(1).PageSetup.VerticalAlignment = WD_ALIGN_VERTICAL_CENTER
-    add_paragraph(
-        doc,
-        "第三届中国研究生操作系统开源创新大赛",
-        alignment=WD_ALIGN_PARAGRAPH_CENTER,
-        first_line_indent=0,
-        space_after=22,
-        line_spacing_rule=0,
-        east_asia_font="黑体",
-        ascii_font="Arial",
-        size=18,
-        bold=True,
-    )
-    add_paragraph(
-        doc,
-        "第 16 题：云—边—端异构计算资源调度",
-        alignment=WD_ALIGN_PARAGRAPH_CENTER,
-        first_line_indent=0,
-        space_after=42,
-        line_spacing_rule=0,
-        east_asia_font="黑体",
-        ascii_font="Arial",
-        size=14,
-        bold=True,
-    )
-    add_paragraph(
-        doc,
-        "基于深度强化学习的\n云—边—端异构计算资源管理调度方法".replace("\n", "\v"),
-        alignment=WD_ALIGN_PARAGRAPH_CENTER,
-        first_line_indent=0,
-        space_after=30,
-        line_spacing_rule=0,
-        east_asia_font="方正小标宋简体",
-        ascii_font="Arial",
-        size=24,
-        bold=True,
-    )
-    add_paragraph(
-        doc,
-        "技 术 报 告",
-        alignment=WD_ALIGN_PARAGRAPH_CENTER,
-        first_line_indent=0,
-        space_after=54,
-        line_spacing_rule=0,
-        east_asia_font="黑体",
-        ascii_font="Arial",
-        size=20,
-        bold=True,
-    )
-    add_paragraph(
-        doc,
-        "参赛队伍：[匿名]",
-        alignment=WD_ALIGN_PARAGRAPH_CENTER,
-        first_line_indent=0,
-        space_after=12,
-        line_spacing_rule=0,
-        east_asia_font="宋体",
-        ascii_font="Consolas",
-        size=12,
-    )
-    add_paragraph(
-        doc,
-        "二〇二六年七月",
-        alignment=WD_ALIGN_PARAGRAPH_CENTER,
-        first_line_indent=0,
-        line_spacing_rule=0,
-        east_asia_font="宋体",
-        ascii_font="Consolas",
-        size=12,
-    )
-
-
-def insert_section_break(doc) -> None:
-    end_range(doc).InsertBreak(WD_BREAK_SECTION_NEXT_PAGE)
+    doc.Sections.Item(1).PageSetup.VerticalAlignment = 1
+    add_paragraph(doc, "第三届中国研究生操作系统开源创新大赛", alignment=WD_ALIGN_CENTER, first_line=0, space_after=18, east_asia_font="黑体", ascii_font="Arial", size=18, bold=True)
+    add_paragraph(doc, "暨开放原子大赛操作系统专项赛", alignment=WD_ALIGN_CENTER, first_line=0, space_after=32, east_asia_font="黑体", ascii_font="Arial", size=15, bold=True)
+    add_paragraph(doc, "第 16 题：云—边—端异构计算资源调度", alignment=WD_ALIGN_CENTER, first_line=0, space_after=48, east_asia_font="黑体", ascii_font="Arial", size=14, bold=True)
+    add_paragraph(doc, "基于深度强化学习的\v云—边—端异构计算资源管理调度方法", alignment=WD_ALIGN_CENTER, first_line=0, space_after=36, east_asia_font="方正小标宋简体", ascii_font="Arial", size=24, bold=True)
+    add_paragraph(doc, "项 目 技 术 报 告", alignment=WD_ALIGN_CENTER, first_line=0, space_after=52, east_asia_font="黑体", ascii_font="Arial", size=20, bold=True)
+    add_paragraph(doc, "参赛队伍：[匿名]", alignment=WD_ALIGN_CENTER, first_line=0, space_after=10, size=12)
+    add_paragraph(doc, "二〇二六年七月", alignment=WD_ALIGN_CENTER, first_line=0, size=12)
 
 
 def add_toc(doc):
-    doc.Sections.Item(2).PageSetup.VerticalAlignment = WD_ALIGN_VERTICAL_TOP
-    title = add_paragraph(
-        doc,
-        "目 录",
-        alignment=WD_ALIGN_PARAGRAPH_CENTER,
-        first_line_indent=0,
-        space_before=12,
-        space_after=18,
-        line_spacing_rule=0,
-        east_asia_font="黑体",
-        ascii_font="Arial",
-        size=18,
-        bold=True,
-    )
-    title.Format.KeepWithNext = -1
-    toc_range = end_range(doc)
-    toc = doc.TablesOfContents.Add(
-        Range=toc_range,
-        UseHeadingStyles=True,
-        UpperHeadingLevel=1,
-        LowerHeadingLevel=3,
-        UseFields=False,
-        TableID="",
-        RightAlignPageNumbers=True,
-        IncludePageNumbers=True,
-        AddedStyles="",
-        UseHyperlinks=True,
-        HidePageNumbersInWeb=True,
-        UseOutlineLevels=True,
-    )
+    end_range(doc).InsertBreak(WD_BREAK_SECTION_NEXT_PAGE)
+    doc.Sections.Item(2).PageSetup.VerticalAlignment = 0
+    add_paragraph(doc, "目  录", alignment=WD_ALIGN_CENTER, first_line=0, space_before=10, space_after=18, east_asia_font="黑体", ascii_font="Arial", size=18, bold=True)
+    toc = doc.TablesOfContents.Add(end_range(doc), True, 1, 3, False, "", True, True, "", True, True, False)
     end_range(doc).InsertAfter("\r")
-    insert_section_break(doc)
+    end_range(doc).InsertBreak(WD_BREAK_SECTION_NEXT_PAGE)
     return toc
 
 
-def configure_page_numbers(doc) -> None:
-    if doc.Sections.Count < 3:
-        return
-    first_footer = doc.Sections.Item(1).Footers.Item(1)
-    first_footer.LinkToPrevious = False
-    first_footer.Range.Text = ""
-
-    toc_footer = doc.Sections.Item(2).Footers.Item(1)
-    toc_footer.LinkToPrevious = False
-    toc_footer.Range.ParagraphFormat.Alignment = WD_ALIGN_PARAGRAPH_CENTER
-    toc_numbers = toc_footer.PageNumbers
-    toc_numbers.RestartNumberingAtSection = True
-    toc_numbers.StartingNumber = 1
-    toc_numbers.NumberStyle = WD_PAGE_NUMBER_STYLE_LOWERCASE_ROMAN
-    toc_numbers.Add(WD_ALIGN_PARAGRAPH_CENTER, True)
-
-    body_footer = doc.Sections.Item(3).Footers.Item(1)
-    body_footer.LinkToPrevious = False
-    body_footer.Range.ParagraphFormat.Alignment = WD_ALIGN_PARAGRAPH_CENTER
-    body_numbers = body_footer.PageNumbers
-    body_numbers.RestartNumberingAtSection = True
-    body_numbers.StartingNumber = 1
-    body_numbers.NumberStyle = WD_PAGE_NUMBER_STYLE_ARABIC
-    body_numbers.Add(WD_ALIGN_PARAGRAPH_CENTER, True)
+def configure_headers_and_pages(doc) -> None:
+    for index in range(1, doc.Sections.Count + 1):
+        section = doc.Sections.Item(index)
+        section.Headers.Item(1).LinkToPrevious = False
+        section.Footers.Item(1).LinkToPrevious = False
+        if index == 1:
+            section.Headers.Item(1).Range.Text = ""
+            section.Footers.Item(1).Range.Text = ""
+            continue
+        header = section.Headers.Item(1).Range
+        header.Text = "基于深度强化学习的云—边—端异构计算资源管理调度方法"
+        header.ParagraphFormat.Alignment = WD_ALIGN_CENTER
+        set_font(header.Font, "宋体", "Times New Roman", 9)
+        footer = section.Footers.Item(1)
+        footer.Range.ParagraphFormat.Alignment = WD_ALIGN_CENTER
+        numbers = footer.PageNumbers
+        numbers.RestartNumberingAtSection = True
+        numbers.StartingNumber = 1
+        numbers.NumberStyle = WD_PAGE_NUMBER_LOWERCASE_ROMAN if index == 2 else WD_PAGE_NUMBER_ARABIC
+        numbers.Add(WD_ALIGN_CENTER, True)
 
 
-def parse_markdown_into_word(doc, markdown: str) -> BuildState:
+def parse_markdown(doc, markdown: str) -> dict:
     lines = markdown.splitlines()
-    start_index = next((i for i, line in enumerate(lines) if line.strip() == "## 摘要"), 0)
-    lines = lines[start_index:]
-    state = BuildState(markdown_tables=[], heading_pages={})
+    start = next(i for i, line in enumerate(lines) if line.strip() == "## 摘要")
+    lines = lines[start:]
     index = 0
     paragraph_buffer: list[str] = []
+    table_count = 0
+    code_block_count = 0
+    figure_count = 0
 
-    def flush_paragraph() -> None:
-        if paragraph_buffer:
-            text = " ".join(part.strip() for part in paragraph_buffer if part.strip())
-            paragraph_buffer.clear()
-            if text:
-                add_paragraph(doc, text)
+    def flush() -> None:
+        if not paragraph_buffer:
+            return
+        value = " ".join(item.strip() for item in paragraph_buffer if item.strip())
+        paragraph_buffer.clear()
+        if value:
+            add_paragraph(doc, clean_inline(value))
 
     while index < len(lines):
         line = lines[index]
         stripped = line.strip()
-
         if not stripped:
-            flush_paragraph()
+            flush()
             index += 1
             continue
-
         if stripped.startswith("```"):
-            flush_paragraph()
+            flush()
             language = stripped[3:].strip()
-            code_lines = []
+            code: list[str] = []
             index += 1
             while index < len(lines) and not lines[index].strip().startswith("```"):
-                code_lines.append(lines[index])
+                code.append(lines[index])
                 index += 1
-            add_code_block(doc, "\n".join(code_lines), language)
+            add_code_block(doc, "\n".join(code), language)
+            code_block_count += 1
             index += 1
             continue
-
-        if stripped == r"\[":
-            flush_paragraph()
-            equation_lines = []
-            index += 1
-            while index < len(lines) and lines[index].strip() != r"\]":
-                equation_lines.append(lines[index])
-                index += 1
-            add_equation(doc, equation_lines)
+        image_match = re.fullmatch(r"!\[([^]]+)\]\(([^)]+)\)", stripped)
+        if image_match:
+            flush()
+            figure_count += 1
+            add_figure(doc, image_match.group(1), image_match.group(2), figure_count)
             index += 1
             continue
-
         if stripped.startswith("|") and index + 1 < len(lines):
-            header = split_table_row(stripped)
             separator = split_table_row(lines[index + 1])
-            if is_table_separator(separator):
-                flush_paragraph()
-                table_rows = [header]
+            if is_separator(separator):
+                flush()
+                rows = [split_table_row(stripped)]
                 index += 2
                 while index < len(lines) and lines[index].strip().startswith("|"):
-                    table_rows.append(split_table_row(lines[index]))
+                    rows.append(split_table_row(lines[index]))
                     index += 1
-                table = add_markdown_table(doc, table_rows)
-                if table is not None:
-                    state.markdown_tables.append(table)
+                add_table(doc, rows)
+                table_count += 1
                 continue
-
-        heading_match = re.match(r"^(#{1,3})\s+(.+)$", stripped)
-        if heading_match:
-            flush_paragraph()
-            level = len(heading_match.group(1))
-            heading_text, _ = clean_markdown_text(heading_match.group(2))
-            if heading_text == "摘要":
-                level = 1
-            add_heading(doc, heading_text, level)
+        heading = re.match(r"^(#{1,3})\s+(.+)$", stripped)
+        if heading:
+            flush()
+            raw_level = len(heading.group(1))
+            text = clean_inline(heading.group(2))
+            level = 1 if text == "摘要" else raw_level
+            add_heading(doc, text, min(level, 3))
             index += 1
             continue
-
-        list_match = re.match(r"^(\s*)([-+*]|\d+\.)\s+(.+)$", line)
+        list_match = re.match(r"^\s*(\d+\.|[-+*])\s+(.+)$", line)
         if list_match:
-            flush_paragraph()
-            indentation = len(list_match.group(1).replace("\t", "    ")) // 4
-            marker = list_match.group(2)
-            add_list_item(doc, list_match.group(3), indentation, marker.endswith("."), marker)
+            flush()
+            add_list_item(doc, list_match.group(2), list_match.group(1).endswith("."))
             index += 1
             continue
-
         if stripped.startswith(">"):
-            flush_paragraph()
-            paragraph = add_paragraph(
-                doc,
-                stripped.lstrip("> "),
-                alignment=WD_ALIGN_PARAGRAPH_LEFT,
-                first_line_indent=0,
-                left_indent=24,
-                space_after=4,
-            )
-            paragraph.Range.Font.Italic = -1
-            paragraph.Range.Font.Color = rgb(89, 89, 89)
+            flush()
+            paragraph = add_paragraph(doc, clean_inline(stripped.lstrip("> ")), alignment=WD_ALIGN_LEFT, first_line=0, space_after=5, east_asia_font="楷体", ascii_font="Times New Roman", size=10.5)
+            paragraph.Format.LeftIndent = 24
+            paragraph.Range.Shading.BackgroundPatternColor = rgb(245, 247, 250)
             index += 1
             continue
-
         if stripped == "---":
-            flush_paragraph()
+            flush()
             index += 1
             continue
-
         paragraph_buffer.append(stripped)
         index += 1
-
-    flush_paragraph()
-    return state
-
-
-def find_heading_page(doc, prefix: str) -> int | None:
-    for paragraph in doc.Paragraphs:
-        text = paragraph.Range.Text.strip().replace("\r", "")
-        if text.startswith(prefix) and int(paragraph.OutlineLevel) == 1:
-            return int(paragraph.Range.Information(3))  # wdActiveEndPageNumber
-    return None
+    flush()
+    return {
+        "data_table_count": table_count,
+        "code_block_table_count": code_block_count,
+        "figure_count": figure_count,
+    }
 
 
-def update_and_paginate(doc, toc) -> int:
-    doc.Fields.Update()
-    toc.Update()
-    doc.Repaginate()
-    return int(doc.ComputeStatistics(WD_STATISTIC_PAGES))
+def sanitize_core_properties(docx_path: Path) -> None:
+    core_name = "docProps/core.xml"
+    temp = docx_path.with_name(f".{docx_path.name}.tmp")
+    creator = "{http://purl.org/dc/elements/1.1/}creator"
+    modified = "{http://schemas.openxmlformats.org/package/2006/metadata/core-properties}lastModifiedBy"
+    with zipfile.ZipFile(docx_path, "r") as source, zipfile.ZipFile(temp, "w") as target:
+        for item in source.infolist():
+            data = source.read(item.filename)
+            if item.filename == core_name:
+                root = ET.fromstring(data)
+                for tag in (creator, modified):
+                    node = root.find(tag)
+                    if node is not None:
+                        node.text = "Anonymous"
+                data = ET.tostring(root, encoding="utf-8", xml_declaration=True)
+            target.writestr(item, data)
+    temp.replace(docx_path)
 
 
-def render_pdf_screenshots(pdf_path: Path, screenshots_dir: Path, page_map: dict[str, int]) -> list[Path]:
+def render_key_pages(pdf_path: Path, output_dir: Path) -> list[Path]:
     import fitz
 
-    screenshots_dir.mkdir(parents=True, exist_ok=True)
-    for old_file in screenshots_dir.glob("*.png"):
-        old_file.unlink()
-    pdf = fitz.open(pdf_path)
-    outputs = []
-    for label, page_number in page_map.items():
-        safe_page = max(1, min(page_number, pdf.page_count))
-        page = pdf.load_page(safe_page - 1)
-        pixmap = page.get_pixmap(matrix=fitz.Matrix(1.8, 1.8), alpha=False)
-        output = screenshots_dir / f"{label}_第{safe_page}页.png"
-        pixmap.save(output)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    for old in output_dir.glob("*.png"):
+        old.unlink()
+    document = fitz.open(pdf_path)
+    targets = {
+        "01_封面": 0,
+        "02_目录": 1,
+    }
+    searches = {
+        "03_技术演进": "第三章 技术演进",
+        "04_实验结果": "第六章 结果与证据",
+    }
+    for label, needle in searches.items():
+        matching_pages = [i for i, page in enumerate(document) if needle in page.get_text()]
+        if matching_pages:
+            targets[label] = matching_pages[-1]
+    outputs: list[Path] = []
+    for label, page_number in targets.items():
+        page = document.load_page(max(0, min(page_number, document.page_count - 1)))
+        pix = page.get_pixmap(matrix=fitz.Matrix(1.65, 1.65), alpha=False)
+        output = output_dir / f"{label}_第{page_number + 1}页.png"
+        pix.save(output)
         outputs.append(output)
-    pdf.close()
+    document.close()
     return outputs
 
 
-def find_official_template() -> Path | None:
-    exact_patterns = ("*初赛作品提交模板*.doc", "*初赛作品提交模板*.docx", "*初赛作品提交模板*.dotx")
-    roots = [ROOT, ROOT.parent, Path.home() / "Desktop", Path.home() / "Downloads"]
-    candidates = []
-    for root in roots:
-        if not root.exists():
-            continue
-        for pattern in exact_patterns:
-            candidates.extend(path for path in root.rglob(pattern) if path.is_file())
-    return sorted(set(candidates))[0] if candidates else None
-
-
-def set_anonymous_document_metadata(doc) -> None:
-    """Remove workstation identity from Office core properties."""
-    for property_name in ("Author", "Last Save By"):
-        try:
-            doc.BuiltInDocumentProperties.Item(property_name).Value = "Anonymous"
-        except Exception:
-            # Some Word/template combinations expose Last Save By as read-only.
-            pass
-
-
-def sanitize_docx_core_properties(docx_path: Path) -> None:
-    """Replace author fields directly in the OOXML package after Word closes it."""
-    namespaces = {
-        "cp": "http://schemas.openxmlformats.org/package/2006/metadata/core-properties",
-        "dc": "http://purl.org/dc/elements/1.1/",
-        "dcterms": "http://purl.org/dc/terms/",
-        "dcmitype": "http://purl.org/dc/dcmitype/",
-        "xsi": "http://www.w3.org/2001/XMLSchema-instance",
-    }
-    for prefix, uri in namespaces.items():
-        ET.register_namespace(prefix, uri)
-    core_properties_path = "docProps/core.xml"
-    creator_tag = "{http://purl.org/dc/elements/1.1/}creator"
-    last_modified_by_tag = (
-        "{http://schemas.openxmlformats.org/package/2006/metadata/core-properties}lastModifiedBy"
-    )
-    temporary_path = docx_path.with_name(f".{docx_path.name}.anonymous.tmp")
-
-    try:
-        with zipfile.ZipFile(docx_path, "r") as source, zipfile.ZipFile(temporary_path, "w") as target:
-            for item in source.infolist():
-                data = source.read(item.filename)
-                if item.filename == core_properties_path:
-                    root = ET.fromstring(data)
-                    for tag in (creator_tag, last_modified_by_tag):
-                        element = root.find(tag)
-                        if element is not None:
-                            element.text = "Anonymous"
-                    data = ET.tostring(root, encoding="utf-8", xml_declaration=True)
-                target.writestr(item, data)
-        temporary_path.replace(docx_path)
-    finally:
-        temporary_path.unlink(missing_ok=True)
-
-
-def generate(input_path: Path, output_path: Path, template_path: Path | None, visible: bool) -> dict:
+def build(input_path: Path, output_path: Path, template_path: Path, visible: bool) -> dict:
+    markdown = input_path.read_text(encoding="utf-8")
     pdf_path = output_path.with_suffix(".pdf")
     screenshots_dir = output_path.parent / "screenshots"
-    markdown = input_path.read_text(encoding="utf-8")
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-
     pythoncom.CoInitialize()
     word = None
     doc = None
-    original_user_name = None
-    original_user_initials = None
+    original_name = None
+    original_initials = None
     try:
         word = win32com.client.DispatchEx("Word.Application")
         word.Visible = visible
         word.DisplayAlerts = 0
-        original_user_name = word.UserName
-        original_user_initials = word.UserInitials
+        original_name = word.UserName
+        original_initials = word.UserInitials
         word.UserName = "Anonymous"
         word.UserInitials = "ANON"
-        if template_path:
-            doc = word.Documents.Open(str(template_path.resolve()))
-            doc.Content.Delete()
-        else:
-            doc = word.Documents.Add()
-        set_anonymous_document_metadata(doc)
-
+        doc = word.Documents.Open(str(template_path.resolve()))
+        doc.Content.Delete()
         configure_styles(doc)
         configure_page_setup(doc)
         add_cover(doc)
-        insert_section_break(doc)
         toc = add_toc(doc)
-        state = parse_markdown_into_word(doc, markdown)
+        stats = parse_markdown(doc, markdown)
         configure_page_setup(doc)
-        configure_page_numbers(doc)
-
-        set_anonymous_document_metadata(doc)
-        doc.SaveAs2(str(output_path.resolve()), FileFormat=WD_FORMAT_DOCX)
-        page_count = update_and_paginate(doc, toc)
-        set_anonymous_document_metadata(doc)
+        configure_headers_and_pages(doc)
+        try:
+            doc.BuiltInDocumentProperties.Item("Author").Value = "Anonymous"
+        except Exception:
+            pass
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        doc.SaveAs2(str(output_path.resolve()), WD_FORMAT_DOCX)
+        doc.Fields.Update()
+        toc.Update()
+        doc.Repaginate()
+        page_count = int(doc.ComputeStatistics(WD_STATISTIC_PAGES))
         doc.Save()
-
-        first_table_page = (
-            int(doc.Range(state.markdown_tables[0].Range.Start, state.markdown_tables[0].Range.Start).Information(3))
-            if state.markdown_tables
-            else 3
-        )
-        appendix_page = find_heading_page(doc, "附录 A") or find_heading_page(doc, "附录") or page_count
-        page_map = {
-            "01_封面": 1,
-            "02_目录": 2,
-            "03_正文表格": first_table_page,
-            "04_附录": appendix_page,
-        }
-
-        doc.ExportAsFixedFormat(str(pdf_path.resolve()), WD_EXPORT_FORMAT_PDF)
-        # Word is intentionally still open while screenshots are generated.
-        screenshots = render_pdf_screenshots(pdf_path, screenshots_dir, page_map)
-        time.sleep(1.0)
-
+        doc.ExportAsFixedFormat(str(pdf_path.resolve()), WD_EXPORT_PDF)
+        time.sleep(0.8)
         doc.Close(True)
         doc = None
-        if original_user_name is not None:
-            word.UserName = original_user_name
-        if original_user_initials is not None:
-            word.UserInitials = original_user_initials
+        word.UserName = original_name
+        word.UserInitials = original_initials
         word.Quit()
         word = None
-        sanitize_docx_core_properties(output_path)
-
+        sanitize_core_properties(output_path)
+        screenshots = render_key_pages(pdf_path, screenshots_dir)
+        data_table_count = stats["data_table_count"]
+        code_block_table_count = stats["code_block_table_count"]
         result = {
-            "input": str(input_path.resolve()),
-            "template": str(template_path.resolve()) if template_path else None,
-            "output_docx": str(output_path.resolve()),
-            "output_pdf": str(pdf_path.resolve()),
+            "input": input_path.resolve().relative_to(ROOT).as_posix(),
+            "template": template_path.resolve().relative_to(ROOT).as_posix(),
+            "output_docx": output_path.resolve().relative_to(ROOT).as_posix(),
+            "output_pdf": pdf_path.resolve().relative_to(ROOT).as_posix(),
             "page_count": page_count,
-            "table_count": len(state.markdown_tables),
-            "page_map": page_map,
-            "screenshots": [str(path.resolve()) for path in screenshots],
+            "data_table_count": data_table_count,
+            "code_block_table_count": code_block_table_count,
+            "word_table_object_count": data_table_count + code_block_table_count,
+            "figure_count": stats["figure_count"],
             "docx_size_bytes": output_path.stat().st_size,
             "pdf_size_bytes": pdf_path.stat().st_size,
+            "screenshots": [path.resolve().relative_to(ROOT).as_posix() for path in screenshots],
         }
-        metadata_path = screenshots_dir / "generation_summary.json"
-        metadata_path.write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8")
+        summary_path = screenshots_dir / "generation_summary.json"
+        summary_path.write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8")
         print(json.dumps(result, ensure_ascii=False, indent=2))
         return result
-    except Exception:
+    finally:
         if doc is not None:
             try:
                 doc.Close(False)
@@ -820,22 +530,10 @@ def generate(input_path: Path, output_path: Path, template_path: Path | None, vi
                 pass
         if word is not None:
             try:
-                word.Quit()
-            except Exception:
-                pass
-        raise
-    finally:
-        if doc is not None:
-            try:
-                doc.Close(True)
-            except Exception:
-                pass
-        if word is not None:
-            try:
-                if original_user_name is not None:
-                    word.UserName = original_user_name
-                if original_user_initials is not None:
-                    word.UserInitials = original_user_initials
+                if original_name is not None:
+                    word.UserName = original_name
+                if original_initials is not None:
+                    word.UserInitials = original_initials
             except Exception:
                 pass
             try:
@@ -847,27 +545,18 @@ def generate(input_path: Path, output_path: Path, template_path: Path | None, vi
         pythoncom.CoUninitialize()
 
 
-def parse_args() -> argparse.Namespace:
+def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--input", type=Path, default=DEFAULT_INPUT)
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
-    parser.add_argument("--template", type=Path)
-    parser.add_argument("--hidden", action="store_true", help="Keep Word hidden during generation.")
-    return parser.parse_args()
-
-
-def main() -> int:
-    args = parse_args()
-    template = args.template
-    if template is None:
-        template = find_official_template()
-    if template is not None and not template.exists():
-        raise FileNotFoundError(f"Template not found: {template}")
-    print(f"pywin32 Word COM input: {args.input.resolve()}")
-    print(f"official template: {template.resolve() if template else 'not found; using general academic layout'}")
-    generate(args.input, args.output, template, visible=not args.hidden)
+    parser.add_argument("--template", type=Path, default=DEFAULT_TEMPLATE)
+    parser.add_argument("--hidden", action="store_true")
+    args = parser.parse_args()
+    if not args.template.is_file():
+        raise FileNotFoundError(f"official template not found: {args.template}")
+    build(args.input, args.output, args.template, visible=not args.hidden)
     return 0
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    raise SystemExit(main())
