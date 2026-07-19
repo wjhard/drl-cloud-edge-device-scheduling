@@ -1,0 +1,241 @@
+{
+  "method": "Residual Gumbel-diverse beam + local search + LNS",
+  "config_path": "training/configs/ppo_mlp_residual.yaml",
+  "model_path": "training/checkpoints/ppo_mlp_residual",
+  "sampling_seed": 978306296,
+  "beam_width": 16,
+  "lns_iterations": 64,
+  "scenario_count": 20,
+  "elapsed_seconds": 123.2817,
+  "overall": {
+    "bestof64_lns_mean_ratio": 0.9234390640939738,
+    "gumbel_beam_lns_mean_ratio": 0.9187528793579887,
+    "paired_mean_difference_beam_minus_bestof64": -0.004686184735985183,
+    "bestof64_lns_better_than_heft_count": 20,
+    "gumbel_beam_lns_better_than_heft_count": 19,
+    "beam_better_scenario_count": 10,
+    "mean_unique_complete_orders": 16.0
+  },
+  "scenarios": [
+    {
+      "scenario": "scenario_10_0.json",
+      "num_tasks": 10,
+      "scenario_seed": 978306296,
+      "heft_makespan": 0.4552284363452672,
+      "bestof64_lns_makespan": 0.39074550726016205,
+      "gumbel_beam_lns_makespan": 0.39074550726016205,
+      "bestof64_lns_ratio": 0.8583503930404773,
+      "gumbel_beam_lns_ratio": 0.8583503930404773,
+      "beam_unique_complete_orders": 16
+    },
+    {
+      "scenario": "scenario_10_1.json",
+      "num_tasks": 10,
+      "scenario_seed": 978306297,
+      "heft_makespan": 0.5088156337709009,
+      "bestof64_lns_makespan": 0.45955866969472786,
+      "gumbel_beam_lns_makespan": 0.45955866969472786,
+      "bestof64_lns_ratio": 0.9031929036631146,
+      "gumbel_beam_lns_ratio": 0.9031929036631146,
+      "beam_unique_complete_orders": 16
+    },
+    {
+      "scenario": "scenario_10_2.json",
+      "num_tasks": 10,
+      "scenario_seed": 978306298,
+      "heft_makespan": 0.5084000846273409,
+      "bestof64_lns_makespan": 0.4597851682917591,
+      "gumbel_beam_lns_makespan": 0.4597851682917591,
+      "bestof64_lns_ratio": 0.9043766556978119,
+      "gumbel_beam_lns_ratio": 0.9043766556978119,
+      "beam_unique_complete_orders": 16
+    },
+    {
+      "scenario": "scenario_10_3.json",
+      "num_tasks": 10,
+      "scenario_seed": 978306299,
+      "heft_makespan": 0.3575317979596756,
+      "bestof64_lns_makespan": 0.3565445400970419,
+      "gumbel_beam_lns_makespan": 0.3575317979596756,
+      "bestof64_lns_ratio": 0.9972386851511734,
+      "gumbel_beam_lns_ratio": 1.0,
+      "beam_unique_complete_orders": 16
+    },
+    {
+      "scenario": "scenario_10_4.json",
+      "num_tasks": 10,
+      "scenario_seed": 978306300,
+      "heft_makespan": 0.3707058369601609,
+      "bestof64_lns_makespan": 0.34021374754819755,
+      "gumbel_beam_lns_makespan": 0.34021374754819755,
+      "bestof64_lns_ratio": 0.9177458610794944,
+      "gumbel_beam_lns_ratio": 0.9177458610794944,
+      "beam_unique_complete_orders": 16
+    },
+    {
+      "scenario": "scenario_15_0.json",
+      "num_tasks": 15,
+      "scenario_seed": 978306301,
+      "heft_makespan": 0.6054409838212004,
+      "bestof64_lns_makespan": 0.5403212223822103,
+      "gumbel_beam_lns_makespan": 0.539352000208843,
+      "bestof64_lns_ratio": 0.892442429271981,
+      "gumbel_beam_lns_ratio": 0.8908415760108588,
+      "beam_unique_complete_orders": 16
+    },
+    {
+      "scenario": "scenario_15_1.json",
+      "num_tasks": 15,
+      "scenario_seed": 978306302,
+      "heft_makespan": 0.6167576868599802,
+      "bestof64_lns_makespan": 0.5407220679141304,
+      "gumbel_beam_lns_makespan": 0.5300108470289947,
+      "bestof64_lns_ratio": 0.8767171928850043,
+      "gumbel_beam_lns_ratio": 0.8593502088759872,
+      "beam_unique_complete_orders": 16
+    },
+    {
+      "scenario": "scenario_15_2.json",
+      "num_tasks": 15,
+      "scenario_seed": 978306303,
+      "heft_makespan": 0.6294246370418829,
+      "bestof64_lns_makespan": 0.5625744344531011,
+      "gumbel_beam_lns_makespan": 0.562574434453101,
+      "bestof64_lns_ratio": 0.893791569864569,
+      "gumbel_beam_lns_ratio": 0.8937915698645689,
+      "beam_unique_complete_orders": 16
+    },
+    {
+      "scenario": "scenario_15_3.json",
+      "num_tasks": 15,
+      "scenario_seed": 978306304,
+      "heft_makespan": 0.6089972186041921,
+      "bestof64_lns_makespan": 0.5761007007051545,
+      "gumbel_beam_lns_makespan": 0.5663428491719803,
+      "bestof64_lns_ratio": 0.9459824825235891,
+      "gumbel_beam_lns_ratio": 0.9299596646270821,
+      "beam_unique_complete_orders": 16
+    },
+    {
+      "scenario": "scenario_15_4.json",
+      "num_tasks": 15,
+      "scenario_seed": 978306305,
+      "heft_makespan": 0.5750342951613558,
+      "bestof64_lns_makespan": 0.5527697194668807,
+      "gumbel_beam_lns_makespan": 0.52960290957486,
+      "bestof64_lns_ratio": 0.9612813081205397,
+      "gumbel_beam_lns_ratio": 0.920993606870443,
+      "beam_unique_complete_orders": 16
+    },
+    {
+      "scenario": "scenario_20_0.json",
+      "num_tasks": 20,
+      "scenario_seed": 978306306,
+      "heft_makespan": 0.9724235579213067,
+      "bestof64_lns_makespan": 0.8673341131478474,
+      "gumbel_beam_lns_makespan": 0.8673341131478474,
+      "bestof64_lns_ratio": 0.8919303795990885,
+      "gumbel_beam_lns_ratio": 0.8919303795990885,
+      "beam_unique_complete_orders": 16
+    },
+    {
+      "scenario": "scenario_20_1.json",
+      "num_tasks": 20,
+      "scenario_seed": 978306307,
+      "heft_makespan": 0.7681376680144106,
+      "bestof64_lns_makespan": 0.6928623924471874,
+      "gumbel_beam_lns_makespan": 0.7034239139464201,
+      "bestof64_lns_ratio": 0.9020028847669906,
+      "gumbel_beam_lns_ratio": 0.9157524012130903,
+      "beam_unique_complete_orders": 16
+    },
+    {
+      "scenario": "scenario_20_2.json",
+      "num_tasks": 20,
+      "scenario_seed": 978306308,
+      "heft_makespan": 0.6474996876100765,
+      "bestof64_lns_makespan": 0.6094611796203425,
+      "gumbel_beam_lns_makespan": 0.6117252589395057,
+      "bestof64_lns_ratio": 0.9412532411712287,
+      "gumbel_beam_lns_ratio": 0.9447498904553694,
+      "beam_unique_complete_orders": 16
+    },
+    {
+      "scenario": "scenario_20_3.json",
+      "num_tasks": 20,
+      "scenario_seed": 978306309,
+      "heft_makespan": 0.86894815180045,
+      "bestof64_lns_makespan": 0.8335247362596547,
+      "gumbel_beam_lns_makespan": 0.8128918065290792,
+      "bestof64_lns_ratio": 0.9592341436397576,
+      "gumbel_beam_lns_ratio": 0.9354894245931443,
+      "beam_unique_complete_orders": 16
+    },
+    {
+      "scenario": "scenario_20_4.json",
+      "num_tasks": 20,
+      "scenario_seed": 978306310,
+      "heft_makespan": 0.8359221176853918,
+      "bestof64_lns_makespan": 0.7453917203391044,
+      "gumbel_beam_lns_makespan": 0.7378257960416411,
+      "bestof64_lns_ratio": 0.8916999617177739,
+      "gumbel_beam_lns_ratio": 0.8826489698401899,
+      "beam_unique_complete_orders": 16
+    },
+    {
+      "scenario": "scenario_25_0.json",
+      "num_tasks": 25,
+      "scenario_seed": 978306311,
+      "heft_makespan": 1.039261202106066,
+      "bestof64_lns_makespan": 1.0179586365580837,
+      "gumbel_beam_lns_makespan": 1.0233422981513416,
+      "bestof64_lns_ratio": 0.9795022026177705,
+      "gumbel_beam_lns_ratio": 0.9846824802826616,
+      "beam_unique_complete_orders": 16
+    },
+    {
+      "scenario": "scenario_25_1.json",
+      "num_tasks": 25,
+      "scenario_seed": 978306312,
+      "heft_makespan": 0.921302144217215,
+      "bestof64_lns_makespan": 0.8646060078473127,
+      "gumbel_beam_lns_makespan": 0.8606178384565414,
+      "bestof64_lns_ratio": 0.9384608657151512,
+      "gumbel_beam_lns_ratio": 0.9341320259140024,
+      "beam_unique_complete_orders": 16
+    },
+    {
+      "scenario": "scenario_25_2.json",
+      "num_tasks": 25,
+      "scenario_seed": 978306313,
+      "heft_makespan": 1.000114438569326,
+      "bestof64_lns_makespan": 0.9515254842102854,
+      "gumbel_beam_lns_makespan": 0.9484003154028584,
+      "bestof64_lns_ratio": 0.9514166054551242,
+      "gumbel_beam_lns_ratio": 0.9482917942466214,
+      "beam_unique_complete_orders": 16
+    },
+    {
+      "scenario": "scenario_25_3.json",
+      "num_tasks": 25,
+      "scenario_seed": 978306314,
+      "heft_makespan": 0.9382051467178703,
+      "bestof64_lns_makespan": 0.8763148411607529,
+      "gumbel_beam_lns_makespan": 0.875455955216826,
+      "bestof64_lns_ratio": 0.9340332913610326,
+      "gumbel_beam_lns_ratio": 0.9331178349206884,
+      "beam_unique_complete_orders": 16
+    },
+    {
+      "scenario": "scenario_25_4.json",
+      "num_tasks": 25,
+      "scenario_seed": 978306315,
+      "heft_makespan": 1.0729189030491886,
+      "bestof64_lns_makespan": 0.9958063165600908,
+      "gumbel_beam_lns_makespan": 0.9931580542505898,
+      "bestof64_lns_ratio": 0.9281282245378032,
+      "gumbel_beam_lns_ratio": 0.9256599463650776,
+      "beam_unique_complete_orders": 16
+    }
+  ]
+}

@@ -1,0 +1,102 @@
+{
+  "design": "independent system-entropy seeds; paired methods share each repeat's seed and exact Best-of-64 samples",
+  "difference_definition": "local-search mean_ratio minus paired Residual Best-of-64 mean_ratio",
+  "repeat_count": 5,
+  "paired_runs": [
+    {
+      "repeat": 1,
+      "sampling_seed": 314495633,
+      "residual_bestof64_mean_ratio": 0.9499481031455419,
+      "local_search_mean_ratio": 0.9354365626301571,
+      "difference_local_minus_base": -0.014511540515384835,
+      "residual_bestof64_better_than_heft_count": 18,
+      "local_search_better_than_heft_count": 19,
+      "elapsed_seconds": 25.382857999999942,
+      "source": "evaluation/results/autonomous_exploration/direction1_local_search/repeat_1.json"
+    },
+    {
+      "repeat": 2,
+      "sampling_seed": 1362660425,
+      "residual_bestof64_mean_ratio": 0.9510685285485193,
+      "local_search_mean_ratio": 0.9390916969679342,
+      "difference_local_minus_base": -0.011976831580585157,
+      "residual_bestof64_better_than_heft_count": 18,
+      "local_search_better_than_heft_count": 20,
+      "elapsed_seconds": 27.07354999999984,
+      "source": "evaluation/results/autonomous_exploration/direction1_local_search/repeat_2.json"
+    },
+    {
+      "repeat": 3,
+      "sampling_seed": 1230227119,
+      "residual_bestof64_mean_ratio": 0.95074802125597,
+      "local_search_mean_ratio": 0.9331113537943206,
+      "difference_local_minus_base": -0.01763666746164938,
+      "residual_bestof64_better_than_heft_count": 18,
+      "local_search_better_than_heft_count": 18,
+      "elapsed_seconds": 26.943250000000262,
+      "source": "evaluation/results/autonomous_exploration/direction1_local_search/repeat_3.json"
+    },
+    {
+      "repeat": 4,
+      "sampling_seed": 590657209,
+      "residual_bestof64_mean_ratio": 0.9568065364198108,
+      "local_search_mean_ratio": 0.9399024861216316,
+      "difference_local_minus_base": -0.016904050298179207,
+      "residual_bestof64_better_than_heft_count": 18,
+      "local_search_better_than_heft_count": 19,
+      "elapsed_seconds": 27.611225900000136,
+      "source": "evaluation/results/autonomous_exploration/direction1_local_search/repeat_4.json"
+    },
+    {
+      "repeat": 5,
+      "sampling_seed": 2021778252,
+      "residual_bestof64_mean_ratio": 0.9475205664265219,
+      "local_search_mean_ratio": 0.9349070293340166,
+      "difference_local_minus_base": -0.012613537092505345,
+      "residual_bestof64_better_than_heft_count": 19,
+      "local_search_better_than_heft_count": 19,
+      "elapsed_seconds": 25.83646039999985,
+      "source": "evaluation/results/autonomous_exploration/direction1_local_search/repeat_5.json"
+    }
+  ],
+  "statistics": {
+    "residual_bestof64_mean_ratio": {
+      "mean": 0.9512183511592728,
+      "sample_std": 0.003419013508487537,
+      "min": 0.9475205664265219,
+      "max": 0.9568065364198108
+    },
+    "local_search_mean_ratio": {
+      "mean": 0.936489825769612,
+      "sample_std": 0.0028915681340840904,
+      "min": 0.9331113537943206,
+      "max": 0.9399024861216316
+    },
+    "paired_difference": {
+      "mean": -0.014728525389660786,
+      "sample_std": 0.002514074168065074,
+      "min": -0.01763666746164938,
+      "max": -0.011976831580585157
+    },
+    "residual_bestof64_better_than_heft_count": {
+      "mean": 18.2,
+      "sample_std": 0.4472135954999579,
+      "min": 18.0,
+      "max": 19.0
+    },
+    "local_search_better_than_heft_count": {
+      "mean": 19.0,
+      "sample_std": 0.7071067811865476,
+      "min": 18.0,
+      "max": 20.0
+    },
+    "paired_t_test_two_sided": {
+      "t_statistic": -13.099845819171012,
+      "degrees_of_freedom": 4,
+      "p_value": 0.0001960651286437309,
+      "alpha": 0.05,
+      "significant": true,
+      "new_method_better": true
+    }
+  }
+}

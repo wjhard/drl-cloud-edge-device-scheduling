@@ -1,0 +1,108 @@
+{
+  "design": "independent system-entropy seeds; beam and Best-of-64 LNS share each run seed",
+  "difference_definition": "Gumbel-beam LNS mean_ratio minus Best-of-64 LNS mean_ratio",
+  "repeat_count": 5,
+  "paired_runs": [
+    {
+      "repeat": 1,
+      "sampling_seed": 978306296,
+      "bestof64_lns_mean_ratio": 0.9234390640939738,
+      "gumbel_beam_lns_mean_ratio": 0.9187528793579887,
+      "difference_beam_minus_bestof64": -0.004686184735985144,
+      "bestof64_lns_better_than_heft_count": 20,
+      "gumbel_beam_lns_better_than_heft_count": 19,
+      "elapsed_seconds": 123.2817,
+      "source": "evaluation/results/autonomous_exploration/direction3_gumbel_beam/repeat_1.json"
+    },
+    {
+      "repeat": 2,
+      "sampling_seed": 107607931,
+      "bestof64_lns_mean_ratio": 0.9185464999933556,
+      "gumbel_beam_lns_mean_ratio": 0.9203220073812874,
+      "difference_beam_minus_bestof64": 0.0017755073879318628,
+      "bestof64_lns_better_than_heft_count": 20,
+      "gumbel_beam_lns_better_than_heft_count": 19,
+      "elapsed_seconds": 113.28064629999972,
+      "source": "evaluation/results/autonomous_exploration/direction3_gumbel_beam/repeat_2.json"
+    },
+    {
+      "repeat": 3,
+      "sampling_seed": 34793461,
+      "bestof64_lns_mean_ratio": 0.9198109296302619,
+      "gumbel_beam_lns_mean_ratio": 0.9222641994076266,
+      "difference_beam_minus_bestof64": 0.0024532697773647083,
+      "bestof64_lns_better_than_heft_count": 20,
+      "gumbel_beam_lns_better_than_heft_count": 20,
+      "elapsed_seconds": 128.65268229999992,
+      "source": "evaluation/results/autonomous_exploration/direction3_gumbel_beam/repeat_3.json"
+    },
+    {
+      "repeat": 4,
+      "sampling_seed": 2123557578,
+      "bestof64_lns_mean_ratio": 0.9227418904244097,
+      "gumbel_beam_lns_mean_ratio": 0.9206019384545309,
+      "difference_beam_minus_bestof64": -0.002139951969878817,
+      "bestof64_lns_better_than_heft_count": 20,
+      "gumbel_beam_lns_better_than_heft_count": 20,
+      "elapsed_seconds": 120.08893959999978,
+      "source": "evaluation/results/autonomous_exploration/direction3_gumbel_beam/repeat_4.json"
+    },
+    {
+      "repeat": 5,
+      "sampling_seed": 1367086631,
+      "bestof64_lns_mean_ratio": 0.919306356140166,
+      "gumbel_beam_lns_mean_ratio": 0.9229000591212613,
+      "difference_beam_minus_bestof64": 0.0035937029810952925,
+      "bestof64_lns_better_than_heft_count": 20,
+      "gumbel_beam_lns_better_than_heft_count": 20,
+      "elapsed_seconds": 116.41646660000015,
+      "source": "evaluation/results/autonomous_exploration/direction3_gumbel_beam/repeat_5.json"
+    }
+  ],
+  "statistics": {
+    "bestof64_lns_mean_ratio": {
+      "mean": 0.9207689480564334,
+      "sample_std": 0.0021804971367087147,
+      "min": 0.9185464999933556,
+      "max": 0.9234390640939738
+    },
+    "gumbel_beam_lns_mean_ratio": {
+      "mean": 0.920968216744539,
+      "sample_std": 0.0016485639276849835,
+      "min": 0.9187528793579887,
+      "max": 0.9229000591212613
+    },
+    "paired_difference": {
+      "mean": 0.00019926868810558052,
+      "sample_std": 0.0034794698577634165,
+      "min": -0.004686184735985144,
+      "max": 0.0035937029810952925
+    },
+    "bestof64_lns_better_than_heft_count": {
+      "mean": 20.0,
+      "sample_std": 0.0,
+      "min": 20.0,
+      "max": 20.0
+    },
+    "gumbel_beam_lns_better_than_heft_count": {
+      "mean": 19.6,
+      "sample_std": 0.5477225575051661,
+      "min": 19.0,
+      "max": 20.0
+    },
+    "elapsed_seconds": {
+      "mean": 120.34408695999991,
+      "sample_std": 5.980088266940384,
+      "min": 113.28064629999972,
+      "max": 128.65268229999992
+    },
+    "paired_t_test_two_sided": {
+      "t_statistic": 0.12805925919924394,
+      "degrees_of_freedom": 4,
+      "p_value": 0.9042822845482867,
+      "alpha": 0.05,
+      "significant": false,
+      "new_method_better": false
+    }
+  }
+}

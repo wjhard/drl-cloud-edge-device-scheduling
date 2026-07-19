@@ -1,0 +1,102 @@
+{
+  "design": "independent system-entropy seeds; LNS and local-search baseline are paired within each run",
+  "difference_definition": "LNS mean_ratio minus local-search mean_ratio",
+  "repeat_count": 5,
+  "paired_runs": [
+    {
+      "repeat": 1,
+      "sampling_seed": 1565812275,
+      "local_search_mean_ratio": 0.9329780280518143,
+      "lns_mean_ratio": 0.9214895105328006,
+      "difference_lns_minus_local": -0.011488517519013697,
+      "local_search_better_than_heft_count": 20,
+      "lns_better_than_heft_count": 20,
+      "elapsed_seconds": 53.130252400000245,
+      "source": "evaluation/results/autonomous_exploration/direction2_lns/repeat_1.json"
+    },
+    {
+      "repeat": 2,
+      "sampling_seed": 842234145,
+      "local_search_mean_ratio": 0.935912388845918,
+      "lns_mean_ratio": 0.9198372908206908,
+      "difference_lns_minus_local": -0.01607509802522722,
+      "local_search_better_than_heft_count": 19,
+      "lns_better_than_heft_count": 20,
+      "elapsed_seconds": 57.36880699999983,
+      "source": "evaluation/results/autonomous_exploration/direction2_lns/repeat_2.json"
+    },
+    {
+      "repeat": 3,
+      "sampling_seed": 386081360,
+      "local_search_mean_ratio": 0.9477835154262392,
+      "lns_mean_ratio": 0.9223577132181999,
+      "difference_lns_minus_local": -0.02542580220803925,
+      "local_search_better_than_heft_count": 18,
+      "lns_better_than_heft_count": 20,
+      "elapsed_seconds": 55.642785300000014,
+      "source": "evaluation/results/autonomous_exploration/direction2_lns/repeat_3.json"
+    },
+    {
+      "repeat": 4,
+      "sampling_seed": 1117038938,
+      "local_search_mean_ratio": 0.9378888860239043,
+      "lns_mean_ratio": 0.9223601970324745,
+      "difference_lns_minus_local": -0.015528688991429784,
+      "local_search_better_than_heft_count": 19,
+      "lns_better_than_heft_count": 20,
+      "elapsed_seconds": 51.783936599999834,
+      "source": "evaluation/results/autonomous_exploration/direction2_lns/repeat_4.json"
+    },
+    {
+      "repeat": 5,
+      "sampling_seed": 1760006972,
+      "local_search_mean_ratio": 0.9330778943982303,
+      "lns_mean_ratio": 0.9184037806976327,
+      "difference_lns_minus_local": -0.014674113700597569,
+      "local_search_better_than_heft_count": 20,
+      "lns_better_than_heft_count": 20,
+      "elapsed_seconds": 55.13688180000008,
+      "source": "evaluation/results/autonomous_exploration/direction2_lns/repeat_5.json"
+    }
+  ],
+  "statistics": {
+    "local_search_mean_ratio": {
+      "mean": 0.9375281425492211,
+      "sample_std": 0.006091422643271662,
+      "min": 0.9329780280518143,
+      "max": 0.9477835154262392
+    },
+    "lns_mean_ratio": {
+      "mean": 0.9208896984603598,
+      "sample_std": 0.001729491028102577,
+      "min": 0.9184037806976327,
+      "max": 0.9223601970324745
+    },
+    "paired_difference": {
+      "mean": -0.016638444088861504,
+      "sample_std": 0.005223670056278645,
+      "min": -0.02542580220803925,
+      "max": -0.011488517519013697
+    },
+    "local_search_better_than_heft_count": {
+      "mean": 19.2,
+      "sample_std": 0.8366600265340756,
+      "min": 18.0,
+      "max": 20.0
+    },
+    "lns_better_than_heft_count": {
+      "mean": 20.0,
+      "sample_std": 0.0,
+      "min": 20.0,
+      "max": 20.0
+    },
+    "paired_t_test_two_sided": {
+      "t_statistic": -7.122328099150388,
+      "degrees_of_freedom": 4,
+      "p_value": 0.0020541839705487727,
+      "alpha": 0.05,
+      "significant": true,
+      "new_method_better": true
+    }
+  }
+}

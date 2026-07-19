@@ -1,0 +1,112 @@
+{
+  "design": "five paired seeds; approximately equal 20-scenario wall-clock budgets",
+  "difference_definition": "LNS mean_ratio minus compute-matched pure-sampling mean_ratio",
+  "paired_runs": [
+    {
+      "repeat": 1,
+      "sampling_seed": 386081360,
+      "pure_sampling_mean_ratio": 0.9440287405123359,
+      "lns_mean_ratio": 0.9223577132181999,
+      "difference_lns_minus_sampling": -0.021671027294135947,
+      "pure_sampling_better_than_heft_count": 18,
+      "lns_better_than_heft_count": 20,
+      "pure_sampling_elapsed_seconds": 56.73944380000103,
+      "lns_elapsed_seconds": 56.42776760000015,
+      "sampling_source": "evaluation/results/autonomous_exploration/compute_matched_sampling/repeat_3.json",
+      "lns_source": "evaluation/results/autonomous_exploration/direction2_lns/direct_repeat_3.json"
+    },
+    {
+      "repeat": 2,
+      "sampling_seed": 842234145,
+      "pure_sampling_mean_ratio": 0.9412093965791165,
+      "lns_mean_ratio": 0.9198372908206908,
+      "difference_lns_minus_sampling": -0.02137210575842574,
+      "pure_sampling_better_than_heft_count": 19,
+      "lns_better_than_heft_count": 20,
+      "pure_sampling_elapsed_seconds": 56.57121740000002,
+      "lns_elapsed_seconds": 56.75158889999966,
+      "sampling_source": "evaluation/results/autonomous_exploration/compute_matched_sampling/repeat_2.json",
+      "lns_source": "evaluation/results/autonomous_exploration/direction2_lns/direct_repeat_2.json"
+    },
+    {
+      "repeat": 3,
+      "sampling_seed": 1117038938,
+      "pure_sampling_mean_ratio": 0.9444557841353951,
+      "lns_mean_ratio": 0.9223601970324745,
+      "difference_lns_minus_sampling": -0.02209558710292059,
+      "pure_sampling_better_than_heft_count": 19,
+      "lns_better_than_heft_count": 20,
+      "pure_sampling_elapsed_seconds": 57.24099929999829,
+      "lns_elapsed_seconds": 54.006264999999985,
+      "sampling_source": "evaluation/results/autonomous_exploration/compute_matched_sampling/repeat_4.json",
+      "lns_source": "evaluation/results/autonomous_exploration/direction2_lns/direct_repeat_4.json"
+    },
+    {
+      "repeat": 4,
+      "sampling_seed": 1565812275,
+      "pure_sampling_mean_ratio": 0.9406535638272866,
+      "lns_mean_ratio": 0.9214895105328006,
+      "difference_lns_minus_sampling": -0.019164053294486005,
+      "pure_sampling_better_than_heft_count": 18,
+      "lns_better_than_heft_count": 20,
+      "pure_sampling_elapsed_seconds": 56.825079399999595,
+      "lns_elapsed_seconds": 52.5633257999998,
+      "sampling_source": "evaluation/results/autonomous_exploration/compute_matched_sampling/repeat_1.json",
+      "lns_source": "evaluation/results/autonomous_exploration/direction2_lns/direct_repeat_1.json"
+    },
+    {
+      "repeat": 5,
+      "sampling_seed": 1760006972,
+      "pure_sampling_mean_ratio": 0.9398900605419331,
+      "lns_mean_ratio": 0.9184037806976327,
+      "difference_lns_minus_sampling": -0.021486279844300404,
+      "pure_sampling_better_than_heft_count": 19,
+      "lns_better_than_heft_count": 20,
+      "pure_sampling_elapsed_seconds": 56.63099669999974,
+      "lns_elapsed_seconds": 52.25972120000006,
+      "sampling_source": "evaluation/results/autonomous_exploration/compute_matched_sampling/repeat_5.json",
+      "lns_source": "evaluation/results/autonomous_exploration/direction2_lns/direct_repeat_5.json"
+    }
+  ],
+  "statistics": {
+    "pure_sampling_mean_ratio": {
+      "mean": 0.9420475091192134,
+      "sample_std": 0.0020630782133150088,
+      "min": 0.9398900605419331,
+      "max": 0.9444557841353951
+    },
+    "lns_mean_ratio": {
+      "mean": 0.9208896984603598,
+      "sample_std": 0.001729491028102577,
+      "min": 0.9184037806976327,
+      "max": 0.9223601970324745
+    },
+    "paired_difference": {
+      "mean": -0.021157810658853738,
+      "sample_std": 0.0011480090153431067,
+      "min": -0.02209558710292059,
+      "max": -0.019164053294486005
+    },
+    "pure_sampling_elapsed_seconds": {
+      "mean": 56.801547319999734,
+      "sample_std": 0.26441824574878475,
+      "min": 56.57121740000002,
+      "max": 57.24099929999829
+    },
+    "lns_elapsed_seconds": {
+      "mean": 54.40173369999993,
+      "sample_std": 2.106596156987268,
+      "min": 52.25972120000006,
+      "max": 56.75158889999966
+    },
+    "elapsed_ratio_sampling_over_lns": 1.0441128151031667,
+    "paired_t_test_two_sided": {
+      "t_statistic": -41.21074160217016,
+      "degrees_of_freedom": 4,
+      "p_value": 2.0720806578332704e-06,
+      "alpha": 0.05,
+      "significant": true,
+      "lns_better": true
+    }
+  }
+}

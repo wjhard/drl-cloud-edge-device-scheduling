@@ -1,0 +1,47 @@
+{
+  "attempt_limit": 3,
+  "attempts_completed": 3,
+  "original_formal_method": "Residual Scheduling + Best-of-64",
+  "recommended_method": "Residual Best-of-64 + precedence-feasible relocation + 64-iteration destroy-repair LNS",
+  "recommended_method_direct_comparison": {
+    "repeat_count": 5,
+    "residual_bestof64_mean_ratio": 0.9508142511327208,
+    "residual_bestof64_sample_std": 0.0033579288659588416,
+    "recommended_mean_ratio": 0.9208896984603598,
+    "recommended_sample_std": 0.001729491028102577,
+    "paired_difference_mean": -0.02992455267236114,
+    "paired_difference_sample_std": 0.003080309578406879,
+    "paired_t_statistic": -21.722925007518153,
+    "paired_t_test_p_value": 0.000026568511931798934,
+    "significant_at_0_05": true,
+    "recommended_better_than_heft_count_each_repeat": [20, 20, 20, 20, 20],
+    "source": "direction2_lns/direct_vs_residual_paired_summary.json"
+  },
+  "compute_matched_comparison": {
+    "pure_sampling_method": "Residual Best-of-128",
+    "repeat_count": 5,
+    "pure_sampling_mean_ratio": 0.9420475091192134,
+    "pure_sampling_sample_std": 0.0020630782133150088,
+    "pure_sampling_mean_elapsed_seconds": 56.801547319999734,
+    "lns_mean_ratio": 0.9208896984603598,
+    "lns_sample_std": 0.001729491028102577,
+    "lns_mean_elapsed_seconds": 54.40173369999993,
+    "elapsed_ratio_sampling_over_lns": 1.0441128151031667,
+    "paired_difference_lns_minus_sampling": -0.021157810658853738,
+    "paired_difference_sample_std": 0.0011480090153431067,
+    "paired_t_statistic": -41.21074160217016,
+    "paired_t_test_p_value": 0.0000020720806578332704,
+    "significant_at_0_05": true,
+    "conclusion": "LNS refinement adds significant value beyond compute-matched pure sampling",
+    "source": "compute_matched_sampling/paired_comparison_summary.json"
+  },
+  "rejected_direction": {
+    "name": "Gumbel-diversified policy beam + identical post-processing",
+    "paired_difference_mean": 0.00019926868810558052,
+    "paired_t_test_p_value": 0.9042822845482867,
+    "conclusion": "未能证明显著改善",
+    "source": "direction3_gumbel_beam/paired_repeats_summary.json"
+  },
+  "formal_pipeline_changed": false,
+  "existing_checkpoint_preserved": "training/checkpoints/ppo_mlp_residual"
+}

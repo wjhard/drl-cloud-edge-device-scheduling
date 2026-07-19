@@ -81,6 +81,19 @@ class RLScheduler(BaseScheduler):
         resource_config: ResourceConfig,
         deterministic: bool,
     ) -> ScheduleResult:
+        schedule_result, _ = self._schedule_once_with_order(
+            dag,
+            resource_config,
+            deterministic=deterministic,
+        )
+        return schedule_result
+
+    def _schedule_once_with_order(
+        self,
+        dag: DAGTask,
+        resource_config: ResourceConfig,
+        deterministic: bool,
+    ) -> tuple[ScheduleResult, list[int]]:
         env_class = {
             "joint": SchedulingEnv,
             "ranked": SchedulingEnvRanked,
@@ -98,6 +111,7 @@ class RLScheduler(BaseScheduler):
         observation, _ = env.reset()
 
         schedule_result: ScheduleResult = {}
+        task_order: list[int] = []
         terminated = False
         while not terminated:
             mask = raw_env.action_masks()
@@ -114,5 +128,6 @@ class RLScheduler(BaseScheduler):
                 float(info["start_time"]),
                 float(info["finish_time"]),
             )
+            task_order.append(int(info["task_id"]))
 
-        return schedule_result
+        return schedule_result, task_order
