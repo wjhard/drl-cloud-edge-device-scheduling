@@ -62,9 +62,9 @@ python -m pytest tests/ -v
 
 仓库已包含最终模型 `training/checkpoints/ppo_mlp_residual.zip`，可直接评测，无需重新训练。
 
-### 一键基础流水线
+### 一键最终流水线
 
-该脚本检查依赖和 checkpoint，必要时训练模型，并完成固定验证集上的 Residual Best-of-64 评测。
+该脚本检查依赖和 checkpoint，必要时训练模型，生成固定验证场景，并使用报告中的 5 个规范种子依次运行 **Residual Best-of-64 + 合法拓扑序重定位 + best-only LNS**。最后自动执行配对统计，输出报告对应的 `mean_ratio=0.920890 ± 0.001729`。使用仓库内 checkpoint 时，完整评测通常需要约 4 至 6 分钟。
 
 Windows PowerShell：
 
@@ -78,7 +78,9 @@ Linux/openEuler：
 bash scripts/run_final_pipeline.sh
 ```
 
-### 运行最终 LNS 精修方案
+输出汇总保存在 `evaluation/results/final_pipeline_lns_summary.json`，五次逐轮结果保存在 `evaluation/results/final_pipeline_lns_repeats/`。
+
+### 单次调试 LNS 精修方案
 
 ```bash
 python evaluation/evaluate_residual_lns.py \
@@ -90,7 +92,7 @@ python evaluation/evaluate_residual_lns.py \
   --lns-iterations 64
 ```
 
-未指定 `--sampling-seed` 时使用系统熵种子，因此单次结果会在统计范围内波动。正式报告数字来自 5 次独立、配对的重复评测，而非挑选单次最好结果。
+未指定 `--sampling-seed` 时使用系统熵种子，因此单次结果会在统计范围内波动。一键脚本固定使用报告中最初由系统熵产生的 5 个规范种子，使任何克隆环境都能复现正式统计，而不是挑选单次最好结果。
 
 ### 重新训练 Residual 模型
 

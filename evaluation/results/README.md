@@ -8,5 +8,6 @@
 - `openeuler_validation/`：openEuler 容器环境、依赖、测试与评测证据。
 - `structural_generalization/`：结构化泛化场景配置和分组结果。
 - `run_final_pipeline_*.log`：一键运行流程的端到端验证记录。
+- `final_pipeline_lns_summary.json` 与 `final_pipeline_lns_repeats/`：最终一键脚本使用五个规范种子得到的 LNS 逐轮结果与统计汇总。
 
 日志中的本机用户目录统一替换为 `<USER_HOME>`。脱敏不改变任何实验数字、随机种子、耗时或算法输出。

@@ -4,8 +4,10 @@ $ProjectRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
 $ConfigPath = "training/configs/ppo_mlp_residual.yaml"
 $ModelPath = "training/checkpoints/ppo_mlp_residual"
 $ScenarioDir = "evaluation/scenarios"
-$ResultsPath = "evaluation/results/summary_mlp_residual_bestof64.json"
-$RequiredImports = "import importlib.util; import gymnasium, matplotlib, networkx, numpy, pulp, pytest, rich, torch, tqdm, yaml; assert all(importlib.util.find_spec(name) is not None for name in ('sb3_contrib', 'stable_baselines3', 'tensorboard'))"
+$ResultsDir = "evaluation/results/final_pipeline_lns_repeats"
+$SummaryPath = "evaluation/results/final_pipeline_lns_summary.json"
+$CanonicalSeeds = @(1565812275, 842234145, 386081360, 1117038938, 1760006972)
+$RequiredImports = "import importlib.util; import gymnasium, matplotlib, networkx, numpy, pulp, pytest, rich, scipy, torch, tqdm, yaml; assert all(importlib.util.find_spec(name) is not None for name in ('sb3_contrib', 'stable_baselines3', 'tensorboard'))"
 
 if ($env:PYTHON) {
     $PythonExe = $env:PYTHON
@@ -45,7 +47,7 @@ try {
     Write-Host "==== check dependencies ===="
     & $PythonExe @PythonPrefixArgs -m pip check
     $PipCheckExit = $LASTEXITCODE
-    & $PythonExe @PythonPrefixArgs -c $RequiredImports
+    & $PythonExe @PythonPrefixArgs -c $RequiredImports *> $null
     $ImportCheckExit = $LASTEXITCODE
 
     if ($PipCheckExit -ne 0) {
@@ -56,7 +58,7 @@ try {
         Write-Host "dependencies_ready=false; installing requirements"
         Invoke-Python -StepName "upgrade pip" -Arguments @("-m", "pip", "install", "--upgrade", "pip")
 
-        & $PythonExe @PythonPrefixArgs -c "import torch"
+        & $PythonExe @PythonPrefixArgs -c "import torch" *> $null
         if ($LASTEXITCODE -ne 0) {
             Invoke-Python -StepName "install CPU PyTorch" -Arguments @(
                 "-m", "pip", "install", "torch==2.12.1+cpu",
@@ -100,25 +102,53 @@ try {
         )
     }
 
-    Invoke-Python -StepName "evaluate Residual best-of-64" -Arguments @(
-        "evaluation/evaluate_bestofn.py",
-        "--config", $ConfigPath,
-        "--model-path", $ModelPath,
-        "--num-samples", "64"
+    Write-Host "==== evaluate final Residual best-of-64 + relocation + LNS ===="
+    New-Item -ItemType Directory -Path $ResultsDir -Force | Out-Null
+    Get-ChildItem $ResultsDir -Filter "direct_repeat_*.json" -File -ErrorAction SilentlyContinue |
+        Remove-Item -Force
+    for ($Index = 0; $Index -lt $CanonicalSeeds.Count; $Index++) {
+        $Repeat = $Index + 1
+        $Seed = $CanonicalSeeds[$Index]
+        $RunPath = Join-Path $ResultsDir "direct_repeat_$Repeat.json"
+        Invoke-Python -StepName "final LNS repeat $Repeat/5 (seed=$Seed)" -Arguments @(
+            "evaluation/evaluate_residual_lns.py",
+            "--config", $ConfigPath,
+            "--model-path", $ModelPath,
+            "--results-path", $RunPath,
+            "--sampling-seed", "$Seed",
+            "--num-samples", "64",
+            "--local-max-passes", "3",
+            "--lns-iterations", "64"
+        )
+    }
+
+    Invoke-Python -StepName "analyze five paired final LNS repeats" -Arguments @(
+        "evaluation/analyze_residual_lns_direct_repeats.py",
+        "--input-dir", $ResultsDir,
+        "--output-path", $SummaryPath
     )
 
-    if (-not (Test-Path $ResultsPath)) {
-        throw "ERROR: expected results file was not created: $ResultsPath"
+    if (-not (Test-Path $SummaryPath)) {
+        throw "ERROR: expected final summary was not created: $SummaryPath"
     }
-    $Summary = Get-Content $ResultsPath -Raw | ConvertFrom-Json
-    $MeanRatio = [double]$Summary.overall.mean_ratio
-    $OutperformCount = @($Summary.scenarios | Where-Object { [double]$_.ratio -lt 1.0 }).Count
-    $ScenarioCount = @($Summary.scenarios).Count
+    $Summary = Get-Content $SummaryPath -Raw | ConvertFrom-Json
+    $MeanRatio = [double]$Summary.statistics.lns_mean_ratio.mean
+    $SampleStd = [double]$Summary.statistics.lns_mean_ratio.sample_std
+    $PValue = [double]$Summary.statistics.paired_t_test_two_sided.p_value
+    $WinningRuns = @($Summary.paired_runs | Where-Object {
+        [int]$_.lns_better_than_heft_count -eq 20
+    }).Count
 
     Write-Host "FINAL_PIPELINE_RESULT"
+    Write-Host "method=Residual Best-of-64 + topological relocation + best-only LNS"
+    Write-Host "repeat_count=$($Summary.repeat_count)"
     Write-Host ("overall_mean_ratio={0:F12}" -f $MeanRatio)
-    Write-Host "outperform_heft_scenarios=$OutperformCount/$ScenarioCount"
-    Write-Host "results_path=$ResultsPath"
+    Write-Host ("overall_mean_ratio_6dp={0:F6}" -f $MeanRatio)
+    Write-Host ("sample_std={0:F12}" -f $SampleStd)
+    Write-Host ("sample_std_6dp={0:F6}" -f $SampleStd)
+    Write-Host "outperform_heft_scenarios=20/20 in $WinningRuns/5 repeats"
+    Write-Host ("paired_p_value={0:E12}" -f $PValue)
+    Write-Host "results_path=$SummaryPath"
     Write-Host "FINAL_PIPELINE_COMPLETE"
 } finally {
     Pop-Location
