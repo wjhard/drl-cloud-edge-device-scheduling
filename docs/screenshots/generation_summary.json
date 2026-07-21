@@ -5,15 +5,21 @@
   "output_pdf": "docs/技术报告.pdf",
   "page_count": 31,
   "data_table_count": 14,
-  "code_block_table_count": 11,
+  "code_block_table_count": 5,
+  "equation_layout_table_count": 6,
   "word_table_object_count": 25,
+  "equation_count": 6,
   "figure_count": 5,
-  "docx_size_bytes": 453164,
-  "pdf_size_bytes": 1068097,
+  "docx_size_bytes": 461494,
+  "pdf_size_bytes": 1109728,
   "screenshots": [
     "docs/screenshots/01_封面_第1页.png",
     "docs/screenshots/02_目录_第2页.png",
-    "docs/screenshots/03_技术演进_第13页.png",
-    "docs/screenshots/04_实验结果_第20页.png"
+    "docs/screenshots/03_公式与模型_第7页.png",
+    "docs/screenshots/04_三线表_第7页.png",
+    "docs/screenshots/05_奖励公式_第12页.png",
+    "docs/screenshots/06_残差公式_第15页.png",
+    "docs/screenshots/07_技术演进_第13页.png",
+    "docs/screenshots/08_实验结果_第20页.png"
   ]
 }

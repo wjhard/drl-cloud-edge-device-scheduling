@@ -1,0 +1,14 @@
+{
+  "report": "docs/技术报告.docx",
+  "docx_zip_corrupt_member": "none",
+  "word_table_object_count": 25,
+  "data_table_count": 14,
+  "three_line_table_count": 14,
+  "non_three_line_data_table_count": 0,
+  "code_block_table_count": 5,
+  "equation_layout_table_count": 6,
+  "equation_object_count": 6,
+  "drawing_object_count": 5,
+  "explicit_page_break_count": 0,
+  "size_bytes": 461494
+}

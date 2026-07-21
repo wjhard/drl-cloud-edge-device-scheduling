@@ -6,9 +6,7 @@ import argparse
 import json
 import re
 import time
-import zipfile
 from pathlib import Path
-from xml.etree import ElementTree as ET
 
 import pythoncom
 import win32com.client
@@ -42,6 +40,36 @@ WD_ROW_HEIGHT_AUTO = 0
 WD_AUTOFIT_WINDOW = 2
 WD_PAGE_NUMBER_ARABIC = 0
 WD_PAGE_NUMBER_LOWERCASE_ROMAN = 2
+WD_BORDER_TOP = -1
+WD_BORDER_LEFT = -2
+WD_BORDER_BOTTOM = -3
+WD_BORDER_RIGHT = -4
+WD_BORDER_HORIZONTAL = -5
+WD_BORDER_VERTICAL = -6
+WD_LINE_STYLE_NONE = 0
+WD_LINE_STYLE_SINGLE = 1
+WD_LINE_WIDTH_050PT = 4
+WD_LINE_WIDTH_150PT = 12
+WD_TAB_ALIGN_CENTER = 1
+WD_TAB_ALIGN_RIGHT = 2
+WD_TAB_LEADER_SPACES = 0
+
+TABLE_CAPTIONS = [
+    "默认异构资源参数",
+    "赛题环节与实现证据对应关系",
+    "项目目录与模块职责",
+    "观测字段及归一化策略",
+    "关键技术演进与性能变化",
+    "未采纳方案及消融结论",
+    "最终搜索阶段的不变量与保障机制",
+    "最终方案五次重复评测结果",
+    "计算量对齐对比结果",
+    "MILP 最优解距离对比",
+    "结构化泛化评测结果",
+    "复现配置与用途",
+    "关键结论与原始证据索引",
+    "关键代码索引",
+]
 
 
 def rgb(red: int, green: int, blue: int) -> int:
@@ -88,6 +116,10 @@ def add_paragraph(
     fmt.SpaceAfter = space_after
     fmt.LineSpacingRule = WD_LINE_SPACE_1PT5
     fmt.KeepWithNext = -1 if keep_with_next else 0
+    try:
+        fmt.WordWrap = -1
+    except Exception:
+        pass
     set_font(paragraph.Range.Font, east_asia_font, ascii_font, size, bold)
     trailing = doc.Paragraphs.Item(doc.Paragraphs.Count)
     if int(trailing.Range.Start) > int(paragraph.Range.Start):
@@ -136,29 +168,61 @@ def is_separator(cells: list[str]) -> bool:
 
 def style_table(table, header: bool = True) -> None:
     table.Range.Style = WD_STYLE_NORMAL
-    table.Borders.Enable = 1
     table.Range.Font.NameFarEast = "宋体"
     table.Range.Font.Name = "Times New Roman"
     table.Range.Font.Size = 9.5
     table.Range.ParagraphFormat.FirstLineIndent = 0
     table.Range.ParagraphFormat.SpaceAfter = 2
     table.Range.ParagraphFormat.LineSpacingRule = 0
-    table.Rows.AllowBreakAcrossPages = True
+    table.Range.ParagraphFormat.Alignment = WD_ALIGN_CENTER
+    try:
+        table.Range.ParagraphFormat.WordWrap = -1
+    except Exception:
+        pass
+    table.Rows.AllowBreakAcrossPages = False
     table.AutoFitBehavior(WD_AUTOFIT_WINDOW)
+    for border_type in (
+        WD_BORDER_TOP,
+        WD_BORDER_LEFT,
+        WD_BORDER_BOTTOM,
+        WD_BORDER_RIGHT,
+        WD_BORDER_HORIZONTAL,
+        WD_BORDER_VERTICAL,
+    ):
+        table.Borders.Item(border_type).LineStyle = WD_LINE_STYLE_NONE
+    for border_type in (WD_BORDER_TOP, WD_BORDER_BOTTOM):
+        border = table.Borders.Item(border_type)
+        border.LineStyle = WD_LINE_STYLE_SINGLE
+        border.LineWidth = WD_LINE_WIDTH_150PT
+        border.Color = WD_COLOR_AUTOMATIC
     if header:
         row = table.Rows.Item(1)
         row.Range.Bold = -1
         row.Range.Font.NameFarEast = "黑体"
-        row.Range.Shading.Texture = WD_TEXTURE_NONE
-        row.Range.Shading.ForegroundPatternColor = WD_COLOR_AUTOMATIC
-        row.Range.Shading.BackgroundPatternColor = rgb(221, 230, 242)
+        row.Range.Shading.BackgroundPatternColor = WD_COLOR_AUTOMATIC
+        border = row.Borders.Item(WD_BORDER_BOTTOM)
+        border.LineStyle = WD_LINE_STYLE_SINGLE
+        border.LineWidth = WD_LINE_WIDTH_050PT
+        border.Color = WD_COLOR_AUTOMATIC
         row.HeadingFormat = True
     for index in range(2 if header else 1, table.Rows.Count + 1):
-        if index % 2 == 0:
-            table.Rows.Item(index).Range.Shading.BackgroundPatternColor = rgb(247, 249, 252)
+        table.Rows.Item(index).Range.Shading.BackgroundPatternColor = WD_COLOR_AUTOMATIC
 
 
-def add_table(doc, rows: list[list[str]]) -> None:
+def add_table(doc, rows: list[list[str]], table_number: int) -> None:
+    caption = TABLE_CAPTIONS[table_number - 1]
+    add_paragraph(
+        doc,
+        f"表 {table_number}  {caption}",
+        alignment=WD_ALIGN_CENTER,
+        first_line=0,
+        space_before=6,
+        space_after=4,
+        keep_with_next=True,
+        east_asia_font="宋体",
+        ascii_font="Times New Roman",
+        size=10.5,
+    )
     column_count = max(len(row) for row in rows)
     table = doc.Tables.Add(end_range(doc), len(rows), column_count)
     for row_index, row in enumerate(rows, 1):
@@ -202,6 +266,54 @@ def add_code_block(doc, code: str, language: str) -> None:
     doc.Range(table.Range.End, table.Range.End).InsertAfter("\r")
 
 
+def add_equation(doc, expression: str, equation_number: int) -> None:
+    # A borderless layout table keeps the equation number outside the OMath
+    # range. This avoids Word extending a built-up equation into the following
+    # paragraph for expressions that contain operators such as min/max.
+    table = doc.Tables.Add(end_range(doc), 1, 3)
+    table.AllowAutoFit = False
+    for index, width in enumerate((55, 338, 55), 1):
+        table.Columns.Item(index).Width = width
+    table.Borders.Enable = 0
+    for border_type in (
+        WD_BORDER_TOP,
+        WD_BORDER_LEFT,
+        WD_BORDER_BOTTOM,
+        WD_BORDER_RIGHT,
+        WD_BORDER_HORIZONTAL,
+        WD_BORDER_VERTICAL,
+    ):
+        table.Borders.Item(border_type).LineStyle = WD_LINE_STYLE_NONE
+    table.TopPadding = 2
+    table.BottomPadding = 2
+    table.LeftPadding = 0
+    table.RightPadding = 0
+    table.Rows.AllowBreakAcrossPages = False
+    table.Range.Style = WD_STYLE_NORMAL
+    table.Range.ParagraphFormat.FirstLineIndent = 0
+    table.Range.ParagraphFormat.SpaceBefore = 4
+    table.Range.ParagraphFormat.SpaceAfter = 4
+    table.Range.ParagraphFormat.LineSpacingRule = WD_LINE_SPACE_1PT5
+    set_font(table.Range.Font, "宋体", "Cambria Math", 11.5, False)
+
+    formula_cell = table.Cell(1, 2)
+    formula_cell.Range.Text = expression
+    formula_cell.Range.ParagraphFormat.Alignment = WD_ALIGN_CENTER
+    equation_range = doc.Range(formula_cell.Range.Start, formula_cell.Range.End - 1)
+    equation_range.Font.Name = "Cambria Math"
+    equation_range.Font.NameAscii = "Cambria Math"
+    equation_range.Font.NameOther = "Cambria Math"
+    equation_range.Font.Size = 11.5
+    math_range = equation_range.OMaths.Add(equation_range)
+    math_range.OMaths.Item(1).BuildUp()
+
+    number_cell = table.Cell(1, 3)
+    number_cell.Range.Text = f"（{equation_number}）"
+    number_cell.Range.ParagraphFormat.Alignment = WD_ALIGN_RIGHT
+    set_font(number_cell.Range.Font, "宋体", "Times New Roman", 11.5, False)
+    doc.Range(table.Range.End, table.Range.End).InsertAfter("\r")
+
+
 def add_figure(doc, alt_text: str, relative_path: str, figure_number: int) -> None:
     path = ROOT / relative_path
     if not path.is_file():
@@ -222,12 +334,12 @@ def add_figure(doc, alt_text: str, relative_path: str, figure_number: int) -> No
         space_after=8,
         east_asia_font="宋体",
         ascii_font="Times New Roman",
-        size=9,
+        size=10.5,
     )
 
 
 def add_list_item(doc, text: str, numbered: bool) -> None:
-    paragraph = add_paragraph(doc, clean_inline(text), alignment=WD_ALIGN_LEFT, first_line=0, space_after=2)
+    paragraph = add_paragraph(doc, clean_inline(text), alignment=WD_ALIGN_JUSTIFY, first_line=0, space_after=2)
     paragraph.Format.LeftIndent = 24
     paragraph.Format.FirstLineIndent = -18
     if numbered:
@@ -244,10 +356,14 @@ def configure_styles(doc) -> None:
     normal.ParagraphFormat.SpaceAfter = 6
     normal.ParagraphFormat.LineSpacingRule = WD_LINE_SPACE_1PT5
     normal.ParagraphFormat.OutlineLevel = 10
+    try:
+        normal.ParagraphFormat.WordWrap = -1
+    except Exception:
+        pass
     for style_id, size, color in (
-        (WD_STYLE_HEADING_1, 16, rgb(31, 78, 121)),
-        (WD_STYLE_HEADING_2, 14, rgb(31, 78, 121)),
-        (WD_STYLE_HEADING_3, 12, rgb(55, 55, 55)),
+        (WD_STYLE_HEADING_1, 16, WD_COLOR_AUTOMATIC),
+        (WD_STYLE_HEADING_2, 14, WD_COLOR_AUTOMATIC),
+        (WD_STYLE_HEADING_3, 12, WD_COLOR_AUTOMATIC),
     ):
         style = doc.Styles.Item(style_id)
         set_font(style.Font, "黑体", "Arial", size, True)
@@ -322,6 +438,7 @@ def parse_markdown(doc, markdown: str) -> dict:
     paragraph_buffer: list[str] = []
     table_count = 0
     code_block_count = 0
+    equation_count = 0
     figure_count = 0
 
     def flush() -> None:
@@ -347,8 +464,12 @@ def parse_markdown(doc, markdown: str) -> dict:
             while index < len(lines) and not lines[index].strip().startswith("```"):
                 code.append(lines[index])
                 index += 1
-            add_code_block(doc, "\n".join(code), language)
-            code_block_count += 1
+            if language.lower() == "math":
+                equation_count += 1
+                add_equation(doc, " ".join(item.strip() for item in code), equation_count)
+            else:
+                add_code_block(doc, "\n".join(code), language)
+                code_block_count += 1
             index += 1
             continue
         image_match = re.fullmatch(r"!\[([^]]+)\]\(([^)]+)\)", stripped)
@@ -367,8 +488,8 @@ def parse_markdown(doc, markdown: str) -> dict:
                 while index < len(lines) and lines[index].strip().startswith("|"):
                     rows.append(split_table_row(lines[index]))
                     index += 1
-                add_table(doc, rows)
                 table_count += 1
+                add_table(doc, rows, table_count)
                 continue
         heading = re.match(r"^(#{1,3})\s+(.+)$", stripped)
         if heading:
@@ -387,7 +508,7 @@ def parse_markdown(doc, markdown: str) -> dict:
             continue
         if stripped.startswith(">"):
             flush()
-            paragraph = add_paragraph(doc, clean_inline(stripped.lstrip("> ")), alignment=WD_ALIGN_LEFT, first_line=0, space_after=5, east_asia_font="楷体", ascii_font="Times New Roman", size=10.5)
+            paragraph = add_paragraph(doc, clean_inline(stripped.lstrip("> ")), alignment=WD_ALIGN_JUSTIFY, first_line=0, space_after=5, east_asia_font="楷体", ascii_font="Times New Roman", size=10.5)
             paragraph.Format.LeftIndent = 24
             paragraph.Range.Shading.BackgroundPatternColor = rgb(245, 247, 250)
             index += 1
@@ -402,27 +523,9 @@ def parse_markdown(doc, markdown: str) -> dict:
     return {
         "data_table_count": table_count,
         "code_block_table_count": code_block_count,
+        "equation_count": equation_count,
         "figure_count": figure_count,
     }
-
-
-def sanitize_core_properties(docx_path: Path) -> None:
-    core_name = "docProps/core.xml"
-    temp = docx_path.with_name(f".{docx_path.name}.tmp")
-    creator = "{http://purl.org/dc/elements/1.1/}creator"
-    modified = "{http://schemas.openxmlformats.org/package/2006/metadata/core-properties}lastModifiedBy"
-    with zipfile.ZipFile(docx_path, "r") as source, zipfile.ZipFile(temp, "w") as target:
-        for item in source.infolist():
-            data = source.read(item.filename)
-            if item.filename == core_name:
-                root = ET.fromstring(data)
-                for tag in (creator, modified):
-                    node = root.find(tag)
-                    if node is not None:
-                        node.text = "Anonymous"
-                data = ET.tostring(root, encoding="utf-8", xml_declaration=True)
-            target.writestr(item, data)
-    temp.replace(docx_path)
 
 
 def render_key_pages(pdf_path: Path, output_dir: Path) -> list[Path]:
@@ -437,8 +540,12 @@ def render_key_pages(pdf_path: Path, output_dir: Path) -> list[Path]:
         "02_目录": 1,
     }
     searches = {
-        "03_技术演进": "第三章 技术演进",
-        "04_实验结果": "第六章 结果与证据",
+        "03_公式与模型": "第一章 赛题问题",
+        "04_三线表": "默认异构资源",
+        "05_奖励公式": "2.5 相对 HEFT 奖励",
+        "06_残差公式": "3.5 残差式排序策略",
+        "07_技术演进": "第三章 技术演进",
+        "08_实验结果": "第六章 结果与证据",
     }
     for label, needle in searches.items():
         matching_pages = [i for i, page in enumerate(document) if needle in page.get_text()]
@@ -473,6 +580,7 @@ def build(input_path: Path, output_path: Path, template_path: Path, visible: boo
         word.UserName = "Anonymous"
         word.UserInitials = "ANON"
         doc = word.Documents.Open(str(template_path.resolve()))
+        doc.RemovePersonalInformation = True
         doc.Content.Delete()
         configure_styles(doc)
         configure_page_setup(doc)
@@ -481,16 +589,22 @@ def build(input_path: Path, output_path: Path, template_path: Path, visible: boo
         stats = parse_markdown(doc, markdown)
         configure_page_setup(doc)
         configure_headers_and_pages(doc)
-        try:
-            doc.BuiltInDocumentProperties.Item("Author").Value = "Anonymous"
-        except Exception:
-            pass
+        for property_name in ("Author", "Last author"):
+            try:
+                doc.BuiltInDocumentProperties(property_name).Value = "Anonymous"
+            except Exception:
+                pass
         output_path.parent.mkdir(parents=True, exist_ok=True)
         doc.SaveAs2(str(output_path.resolve()), WD_FORMAT_DOCX)
         doc.Fields.Update()
         toc.Update()
         doc.Repaginate()
         page_count = int(doc.ComputeStatistics(WD_STATISTIC_PAGES))
+        for property_name in ("Author", "Last author"):
+            try:
+                doc.BuiltInDocumentProperties(property_name).Value = "Anonymous"
+            except Exception:
+                pass
         doc.Save()
         doc.ExportAsFixedFormat(str(pdf_path.resolve()), WD_EXPORT_PDF)
         time.sleep(0.8)
@@ -500,7 +614,6 @@ def build(input_path: Path, output_path: Path, template_path: Path, visible: boo
         word.UserInitials = original_initials
         word.Quit()
         word = None
-        sanitize_core_properties(output_path)
         screenshots = render_key_pages(pdf_path, screenshots_dir)
         data_table_count = stats["data_table_count"]
         code_block_table_count = stats["code_block_table_count"]
@@ -512,7 +625,9 @@ def build(input_path: Path, output_path: Path, template_path: Path, visible: boo
             "page_count": page_count,
             "data_table_count": data_table_count,
             "code_block_table_count": code_block_table_count,
-            "word_table_object_count": data_table_count + code_block_table_count,
+            "equation_layout_table_count": stats["equation_count"],
+            "word_table_object_count": data_table_count + code_block_table_count + stats["equation_count"],
+            "equation_count": stats["equation_count"],
             "figure_count": stats["figure_count"],
             "docx_size_bytes": output_path.stat().st_size,
             "pdf_size_bytes": pdf_path.stat().st_size,
