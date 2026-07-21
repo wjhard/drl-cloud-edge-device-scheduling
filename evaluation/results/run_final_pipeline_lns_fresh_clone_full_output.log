@@ -1,0 +1,248 @@
+FINAL_PIPELINE_START
+project_root=<FRESH_CLONE>
+python_command=<FRESH_CLONE>\.venv\Scripts\python.exe
+==== check dependencies ====
+No broken requirements found.
+dependencies_ready=false; installing requirements
+==== upgrade pip ====
+Requirement already satisfied: pip in .\.venv\Lib\site-packages (26.1.2)
+==== install project requirements ====
+Requirement already satisfied: networkx in .\.venv\Lib\site-packages (from -r requirements.txt (line 1)) (3.6.1)
+Collecting gymnasium (from -r requirements.txt (line 2))
+  Using cached gymnasium-1.3.0-py3-none-any.whl.metadata (10 kB)
+Collecting pyyaml (from -r requirements.txt (line 3))
+  Using cached pyyaml-6.0.3-cp312-cp312-win_amd64.whl.metadata (2.4 kB)
+Collecting numpy (from -r requirements.txt (line 4))
+  Using cached numpy-2.5.1-cp312-cp312-win_amd64.whl.metadata (6.6 kB)
+Collecting matplotlib (from -r requirements.txt (line 5))
+  Using cached matplotlib-3.11.1-cp312-cp312-win_amd64.whl.metadata (80 kB)
+Collecting pytest (from -r requirements.txt (line 6))
+  Using cached pytest-9.1.1-py3-none-any.whl.metadata (7.6 kB)
+Collecting sb3-contrib (from -r requirements.txt (line 7))
+  Using cached sb3_contrib-2.9.0-py3-none-any.whl.metadata (4.1 kB)
+Collecting stable-baselines3 (from -r requirements.txt (line 8))
+  Using cached stable_baselines3-2.9.0-py3-none-any.whl.metadata (5.0 kB)
+Collecting tensorboard (from -r requirements.txt (line 9))
+  Using cached tensorboard-2.21.0-py3-none-any.whl.metadata (1.8 kB)
+Collecting tqdm (from -r requirements.txt (line 10))
+  Using cached tqdm-4.69.0-py3-none-any.whl.metadata (57 kB)
+Collecting rich (from -r requirements.txt (line 11))
+  Using cached rich-15.0.0-py3-none-any.whl.metadata (18 kB)
+Collecting pulp (from -r requirements.txt (line 12))
+  Using cached pulp-3.3.2-py3-none-any.whl.metadata (8.6 kB)
+Collecting scipy (from -r requirements.txt (line 13))
+  Using cached scipy-1.18.0-cp312-cp312-win_amd64.whl.metadata (61 kB)
+Collecting cloudpickle>=1.2.0 (from gymnasium->-r requirements.txt (line 2))
+  Using cached cloudpickle-3.1.2-py3-none-any.whl.metadata (7.1 kB)
+Requirement already satisfied: typing-extensions>=4.3.0 in .\.venv\Lib\site-packages (from gymnasium->-r requirements.txt (line 2)) (4.15.0)
+Collecting farama-notifications>=0.0.1 (from gymnasium->-r requirements.txt (line 2))
+  Using cached farama_notifications-0.0.6-py3-none-any.whl.metadata (729 bytes)
+Collecting contourpy>=1.0.1 (from matplotlib->-r requirements.txt (line 5))
+  Using cached contourpy-1.3.3-cp312-cp312-win_amd64.whl.metadata (5.5 kB)
+Collecting cycler>=0.10 (from matplotlib->-r requirements.txt (line 5))
+  Using cached cycler-0.12.1-py3-none-any.whl.metadata (3.8 kB)
+Collecting fonttools>=4.28.2 (from matplotlib->-r requirements.txt (line 5))
+  Using cached fonttools-4.63.0-cp312-cp312-win_amd64.whl.metadata (121 kB)
+Collecting kiwisolver>=1.3.1 (from matplotlib->-r requirements.txt (line 5))
+  Using cached kiwisolver-1.5.0-cp312-cp312-win_amd64.whl.metadata (5.2 kB)
+Collecting packaging>=20.0 (from matplotlib->-r requirements.txt (line 5))
+  Using cached packaging-26.2-py3-none-any.whl.metadata (3.5 kB)
+Collecting pillow>=9 (from matplotlib->-r requirements.txt (line 5))
+  Using cached pillow-12.3.0-cp312-cp312-win_amd64.whl.metadata (9.3 kB)
+Collecting pyparsing>=3 (from matplotlib->-r requirements.txt (line 5))
+  Using cached pyparsing-3.3.2-py3-none-any.whl.metadata (5.8 kB)
+Collecting python-dateutil>=2.7 (from matplotlib->-r requirements.txt (line 5))
+  Using cached python_dateutil-2.9.0.post0-py2.py3-none-any.whl.metadata (8.4 kB)
+Collecting colorama>=0.4 (from pytest->-r requirements.txt (line 6))
+  Using cached colorama-0.4.6-py2.py3-none-any.whl.metadata (17 kB)
+Collecting iniconfig>=1.0.1 (from pytest->-r requirements.txt (line 6))
+  Using cached iniconfig-2.3.0-py3-none-any.whl.metadata (2.5 kB)
+Collecting pluggy<2,>=1.5 (from pytest->-r requirements.txt (line 6))
+  Using cached pluggy-1.6.0-py3-none-any.whl.metadata (4.8 kB)
+Collecting pygments>=2.7.2 (from pytest->-r requirements.txt (line 6))
+  Using cached pygments-2.20.0-py3-none-any.whl.metadata (2.5 kB)
+Requirement already satisfied: torch<3.0,>=2.8 in .\.venv\Lib\site-packages (from stable-baselines3->-r requirements.txt (line 8)) (2.12.1+cpu)
+Requirement already satisfied: filelock in .\.venv\Lib\site-packages (from torch<3.0,>=2.8->stable-baselines3->-r requirements.txt (line 8)) (3.29.0)
+Requirement already satisfied: setuptools<82 in .\.venv\Lib\site-packages (from torch<3.0,>=2.8->stable-baselines3->-r requirements.txt (line 8)) (78.1.0)
+Requirement already satisfied: sympy>=1.13.3 in .\.venv\Lib\site-packages (from torch<3.0,>=2.8->stable-baselines3->-r requirements.txt (line 8)) (1.14.0)
+Requirement already satisfied: jinja2 in .\.venv\Lib\site-packages (from torch<3.0,>=2.8->stable-baselines3->-r requirements.txt (line 8)) (3.1.6)
+Requirement already satisfied: fsspec>=0.8.5 in .\.venv\Lib\site-packages (from torch<3.0,>=2.8->stable-baselines3->-r requirements.txt (line 8)) (2026.4.0)
+Collecting absl-py>=0.4 (from tensorboard->-r requirements.txt (line 9))
+  Using cached absl_py-2.5.0-py3-none-any.whl.metadata (3.3 kB)
+Collecting grpcio<2.0,>=1.74.0 (from tensorboard->-r requirements.txt (line 9))
+  Using cached grpcio-1.82.1-cp312-cp312-win_amd64.whl.metadata (3.8 kB)
+Collecting markdown>=2.6.8 (from tensorboard->-r requirements.txt (line 9))
+  Using cached markdown-3.10.2-py3-none-any.whl.metadata (5.1 kB)
+Collecting protobuf<8.0.0,>=6.31.1 (from tensorboard->-r requirements.txt (line 9))
+  Using cached protobuf-7.35.1-cp310-abi3-win_amd64.whl.metadata (595 bytes)
+Collecting tensorboard-data-server<0.8.0,>=0.7.0 (from tensorboard->-r requirements.txt (line 9))
+  Using cached tensorboard_data_server-0.7.2-py3-none-any.whl.metadata (1.1 kB)
+Collecting werkzeug>=1.0.1 (from tensorboard->-r requirements.txt (line 9))
+  Using cached werkzeug-3.1.8-py3-none-any.whl.metadata (4.0 kB)
+Collecting markdown-it-py>=2.2.0 (from rich->-r requirements.txt (line 11))
+  Using cached markdown_it_py-4.2.0-py3-none-any.whl.metadata (7.4 kB)
+Collecting mdurl~=0.1 (from markdown-it-py>=2.2.0->rich->-r requirements.txt (line 11))
+  Using cached mdurl-0.1.2-py3-none-any.whl.metadata (1.6 kB)
+Collecting six>=1.5 (from python-dateutil>=2.7->matplotlib->-r requirements.txt (line 5))
+  Using cached six-1.17.0-py2.py3-none-any.whl.metadata (1.7 kB)
+Requirement already satisfied: mpmath<1.4,>=1.1.0 in .\.venv\Lib\site-packages (from sympy>=1.13.3->torch<3.0,>=2.8->stable-baselines3->-r requirements.txt (line 8)) (1.3.0)
+Requirement already satisfied: markupsafe>=2.1.1 in .\.venv\Lib\site-packages (from werkzeug>=1.0.1->tensorboard->-r requirements.txt (line 9)) (3.0.3)
+Using cached gymnasium-1.3.0-py3-none-any.whl (953 kB)
+Using cached pyyaml-6.0.3-cp312-cp312-win_amd64.whl (154 kB)
+Using cached numpy-2.5.1-cp312-cp312-win_amd64.whl (12.4 MB)
+Using cached matplotlib-3.11.1-cp312-cp312-win_amd64.whl (9.3 MB)
+Using cached pytest-9.1.1-py3-none-any.whl (386 kB)
+Using cached pluggy-1.6.0-py3-none-any.whl (20 kB)
+Using cached sb3_contrib-2.9.0-py3-none-any.whl (93 kB)
+Using cached stable_baselines3-2.9.0-py3-none-any.whl (187 kB)
+Using cached tensorboard-2.21.0-py3-none-any.whl (5.5 MB)
+Using cached grpcio-1.82.1-cp312-cp312-win_amd64.whl (5.0 MB)
+Using cached protobuf-7.35.1-cp310-abi3-win_amd64.whl (439 kB)
+Using cached tensorboard_data_server-0.7.2-py3-none-any.whl (2.4 kB)
+Using cached tqdm-4.69.0-py3-none-any.whl (676 kB)
+Using cached rich-15.0.0-py3-none-any.whl (310 kB)
+Using cached pygments-2.20.0-py3-none-any.whl (1.2 MB)
+Using cached pulp-3.3.2-py3-none-any.whl (16.4 MB)
+Using cached scipy-1.18.0-cp312-cp312-win_amd64.whl (36.6 MB)
+Using cached absl_py-2.5.0-py3-none-any.whl (137 kB)
+Using cached cloudpickle-3.1.2-py3-none-any.whl (22 kB)
+Using cached colorama-0.4.6-py2.py3-none-any.whl (25 kB)
+Using cached contourpy-1.3.3-cp312-cp312-win_amd64.whl (226 kB)
+Using cached cycler-0.12.1-py3-none-any.whl (8.3 kB)
+Using cached farama_notifications-0.0.6-py3-none-any.whl (2.9 kB)
+Using cached fonttools-4.63.0-cp312-cp312-win_amd64.whl (2.3 MB)
+Using cached iniconfig-2.3.0-py3-none-any.whl (7.5 kB)
+Using cached kiwisolver-1.5.0-cp312-cp312-win_amd64.whl (73 kB)
+Using cached markdown-3.10.2-py3-none-any.whl (108 kB)
+Using cached markdown_it_py-4.2.0-py3-none-any.whl (91 kB)
+Using cached mdurl-0.1.2-py3-none-any.whl (10.0 kB)
+Using cached packaging-26.2-py3-none-any.whl (100 kB)
+Using cached pillow-12.3.0-cp312-cp312-win_amd64.whl (7.2 MB)
+Using cached pyparsing-3.3.2-py3-none-any.whl (122 kB)
+Using cached python_dateutil-2.9.0.post0-py2.py3-none-any.whl (229 kB)
+Using cached six-1.17.0-py2.py3-none-any.whl (11 kB)
+Using cached werkzeug-3.1.8-py3-none-any.whl (226 kB)
+Installing collected packages: farama-notifications, werkzeug, tensorboard-data-server, six, pyyaml, pyparsing, pygments, pulp, protobuf, pluggy, pillow, packaging, numpy, mdurl, markdown, kiwisolver, iniconfig, grpcio, fonttools, cycler, colorama, cloudpickle, absl-py, tqdm, tensorboard, scipy, python-dateutil, pytest, markdown-it-py, gymnasium, contourpy, stable-baselines3, rich, matplotlib, sb3-contrib
+
+Successfully installed absl-py-2.5.0 cloudpickle-3.1.2 colorama-0.4.6 contourpy-1.3.3 cycler-0.12.1 farama-notifications-0.0.6 fonttools-4.63.0 grpcio-1.82.1 gymnasium-1.3.0 iniconfig-2.3.0 kiwisolver-1.5.0 markdown-3.10.2 markdown-it-py-4.2.0 matplotlib-3.11.1 mdurl-0.1.2 numpy-2.5.1 packaging-26.2 pillow-12.3.0 pluggy-1.6.0 protobuf-7.35.1 pulp-3.3.2 pygments-2.20.0 pyparsing-3.3.2 pytest-9.1.1 python-dateutil-2.9.0.post0 pyyaml-6.0.3 rich-15.0.0 sb3-contrib-2.9.0 scipy-1.18.0 six-1.17.0 stable-baselines3-2.9.0 tensorboard-2.21.0 tensorboard-data-server-0.7.2 tqdm-4.69.0 werkzeug-3.1.8
+==== verify dependency consistency ====
+No broken requirements found.
+==== verify required imports ====
+checkpoint_exists=true; skipping training
+checkpoint_path=training/checkpoints/ppo_mlp_residual.zip
+validation_scenarios_exist=false; generating fixed validation scenarios
+==== generate validation scenarios ====
+generated 20 validation scenarios in evaluation\scenarios
+task size distribution:
+  10: 5
+  15: 5
+  20: 5
+  25: 5
+==== evaluate final Residual best-of-64 + relocation + LNS ====
+==== final LNS repeat 1/5 (seed=1565812275) ====
+RESIDUAL_LNS_EVALUATION
+sampling_seed=1565812275
+residual_bestof64_mean_ratio=0.949532821799
+local_search_mean_ratio=0.932978028052
+lns_mean_ratio=0.921489510533
+paired_difference_lns_minus_residual=-0.028043311266
+paired_difference_lns_minus_local=-0.011488517519
+better_than_heft=20/20
+improved_scenarios=13/20
+elapsed_seconds=52.413781
+results_path=evaluation\results\final_pipeline_lns_repeats\direct_repeat_1.json
+==== final LNS repeat 2/5 (seed=842234145) ====
+RESIDUAL_LNS_EVALUATION
+sampling_seed=842234145
+residual_bestof64_mean_ratio=0.948910493636
+local_search_mean_ratio=0.935912388846
+lns_mean_ratio=0.919837290821
+paired_difference_lns_minus_residual=-0.029073202815
+paired_difference_lns_minus_local=-0.016075098025
+better_than_heft=20/20
+improved_scenarios=16/20
+elapsed_seconds=49.648274
+results_path=evaluation\results\final_pipeline_lns_repeats\direct_repeat_2.json
+==== final LNS repeat 3/5 (seed=386081360) ====
+RESIDUAL_LNS_EVALUATION
+sampling_seed=386081360
+residual_bestof64_mean_ratio=0.956776444937
+local_search_mean_ratio=0.947783515426
+lns_mean_ratio=0.922357713218
+paired_difference_lns_minus_residual=-0.034418731718
+paired_difference_lns_minus_local=-0.025425802208
+better_than_heft=20/20
+improved_scenarios=18/20
+elapsed_seconds=51.420411
+results_path=evaluation\results\final_pipeline_lns_repeats\direct_repeat_3.json
+==== final LNS repeat 4/5 (seed=1117038938) ====
+RESIDUAL_LNS_EVALUATION
+sampling_seed=1117038938
+residual_bestof64_mean_ratio=0.948960585034
+local_search_mean_ratio=0.937888886024
+lns_mean_ratio=0.922360197032
+paired_difference_lns_minus_residual=-0.026600388002
+paired_difference_lns_minus_local=-0.015528688991
+better_than_heft=20/20
+improved_scenarios=15/20
+elapsed_seconds=49.677206
+results_path=evaluation\results\final_pipeline_lns_repeats\direct_repeat_4.json
+==== final LNS repeat 5/5 (seed=1760006972) ====
+RESIDUAL_LNS_EVALUATION
+sampling_seed=1760006972
+residual_bestof64_mean_ratio=0.949890910258
+local_search_mean_ratio=0.933077894398
+lns_mean_ratio=0.918403780698
+paired_difference_lns_minus_residual=-0.031487129560
+paired_difference_lns_minus_local=-0.014674113701
+better_than_heft=20/20
+improved_scenarios=13/20
+elapsed_seconds=50.356969
+results_path=evaluation\results\final_pipeline_lns_repeats\direct_repeat_5.json
+==== analyze five paired final LNS repeats ====
+repeat | seed | Residual Best64 | LNS | difference | base wins | LNS wins
+     1 | 1565812275 | 0.949532821799 | 0.921489510533 | -0.028043311266 | 18/20 | 20/20
+     2 |  842234145 | 0.948910493636 | 0.919837290821 | -0.029073202815 | 19/20 | 20/20
+     3 |  386081360 | 0.956776444937 | 0.922357713218 | -0.034418731718 | 17/20 | 20/20
+     4 | 1117038938 | 0.948960585034 | 0.922360197032 | -0.026600388002 | 19/20 | 20/20
+     5 | 1760006972 | 0.949890910258 | 0.918403780698 | -0.031487129560 | 18/20 | 20/20
+{
+  "residual_bestof64_mean_ratio": {
+    "mean": 0.9508142511327208,
+    "sample_std": 0.0033579288659588416,
+    "min": 0.9489104936359419,
+    "max": 0.9567764449366217
+  },
+  "lns_mean_ratio": {
+    "mean": 0.9208896984603598,
+    "sample_std": 0.001729491028102577,
+    "min": 0.9184037806976327,
+    "max": 0.9223601970324745
+  },
+  "paired_difference": {
+    "mean": -0.02992455267236114,
+    "sample_std": 0.003080309578406879,
+    "min": -0.0344187317184218,
+    "max": -0.026600388001726594
+  },
+  "paired_t_test_two_sided": {
+    "t_statistic": -21.722925007518153,
+    "degrees_of_freedom": 4,
+    "p_value": 2.6568511931798934e-05,
+    "alpha": 0.05,
+    "significant": true,
+    "new_method_better": true
+  }
+}
+results_path=evaluation\results\final_pipeline_lns_summary.json
+FINAL_PIPELINE_RESULT
+method=Residual Best-of-64 + topological relocation + best-only LNS
+repeat_count=5
+overall_mean_ratio=0.920889698460
+overall_mean_ratio_6dp=0.920890
+sample_std=0.001729491028
+sample_std_6dp=0.001729
+outperform_heft_scenarios=20/20 in 5/5 repeats
+paired_p_value=2.656851193180E-005
+results_path=evaluation/results/final_pipeline_lns_summary.json
+FINAL_PIPELINE_COMPLETE
