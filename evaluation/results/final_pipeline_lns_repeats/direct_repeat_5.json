@@ -7,17 +7,22 @@
   "local_max_passes": 3,
   "lns_iterations": 64,
   "scenario_count": 20,
-  "elapsed_seconds": 50.35696910000115,
+  "elapsed_seconds": 129.1946004999918,
   "overall": {
     "residual_bestof64_mean_ratio": 0.9498909102581106,
     "local_search_mean_ratio": 0.9330778943982303,
-    "lns_mean_ratio": 0.9184037806976327,
-    "paired_mean_difference_lns_minus_residual": -0.03148712956047781,
-    "paired_mean_difference_lns_minus_local": -0.014674113700597558,
+    "lns_mean_ratio": 0.9173931305149564,
+    "paired_mean_difference_lns_minus_residual": -0.032497779743154064,
+    "paired_mean_difference_lns_minus_local": -0.015684763883273813,
     "residual_bestof64_better_than_heft_count": 18,
     "local_search_better_than_heft_count": 20,
     "lns_better_than_heft_count": 20,
-    "improved_scenario_count": 13
+    "improved_scenario_count": 16,
+    "portfolio_selected_source_counts": {
+      "cost_first_lns": 2,
+      "heft_lns": 7,
+      "residual_lns": 11
+    }
   },
   "scenarios": [
     {
@@ -32,7 +37,25 @@
       "local_search_ratio": 0.8583503930404773,
       "lns_ratio": 0.8583503930404773,
       "accepted_repairs": 0,
-      "evaluated_neighbors": 2020
+      "evaluated_neighbors": 2010,
+      "selected_source": "residual_lns",
+      "candidate_makespans": {
+        "residual_lns": 0.39074550726016205,
+        "heft_anchor": 0.4552284363452672,
+        "heft_lns": 0.39074550726016205,
+        "width_aware_lns": 0.39074550726016205,
+        "cost_first_lns": 0.39074550726016205
+      },
+      "dag_shape": {
+        "task_count": 10,
+        "edge_count": 16,
+        "source_count": 5,
+        "sink_count": 4,
+        "longest_path_edges": 2,
+        "level_width": 5,
+        "width_ratio": 0.5,
+        "edge_density": 0.17777777777777778
+      }
     },
     {
       "scenario": "scenario_10_1.json",
@@ -46,7 +69,25 @@
       "local_search_ratio": 0.9192950998604804,
       "lns_ratio": 0.9031929036631146,
       "accepted_repairs": 3,
-      "evaluated_neighbors": 2157
+      "evaluated_neighbors": 2137,
+      "selected_source": "residual_lns",
+      "candidate_makespans": {
+        "residual_lns": 0.45955866969472786,
+        "heft_anchor": 0.5088156337709009,
+        "heft_lns": 0.45955866969472786,
+        "width_aware_lns": 0.45955866969472786,
+        "cost_first_lns": 0.462370006900757
+      },
+      "dag_shape": {
+        "task_count": 10,
+        "edge_count": 11,
+        "source_count": 5,
+        "sink_count": 4,
+        "longest_path_edges": 2,
+        "level_width": 5,
+        "width_ratio": 0.5,
+        "edge_density": 0.12222222222222222
+      }
     },
     {
       "scenario": "scenario_10_2.json",
@@ -55,12 +96,30 @@
       "heft_makespan": 0.5084000846273409,
       "residual_bestof64_makespan": 0.47457161674237713,
       "local_search_makespan": 0.47457161674237713,
-      "lns_makespan": 0.45899559111126,
+      "lns_makespan": 0.45090248323965565,
       "residual_bestof64_ratio": 0.9334609318372554,
       "local_search_ratio": 0.9334609318372554,
-      "lns_ratio": 0.9028235930521243,
+      "lns_ratio": 0.8869048154666788,
       "accepted_repairs": 3,
-      "evaluated_neighbors": 2354
+      "evaluated_neighbors": 2293,
+      "selected_source": "residual_lns",
+      "candidate_makespans": {
+        "residual_lns": 0.45090248323965565,
+        "heft_anchor": 0.5084000846273409,
+        "heft_lns": 0.45090248323965565,
+        "width_aware_lns": 0.45090248323965565,
+        "cost_first_lns": 0.4597851682917591
+      },
+      "dag_shape": {
+        "task_count": 10,
+        "edge_count": 11,
+        "source_count": 3,
+        "sink_count": 5,
+        "longest_path_edges": 2,
+        "level_width": 5,
+        "width_ratio": 0.5,
+        "edge_density": 0.12222222222222222
+      }
     },
     {
       "scenario": "scenario_10_3.json",
@@ -74,7 +133,25 @@
       "local_search_ratio": 0.9972386851511734,
       "lns_ratio": 0.9972386851511734,
       "accepted_repairs": 0,
-      "evaluated_neighbors": 2109
+      "evaluated_neighbors": 2129,
+      "selected_source": "residual_lns",
+      "candidate_makespans": {
+        "residual_lns": 0.3565445400970419,
+        "heft_anchor": 0.3575317979596756,
+        "heft_lns": 0.3565445400970419,
+        "width_aware_lns": 0.3565445400970419,
+        "cost_first_lns": 0.3565445400970419
+      },
+      "dag_shape": {
+        "task_count": 10,
+        "edge_count": 11,
+        "source_count": 3,
+        "sink_count": 5,
+        "longest_path_edges": 2,
+        "level_width": 4,
+        "width_ratio": 0.4,
+        "edge_density": 0.12222222222222222
+      }
     },
     {
       "scenario": "scenario_10_4.json",
@@ -88,7 +165,25 @@
       "local_search_ratio": 0.9240391553260354,
       "lns_ratio": 0.9177458610794944,
       "accepted_repairs": 1,
-      "evaluated_neighbors": 2356
+      "evaluated_neighbors": 2383,
+      "selected_source": "residual_lns",
+      "candidate_makespans": {
+        "residual_lns": 0.34021374754819755,
+        "heft_anchor": 0.3707058369601609,
+        "heft_lns": 0.34021374754819755,
+        "width_aware_lns": 0.34021374754819755,
+        "cost_first_lns": 0.34021374754819755
+      },
+      "dag_shape": {
+        "task_count": 10,
+        "edge_count": 10,
+        "source_count": 4,
+        "sink_count": 4,
+        "longest_path_edges": 3,
+        "level_width": 4,
+        "width_ratio": 0.4,
+        "edge_density": 0.1111111111111111
+      }
     },
     {
       "scenario": "scenario_15_0.json",
@@ -101,8 +196,26 @@
       "residual_bestof64_ratio": 0.9371042101957026,
       "local_search_ratio": 0.9371042101957026,
       "lns_ratio": 0.8908415760108586,
-      "accepted_repairs": 2,
-      "evaluated_neighbors": 5152
+      "accepted_repairs": 5,
+      "evaluated_neighbors": 5064,
+      "selected_source": "heft_lns",
+      "candidate_makespans": {
+        "residual_lns": 0.5399272984450325,
+        "heft_anchor": 0.6054409838212004,
+        "heft_lns": 0.5393520002088429,
+        "width_aware_lns": 0.543775177468526,
+        "cost_first_lns": 0.5442571519575996
+      },
+      "dag_shape": {
+        "task_count": 15,
+        "edge_count": 20,
+        "source_count": 6,
+        "sink_count": 6,
+        "longest_path_edges": 3,
+        "level_width": 6,
+        "width_ratio": 0.4,
+        "edge_density": 0.09523809523809523
+      }
     },
     {
       "scenario": "scenario_15_1.json",
@@ -111,12 +224,30 @@
       "heft_makespan": 0.6167576868599802,
       "residual_bestof64_makespan": 0.5665404617090128,
       "local_search_makespan": 0.5300108470289947,
-      "lns_makespan": 0.5300108470289947,
+      "lns_makespan": 0.5292325394728098,
       "residual_bestof64_ratio": 0.9185786797297462,
       "local_search_ratio": 0.8593502088759872,
-      "lns_ratio": 0.8593502088759872,
+      "lns_ratio": 0.858088274776475,
       "accepted_repairs": 0,
-      "evaluated_neighbors": 4213
+      "evaluated_neighbors": 4186,
+      "selected_source": "cost_first_lns",
+      "candidate_makespans": {
+        "residual_lns": 0.5300108470289947,
+        "heft_anchor": 0.6167576868599802,
+        "heft_lns": 0.5292325394728098,
+        "width_aware_lns": 0.5300108470289947,
+        "cost_first_lns": 0.5292325394728098
+      },
+      "dag_shape": {
+        "task_count": 15,
+        "edge_count": 31,
+        "source_count": 4,
+        "sink_count": 5,
+        "longest_path_edges": 3,
+        "level_width": 5,
+        "width_ratio": 0.3333333333333333,
+        "edge_density": 0.14761904761904762
+      }
     },
     {
       "scenario": "scenario_15_2.json",
@@ -130,7 +261,25 @@
       "local_search_ratio": 0.893791569864569,
       "lns_ratio": 0.893791569864569,
       "accepted_repairs": 0,
-      "evaluated_neighbors": 3492
+      "evaluated_neighbors": 3417,
+      "selected_source": "residual_lns",
+      "candidate_makespans": {
+        "residual_lns": 0.5625744344531011,
+        "heft_anchor": 0.6294246370418829,
+        "heft_lns": 0.5735260247625004,
+        "width_aware_lns": 0.5692656109559773,
+        "cost_first_lns": 0.5735260247625004
+      },
+      "dag_shape": {
+        "task_count": 15,
+        "edge_count": 32,
+        "source_count": 5,
+        "sink_count": 5,
+        "longest_path_edges": 3,
+        "level_width": 5,
+        "width_ratio": 0.3333333333333333,
+        "edge_density": 0.1523809523809524
+      }
     },
     {
       "scenario": "scenario_15_3.json",
@@ -139,12 +288,30 @@
       "heft_makespan": 0.6089972186041921,
       "residual_bestof64_makespan": 0.5909565825277887,
       "local_search_makespan": 0.5909565825277887,
-      "lns_makespan": 0.5681664328984468,
+      "lns_makespan": 0.5693590621249809,
       "residual_bestof64_ratio": 0.970376488553179,
       "local_search_ratio": 0.970376488553179,
-      "lns_ratio": 0.9329540686584276,
-      "accepted_repairs": 3,
-      "evaluated_neighbors": 4674
+      "lns_ratio": 0.9349124178759618,
+      "accepted_repairs": 2,
+      "evaluated_neighbors": 4751,
+      "selected_source": "residual_lns",
+      "candidate_makespans": {
+        "residual_lns": 0.5693590621249809,
+        "heft_anchor": 0.6089972186041921,
+        "heft_lns": 0.5719871357791851,
+        "width_aware_lns": 0.5707420110391821,
+        "cost_first_lns": 0.576386297646387
+      },
+      "dag_shape": {
+        "task_count": 15,
+        "edge_count": 26,
+        "source_count": 6,
+        "sink_count": 4,
+        "longest_path_edges": 3,
+        "level_width": 6,
+        "width_ratio": 0.4,
+        "edge_density": 0.12380952380952381
+      }
     },
     {
       "scenario": "scenario_15_4.json",
@@ -153,12 +320,30 @@
       "heft_makespan": 0.5750342951613558,
       "residual_bestof64_makespan": 0.5661418752824788,
       "local_search_makespan": 0.5631032512468613,
-      "lns_makespan": 0.5303401662744981,
+      "lns_makespan": 0.5374376478140992,
       "residual_bestof64_ratio": 0.9845358442901535,
       "local_search_ratio": 0.9792515959223848,
-      "lns_ratio": 0.9222757159652252,
-      "accepted_repairs": 4,
-      "evaluated_neighbors": 3753
+      "lns_ratio": 0.9346184259554347,
+      "accepted_repairs": 5,
+      "evaluated_neighbors": 3787,
+      "selected_source": "residual_lns",
+      "candidate_makespans": {
+        "residual_lns": 0.5374376478140992,
+        "heft_anchor": 0.5750342951613558,
+        "heft_lns": 0.5374376478140992,
+        "width_aware_lns": 0.558598506424561,
+        "cost_first_lns": 0.5374376478140992
+      },
+      "dag_shape": {
+        "task_count": 15,
+        "edge_count": 28,
+        "source_count": 3,
+        "sink_count": 4,
+        "longest_path_edges": 3,
+        "level_width": 6,
+        "width_ratio": 0.4,
+        "edge_density": 0.13333333333333333
+      }
     },
     {
       "scenario": "scenario_20_0.json",
@@ -167,12 +352,30 @@
       "heft_makespan": 0.9724235579213067,
       "residual_bestof64_makespan": 0.9190780013697897,
       "local_search_makespan": 0.8673341131478474,
-      "lns_makespan": 0.8673341131478474,
+      "lns_makespan": 0.8592757966594395,
       "residual_bestof64_ratio": 0.9451416452049447,
       "local_search_ratio": 0.8919303795990885,
-      "lns_ratio": 0.8919303795990885,
-      "accepted_repairs": 0,
-      "evaluated_neighbors": 6227
+      "lns_ratio": 0.8836435416026566,
+      "accepted_repairs": 2,
+      "evaluated_neighbors": 6227,
+      "selected_source": "cost_first_lns",
+      "candidate_makespans": {
+        "residual_lns": 0.8647645255230959,
+        "heft_anchor": 0.9724235579213067,
+        "heft_lns": 0.8647645255230959,
+        "width_aware_lns": 0.8647645255230959,
+        "cost_first_lns": 0.8592757966594395
+      },
+      "dag_shape": {
+        "task_count": 20,
+        "edge_count": 57,
+        "source_count": 6,
+        "sink_count": 5,
+        "longest_path_edges": 4,
+        "level_width": 6,
+        "width_ratio": 0.3,
+        "edge_density": 0.15
+      }
     },
     {
       "scenario": "scenario_20_1.json",
@@ -181,12 +384,28 @@
       "heft_makespan": 0.7681376680144106,
       "residual_bestof64_makespan": 0.7180393088477288,
       "local_search_makespan": 0.7057850164953632,
-      "lns_makespan": 0.6897627117886691,
+      "lns_makespan": 0.6878362601040734,
       "residual_bestof64_ratio": 0.9347794526257474,
       "local_search_ratio": 0.918826202495413,
-      "lns_ratio": 0.897967565594933,
+      "lns_ratio": 0.8954596145272872,
       "accepted_repairs": 4,
-      "evaluated_neighbors": 5107
+      "evaluated_neighbors": 5038,
+      "selected_source": "heft_lns",
+      "candidate_makespans": {
+        "residual_lns": 0.6951474390676059,
+        "heft_anchor": 0.7681376680144106,
+        "heft_lns": 0.6878362601040734
+      },
+      "dag_shape": {
+        "task_count": 20,
+        "edge_count": 64,
+        "source_count": 4,
+        "sink_count": 6,
+        "longest_path_edges": 4,
+        "level_width": 5,
+        "width_ratio": 0.25,
+        "edge_density": 0.16842105263157894
+      }
     },
     {
       "scenario": "scenario_20_2.json",
@@ -195,12 +414,28 @@
       "heft_makespan": 0.6474996876100765,
       "residual_bestof64_makespan": 0.6200186501634528,
       "local_search_makespan": 0.6200186501634528,
-      "lns_makespan": 0.6094611796203424,
+      "lns_makespan": 0.6078395137067651,
       "residual_bestof64_ratio": 0.9575582228494097,
       "local_search_ratio": 0.9575582228494097,
-      "lns_ratio": 0.9412532411712284,
-      "accepted_repairs": 2,
-      "evaluated_neighbors": 6294
+      "lns_ratio": 0.9387487366214845,
+      "accepted_repairs": 3,
+      "evaluated_neighbors": 6319,
+      "selected_source": "heft_lns",
+      "candidate_makespans": {
+        "residual_lns": 0.6094611796203424,
+        "heft_anchor": 0.6474996876100765,
+        "heft_lns": 0.6078395137067651
+      },
+      "dag_shape": {
+        "task_count": 20,
+        "edge_count": 54,
+        "source_count": 5,
+        "sink_count": 6,
+        "longest_path_edges": 4,
+        "level_width": 5,
+        "width_ratio": 0.25,
+        "edge_density": 0.14210526315789473
+      }
     },
     {
       "scenario": "scenario_20_3.json",
@@ -209,12 +444,28 @@
       "heft_makespan": 0.86894815180045,
       "residual_bestof64_makespan": 0.8583275110221198,
       "local_search_makespan": 0.8414564346398306,
-      "lns_makespan": 0.8297043158956001,
+      "lns_makespan": 0.8312611007359747,
       "residual_bestof64_ratio": 0.9877775897718127,
       "local_search_ratio": 0.9683620741885958,
-      "lns_ratio": 0.9548375402795469,
-      "accepted_repairs": 3,
-      "evaluated_neighbors": 5050
+      "lns_ratio": 0.956629114192385,
+      "accepted_repairs": 1,
+      "evaluated_neighbors": 5043,
+      "selected_source": "residual_lns",
+      "candidate_makespans": {
+        "residual_lns": 0.8312611007359747,
+        "heft_anchor": 0.86894815180045,
+        "heft_lns": 0.8394147294539125
+      },
+      "dag_shape": {
+        "task_count": 20,
+        "edge_count": 49,
+        "source_count": 5,
+        "sink_count": 5,
+        "longest_path_edges": 4,
+        "level_width": 5,
+        "width_ratio": 0.25,
+        "edge_density": 0.12894736842105264
+      }
     },
     {
       "scenario": "scenario_20_4.json",
@@ -228,7 +479,25 @@
       "local_search_ratio": 0.8796579448446535,
       "lns_ratio": 0.8796579448446535,
       "accepted_repairs": 0,
-      "evaluated_neighbors": 5160
+      "evaluated_neighbors": 5163,
+      "selected_source": "residual_lns",
+      "candidate_makespans": {
+        "residual_lns": 0.7353255320933224,
+        "heft_anchor": 0.8359221176853918,
+        "heft_lns": 0.7353255320933224,
+        "width_aware_lns": 0.7453917203391044,
+        "cost_first_lns": 0.7453917203391044
+      },
+      "dag_shape": {
+        "task_count": 20,
+        "edge_count": 65,
+        "source_count": 6,
+        "sink_count": 5,
+        "longest_path_edges": 4,
+        "level_width": 6,
+        "width_ratio": 0.3,
+        "edge_density": 0.17105263157894737
+      }
     },
     {
       "scenario": "scenario_25_0.json",
@@ -237,12 +506,28 @@
       "heft_makespan": 1.039261202106066,
       "residual_bestof64_makespan": 1.0415841511862836,
       "local_search_makespan": 1.0293355493755298,
-      "lns_makespan": 1.0196854077258692,
+      "lns_makespan": 1.0215640081059039,
       "residual_bestof64_ratio": 1.0022351927268236,
       "local_search_ratio": 0.990449318505856,
-      "lns_ratio": 0.9811637398369857,
-      "accepted_repairs": 3,
-      "evaluated_neighbors": 8490
+      "lns_ratio": 0.982971370465578,
+      "accepted_repairs": 2,
+      "evaluated_neighbors": 8535,
+      "selected_source": "residual_lns",
+      "candidate_makespans": {
+        "residual_lns": 1.0215640081059039,
+        "heft_anchor": 1.039261202106066,
+        "heft_lns": 1.0314301144105227
+      },
+      "dag_shape": {
+        "task_count": 25,
+        "edge_count": 90,
+        "source_count": 4,
+        "sink_count": 8,
+        "longest_path_edges": 5,
+        "level_width": 6,
+        "width_ratio": 0.24,
+        "edge_density": 0.15
+      }
     },
     {
       "scenario": "scenario_25_1.json",
@@ -251,12 +536,30 @@
       "heft_makespan": 0.921302144217215,
       "residual_bestof64_makespan": 0.8895185336162899,
       "local_search_makespan": 0.873395453435065,
-      "lns_makespan": 0.8517740726684556,
+      "lns_makespan": 0.8466206686253124,
       "residual_bestof64_ratio": 0.9655014255633475,
       "local_search_ratio": 0.9480011079070547,
-      "lns_ratio": 0.924532823476891,
-      "accepted_repairs": 3,
-      "evaluated_neighbors": 8093
+      "lns_ratio": 0.9189392143927377,
+      "accepted_repairs": 2,
+      "evaluated_neighbors": 8242,
+      "selected_source": "heft_lns",
+      "candidate_makespans": {
+        "residual_lns": 0.859605691098608,
+        "heft_anchor": 0.921302144217215,
+        "heft_lns": 0.8466206686253124,
+        "width_aware_lns": 0.869001950596163,
+        "cost_first_lns": 0.8488545954954797
+      },
+      "dag_shape": {
+        "task_count": 25,
+        "edge_count": 92,
+        "source_count": 8,
+        "sink_count": 5,
+        "longest_path_edges": 4,
+        "level_width": 8,
+        "width_ratio": 0.32,
+        "edge_density": 0.15333333333333332
+      }
     },
     {
       "scenario": "scenario_25_2.json",
@@ -265,12 +568,28 @@
       "heft_makespan": 1.000114438569326,
       "residual_bestof64_makespan": 0.9804460984351904,
       "local_search_makespan": 0.959094580845427,
-      "lns_makespan": 0.9448286618285122,
+      "lns_makespan": 0.9458239080837444,
       "residual_bestof64_ratio": 0.9803339104250196,
       "local_search_ratio": 0.9589848359927907,
-      "lns_ratio": 0.9447205493604306,
-      "accepted_repairs": 4,
-      "evaluated_neighbors": 8821
+      "lns_ratio": 0.9457156817341377,
+      "accepted_repairs": 1,
+      "evaluated_neighbors": 9024,
+      "selected_source": "heft_lns",
+      "candidate_makespans": {
+        "residual_lns": 0.953085833459454,
+        "heft_anchor": 1.000114438569326,
+        "heft_lns": 0.9458239080837444
+      },
+      "dag_shape": {
+        "task_count": 25,
+        "edge_count": 73,
+        "source_count": 6,
+        "sink_count": 7,
+        "longest_path_edges": 4,
+        "level_width": 6,
+        "width_ratio": 0.24,
+        "edge_density": 0.12166666666666667
+      }
     },
     {
       "scenario": "scenario_25_3.json",
@@ -279,12 +598,28 @@
       "heft_makespan": 0.9382051467178703,
       "residual_bestof64_makespan": 0.902015343209166,
       "local_search_makespan": 0.8814724474964843,
-      "lns_makespan": 0.8795189087398627,
+      "lns_makespan": 0.876794842682685,
       "residual_bestof64_ratio": 0.9614265561905013,
       "local_search_ratio": 0.9395306032802588,
-      "lns_ratio": 0.9374483947532051,
-      "accepted_repairs": 1,
-      "evaluated_neighbors": 9104
+      "lns_ratio": 0.9345449081685202,
+      "accepted_repairs": 0,
+      "evaluated_neighbors": 8588,
+      "selected_source": "heft_lns",
+      "candidate_makespans": {
+        "residual_lns": 0.8814724474964843,
+        "heft_anchor": 0.9382051467178703,
+        "heft_lns": 0.876794842682685
+      },
+      "dag_shape": {
+        "task_count": 25,
+        "edge_count": 82,
+        "source_count": 7,
+        "sink_count": 3,
+        "longest_path_edges": 5,
+        "level_width": 7,
+        "width_ratio": 0.28,
+        "edge_density": 0.13666666666666666
+      }
     },
     {
       "scenario": "scenario_25_4.json",
@@ -293,12 +628,28 @@
       "heft_makespan": 1.0729189030491886,
       "residual_bestof64_makespan": 1.0272671562347233,
       "local_search_makespan": 1.0042508697769759,
-      "lns_makespan": 1.0042508697769759,
+      "lns_makespan": 1.0041099968030787,
       "residual_bestof64_ratio": 0.9574508877747191,
       "local_search_ratio": 0.935998859674239,
-      "lns_ratio": 0.935998859674239,
+      "lns_ratio": 0.9358675608654503,
       "accepted_repairs": 0,
-      "evaluated_neighbors": 8523
+      "evaluated_neighbors": 8366,
+      "selected_source": "heft_lns",
+      "candidate_makespans": {
+        "residual_lns": 1.0042508697769759,
+        "heft_anchor": 1.0729189030491886,
+        "heft_lns": 1.0041099968030787
+      },
+      "dag_shape": {
+        "task_count": 25,
+        "edge_count": 88,
+        "source_count": 1,
+        "sink_count": 4,
+        "longest_path_edges": 5,
+        "level_width": 7,
+        "width_ratio": 0.28,
+        "edge_density": 0.14666666666666667
+      }
     }
   ]
 }

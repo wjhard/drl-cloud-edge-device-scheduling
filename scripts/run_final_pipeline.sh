@@ -8,6 +8,7 @@ SCENARIO_DIR="evaluation/scenarios"
 RESULTS_DIR="evaluation/results/final_pipeline_lns_repeats"
 SUMMARY_PATH="evaluation/results/final_pipeline_lns_summary.json"
 CANONICAL_SEEDS=(1565812275 842234145 386081360 1117038938 1760006972)
+PYTORCH_INDEX_URL="${PYTORCH_INDEX_URL:-https://mirror.sjtu.edu.cn/pytorch-wheels/cpu}"
 REQUIRED_IMPORTS="import importlib.util; import gymnasium, matplotlib, networkx, numpy, pulp, pytest, rich, scipy, torch, tqdm, yaml; assert all(importlib.util.find_spec(name) is not None for name in ('sb3_contrib', 'stable_baselines3', 'tensorboard'))"
 
 if [[ -n "${PYTHON:-}" ]]; then
@@ -45,7 +46,7 @@ if (( import_check_exit != 0 )); then
   run_step "upgrade pip" "$PYTHON_BIN" -m pip install --upgrade pip
   if ! "$PYTHON_BIN" -c "import torch" >/dev/null 2>&1; then
     run_step "install CPU PyTorch" "$PYTHON_BIN" -m pip install \
-      "torch==2.12.1+cpu" --index-url https://download.pytorch.org/whl/cpu
+      "torch==2.12.1+cpu" --index-url "$PYTORCH_INDEX_URL"
   fi
   run_step "install project requirements" "$PYTHON_BIN" -m pip install -r requirements.txt
   echo "==== verify dependency consistency ===="
@@ -76,6 +77,7 @@ else
 fi
 
 echo "==== evaluate final Residual best-of-64 + relocation + LNS ===="
+echo "portfolio_mode=adaptive (Residual/LNS + HEFT anchor + width-aware candidate)"
 mkdir -p "$RESULTS_DIR"
 rm -f "$RESULTS_DIR"/direct_repeat_*.json
 for index in "${!CANONICAL_SEEDS[@]}"; do
@@ -90,7 +92,8 @@ for index in "${!CANONICAL_SEEDS[@]}"; do
     --sampling-seed "$seed" \
     --num-samples 64 \
     --local-max-passes 3 \
-    --lns-iterations 64
+    --lns-iterations 64 \
+    --portfolio-mode adaptive
 done
 
 run_step "analyze five paired final LNS repeats" "$PYTHON_BIN" \
@@ -119,7 +122,7 @@ winning_runs = sum(
     for record in summary["paired_runs"]
 )
 print("FINAL_PIPELINE_RESULT")
-print("method=Residual Best-of-64 + topological relocation + best-only LNS")
+print("method=Adaptive Residual Best-of-64 + topological relocation + best-only LNS + heuristic portfolio")
 print(f"repeat_count={summary['repeat_count']}")
 print(f"overall_mean_ratio={mean_ratio:.12f}")
 print(f"overall_mean_ratio_6dp={mean_ratio:.6f}")

@@ -1,9 +1,14 @@
 from __future__ import annotations
 
+from pathlib import Path
+
+from evaluation.evaluate_wide_parallel import DEFAULT_SCENARIOS_DIR
 from evaluation.generate_structural_generalization_scenarios import (
+    DEFAULT_OUTPUT_ROOT,
     GROUPS,
     generate_structural_scenarios,
 )
+from scripts.reproduce import REPRODUCE_SCENARIOS_DIR
 
 
 def test_structural_scenarios_are_grouped_deep_and_resource_paired(tmp_path):
@@ -26,3 +31,9 @@ def test_structural_scenarios_are_grouped_deep_and_resource_paired(tmp_path):
         homogeneous_path = tmp_path / "homogeneous_resources" / f"scenario_{task_size}_{manifest['task_sizes'].index(task_size)}.json"
         control_path = tmp_path / "original_control" / f"scenario_{task_size}_{manifest['task_sizes'].index(task_size)}.json"
         assert homogeneous_path.read_text(encoding="utf-8") == control_path.read_text(encoding="utf-8")
+
+
+def test_structural_default_paths_are_pinned_to_v2() -> None:
+    assert Path(DEFAULT_OUTPUT_ROOT).as_posix() == "evaluation/scenarios_structural_v2"
+    assert DEFAULT_SCENARIOS_DIR.as_posix() == "evaluation/scenarios_structural_v2/wide_parallel"
+    assert REPRODUCE_SCENARIOS_DIR == "evaluation/scenarios_structural_v2_reproduce"

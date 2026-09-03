@@ -1,0 +1,77 @@
+{
+  "environment": {
+    "timestamp_utc": "2026-08-31T14:00:56.185234+00:00",
+    "python": "3.12.4 | packaged by Anaconda, Inc. | (main, Jun 18 2024, 15:03:56) [MSC v.1929 64 bit (AMD64)]",
+    "python_executable": "python.exe",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "system": "Windows",
+    "release": "11",
+    "machine": "AMD64",
+    "processor": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+    "project_root": ".",
+    "git_revision": "3ccbb9d86a7dbaa1306e534450891310c4f7659e",
+    "git_dirty": true
+  },
+  "profile": "wide",
+  "commands": [
+    {
+      "label": "compileall",
+      "command": [
+        "python",
+        "-m",
+        "compileall",
+        "-q",
+        "env",
+        "baselines",
+        "policies",
+        "training",
+        "evaluation",
+        "tests"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.08034630003385246
+    },
+    {
+      "label": "pytest",
+      "command": [
+        "python",
+        "-m",
+        "pytest",
+        "tests",
+        "-q",
+        "--basetemp",
+        "<USER_HOME>\\AppData\\Local\\Temp\\drl-scheduler-pytest-1udnzte2"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 5.363984199997503
+    },
+    {
+      "label": "generate structural scenarios",
+      "command": [
+        "python",
+        "evaluation/generate_structural_generalization_scenarios.py",
+        "--output-root",
+        "evaluation/scenarios_structural_v2_reproduce"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.22654860001057386
+    },
+    {
+      "label": "wide-parallel adaptive evaluation",
+      "command": [
+        "python",
+        "evaluation/evaluate_wide_parallel.py",
+        "--scenarios-dir",
+        "evaluation/scenarios_structural_v2_reproduce/wide_parallel",
+        "--results-path",
+        "evaluation/results/wide_parallel_adaptive_reproduce.json",
+        "--num-samples",
+        "16",
+        "--lns-iterations",
+        "16"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 20.526723599992692
+    }
+  ]
+}

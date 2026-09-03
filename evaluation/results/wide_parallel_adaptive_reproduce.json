@@ -1,0 +1,295 @@
+{
+  "method": "Adaptive Residual portfolio for wide-parallel generalization",
+  "config_path": "training/configs/ppo_mlp_residual.yaml",
+  "model_path": "training/checkpoints/ppo_mlp_residual",
+  "scenarios_dir": "evaluation/scenarios_structural_v2_reproduce/wide_parallel",
+  "resource_config_path": "configs/resource_default.yaml",
+  "num_samples": 16,
+  "local_max_passes": 3,
+  "lns_iterations": 16,
+  "seed": 20260830,
+  "wide_width_ratio_threshold": 0.3,
+  "groups": {
+    "residual_only": {
+      "scenario_count": 5,
+      "mean_ratio": 0.9657724297583121,
+      "sample_std": 0.02816949181046749,
+      "outperform_heft_count": 4,
+      "non_regression_vs_heft_count": 5,
+      "heft_tie_proven_optimal_count": 1,
+      "selected_source_counts": {
+        "residual_lns": 5
+      }
+    },
+    "adaptive": {
+      "scenario_count": 5,
+      "mean_ratio": 0.9596146564607944,
+      "sample_std": 0.028386605190650418,
+      "outperform_heft_count": 4,
+      "non_regression_vs_heft_count": 5,
+      "heft_tie_proven_optimal_count": 1,
+      "selected_source_counts": {
+        "heft_lns": 3,
+        "residual_lns": 2
+      }
+    }
+  },
+  "adaptive_heft_tie_optimality_checks": {
+    "scenario_8_0.json": {
+      "status": "optimal",
+      "proven_optimal": true,
+      "optimal_makespan": 0.4137153027466314,
+      "best_bound": 0.4137153027466314,
+      "relative_gap": 0.0,
+      "solve_time_seconds": 0.5975712999934331,
+      "adaptive_matches_optimum": true
+    }
+  },
+  "paired_adaptive_minus_residual_ratio": {
+    "mean": -0.0061577732975176104,
+    "improved_or_equal_count": 5,
+    "improved_count": 3
+  },
+  "scenarios": [
+    {
+      "mode": "residual_only",
+      "scenario": "scenario_12_1.json",
+      "makespan": 0.4665736725491503,
+      "heft_makespan": 0.4911258578815233,
+      "ratio": 0.950008363562287,
+      "selected_source": "residual_lns",
+      "candidate_makespans": {
+        "residual_lns": 0.4665736725491503
+      },
+      "dag_shape": {
+        "task_count": 12,
+        "edge_count": 19,
+        "source_count": 2,
+        "sink_count": 2,
+        "longest_path_edges": 2,
+        "level_width": 8,
+        "width_ratio": 0.6666666666666666,
+        "edge_density": 0.14393939393939395
+      },
+      "scenario_seed": 20260830
+    },
+    {
+      "mode": "residual_only",
+      "scenario": "scenario_16_2.json",
+      "makespan": 0.5981207571641478,
+      "heft_makespan": 0.6154740224315536,
+      "ratio": 0.9718050402861063,
+      "selected_source": "residual_lns",
+      "candidate_makespans": {
+        "residual_lns": 0.5981207571641478
+      },
+      "dag_shape": {
+        "task_count": 16,
+        "edge_count": 30,
+        "source_count": 3,
+        "sink_count": 3,
+        "longest_path_edges": 2,
+        "level_width": 10,
+        "width_ratio": 0.625,
+        "edge_density": 0.125
+      },
+      "scenario_seed": 20260831
+    },
+    {
+      "mode": "residual_only",
+      "scenario": "scenario_20_3.json",
+      "makespan": 0.6653738021626768,
+      "heft_makespan": 0.717847890486246,
+      "ratio": 0.9269008253433398,
+      "selected_source": "residual_lns",
+      "candidate_makespans": {
+        "residual_lns": 0.6653738021626768
+      },
+      "dag_shape": {
+        "task_count": 20,
+        "edge_count": 30,
+        "source_count": 4,
+        "sink_count": 4,
+        "longest_path_edges": 2,
+        "level_width": 12,
+        "width_ratio": 0.6,
+        "edge_density": 0.07894736842105263
+      },
+      "scenario_seed": 20260832
+    },
+    {
+      "mode": "residual_only",
+      "scenario": "scenario_25_4.json",
+      "makespan": 0.8402988800685494,
+      "heft_makespan": 0.8573184345599847,
+      "ratio": 0.9801479195998269,
+      "selected_source": "residual_lns",
+      "candidate_makespans": {
+        "residual_lns": 0.8402988800685494
+      },
+      "dag_shape": {
+        "task_count": 25,
+        "edge_count": 52,
+        "source_count": 5,
+        "sink_count": 5,
+        "longest_path_edges": 2,
+        "level_width": 15,
+        "width_ratio": 0.6,
+        "edge_density": 0.08666666666666667
+      },
+      "scenario_seed": 20260833
+    },
+    {
+      "mode": "residual_only",
+      "scenario": "scenario_8_0.json",
+      "makespan": 0.4137152991441926,
+      "heft_makespan": 0.4137152991441926,
+      "ratio": 1.0,
+      "selected_source": "residual_lns",
+      "candidate_makespans": {
+        "residual_lns": 0.4137152991441926
+      },
+      "dag_shape": {
+        "task_count": 8,
+        "edge_count": 12,
+        "source_count": 1,
+        "sink_count": 1,
+        "longest_path_edges": 2,
+        "level_width": 6,
+        "width_ratio": 0.75,
+        "edge_density": 0.21428571428571427
+      },
+      "scenario_seed": 20260834
+    },
+    {
+      "mode": "adaptive",
+      "scenario": "scenario_12_1.json",
+      "makespan": 0.46595723378970455,
+      "heft_makespan": 0.4911258578815233,
+      "ratio": 0.9487532092071391,
+      "selected_source": "heft_lns",
+      "candidate_makespans": {
+        "residual_lns": 0.4665736725491503,
+        "heft_anchor": 0.4911258578815233,
+        "heft_lns": 0.46595723378970455,
+        "width_aware_lns": 0.46595723378970455,
+        "cost_first_lns": 0.4697160455280139
+      },
+      "dag_shape": {
+        "task_count": 12,
+        "edge_count": 19,
+        "source_count": 2,
+        "sink_count": 2,
+        "longest_path_edges": 2,
+        "level_width": 8,
+        "width_ratio": 0.6666666666666666,
+        "edge_density": 0.14393939393939395
+      },
+      "scenario_seed": 20260830
+    },
+    {
+      "mode": "adaptive",
+      "scenario": "scenario_16_2.json",
+      "makespan": 0.5829066740407232,
+      "heft_makespan": 0.6154740224315536,
+      "ratio": 0.9470857465890005,
+      "selected_source": "heft_lns",
+      "candidate_makespans": {
+        "residual_lns": 0.5981207571641478,
+        "heft_anchor": 0.6154740224315536,
+        "heft_lns": 0.5829066740407232,
+        "width_aware_lns": 0.5921053097149162,
+        "cost_first_lns": 0.5845541223861864
+      },
+      "dag_shape": {
+        "task_count": 16,
+        "edge_count": 30,
+        "source_count": 3,
+        "sink_count": 3,
+        "longest_path_edges": 2,
+        "level_width": 10,
+        "width_ratio": 0.625,
+        "edge_density": 0.125
+      },
+      "scenario_seed": 20260831
+    },
+    {
+      "mode": "adaptive",
+      "scenario": "scenario_20_3.json",
+      "makespan": 0.6653738021626768,
+      "heft_makespan": 0.717847890486246,
+      "ratio": 0.9269008253433398,
+      "selected_source": "residual_lns",
+      "candidate_makespans": {
+        "residual_lns": 0.6653738021626768,
+        "heft_anchor": 0.717847890486246,
+        "heft_lns": 0.6653738021626768,
+        "width_aware_lns": 0.6678394631625579,
+        "cost_first_lns": 0.69116489287864
+      },
+      "dag_shape": {
+        "task_count": 20,
+        "edge_count": 30,
+        "source_count": 4,
+        "sink_count": 4,
+        "longest_path_edges": 2,
+        "level_width": 12,
+        "width_ratio": 0.6,
+        "edge_density": 0.07894736842105263
+      },
+      "scenario_seed": 20260832
+    },
+    {
+      "mode": "adaptive",
+      "scenario": "scenario_25_4.json",
+      "makespan": 0.8361713903922517,
+      "heft_makespan": 0.8573184345599847,
+      "ratio": 0.9753335011644926,
+      "selected_source": "heft_lns",
+      "candidate_makespans": {
+        "residual_lns": 0.8402988800685494,
+        "heft_anchor": 0.8573184345599847,
+        "heft_lns": 0.8361713903922517,
+        "width_aware_lns": 0.8388952131559099,
+        "cost_first_lns": 0.8376205838566687
+      },
+      "dag_shape": {
+        "task_count": 25,
+        "edge_count": 52,
+        "source_count": 5,
+        "sink_count": 5,
+        "longest_path_edges": 2,
+        "level_width": 15,
+        "width_ratio": 0.6,
+        "edge_density": 0.08666666666666667
+      },
+      "scenario_seed": 20260833
+    },
+    {
+      "mode": "adaptive",
+      "scenario": "scenario_8_0.json",
+      "makespan": 0.4137152991441926,
+      "heft_makespan": 0.4137152991441926,
+      "ratio": 1.0,
+      "selected_source": "residual_lns",
+      "candidate_makespans": {
+        "residual_lns": 0.4137152991441926,
+        "heft_anchor": 0.4137152991441926,
+        "heft_lns": 0.4137152991441926,
+        "width_aware_lns": 0.4137152991441926,
+        "cost_first_lns": 0.4137152991441926
+      },
+      "dag_shape": {
+        "task_count": 8,
+        "edge_count": 12,
+        "source_count": 1,
+        "sink_count": 1,
+        "longest_path_edges": 2,
+        "level_width": 6,
+        "width_ratio": 0.75,
+        "edge_density": 0.21428571428571427
+      },
+      "scenario_seed": 20260834
+    }
+  ]
+}

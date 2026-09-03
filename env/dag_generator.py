@@ -64,6 +64,112 @@ def generate_random_dag(
     return _build_dag_task(graph)
 
 
+def generate_wide_parallel_dag(
+    num_tasks: int,
+    edge_density: float = 0.15,
+    min_cost: float = 1.0,
+    max_cost: float = 10.0,
+    seed: int | None = None,
+) -> DAGTask:
+    """Generate a connected, low-density layered DAG with a broad frontier.
+
+    The ordinary generator samples levels independently and can accidentally
+    produce a narrow graph even when a low edge density is requested.  This
+    constructor is used by the robustness curriculum and structural tests to
+    guarantee a wide-parallel workload rather than merely hoping for one.
+    """
+
+    if num_tasks < 3:
+        raise ValueError("wide-parallel DAGs require at least three tasks")
+    if not 0.0 <= edge_density <= 1.0:
+        raise ValueError("edge_density must be between 0 and 1")
+    if min_cost <= 0 or max_cost < min_cost:
+        raise ValueError("cost bounds must satisfy 0 < min_cost <= max_cost")
+
+    rng = random.Random(seed)
+    source_count = max(1, num_tasks // 5)
+    sink_count = max(1, num_tasks // 5)
+    middle_count = num_tasks - source_count - sink_count
+    if middle_count <= 0:
+        source_count = 1
+        sink_count = 1
+        middle_count = num_tasks - 2
+    layers = [
+        list(range(source_count)),
+        list(range(source_count, source_count + middle_count)),
+        list(range(source_count + middle_count, num_tasks)),
+    ]
+
+    graph = nx.DiGraph()
+    for level, nodes in enumerate(layers):
+        for task_id in nodes:
+            graph.add_node(
+                task_id,
+                task_id=task_id,
+                level=level,
+                computation_cost=rng.uniform(min_cost, max_cost),
+            )
+
+    # Ensure every non-source task has a predecessor and every non-sink task
+    # has a successor.  Additional edges preserve the three-layer DAG shape.
+    for src in layers[0]:
+        dst = rng.choice(layers[1])
+        graph.add_edge(src, dst, data_size=rng.uniform(1.0, 10.0))
+    for dst in layers[1]:
+        src = rng.choice(layers[0])
+        graph.add_edge(src, dst, data_size=rng.uniform(1.0, 10.0))
+    for src in layers[1]:
+        dst = rng.choice(layers[2])
+        graph.add_edge(src, dst, data_size=rng.uniform(1.0, 10.0))
+    for dst in layers[2]:
+        src = rng.choice(layers[1])
+        graph.add_edge(src, dst, data_size=rng.uniform(1.0, 10.0))
+
+    for left, right in ((layers[0], layers[1]), (layers[1], layers[2])):
+        for src in left:
+            for dst in right:
+                if rng.random() < edge_density:
+                    graph.add_edge(src, dst, data_size=rng.uniform(1.0, 10.0))
+    return _build_dag_task(graph)
+
+
+def generate_deep_chain_dag(
+    num_tasks: int,
+    edge_density: float = 0.65,
+    min_cost: float = 1.0,
+    max_cost: float = 10.0,
+    seed: int | None = None,
+) -> DAGTask:
+    """Generate a mostly serial layered DAG for robustness training."""
+
+    if num_tasks <= 0:
+        raise ValueError("num_tasks must be positive")
+    if not 0.0 <= edge_density <= 1.0:
+        raise ValueError("edge_density must be between 0 and 1")
+    rng = random.Random(seed)
+    graph = nx.DiGraph()
+    for task_id in range(num_tasks):
+        graph.add_node(
+            task_id,
+            task_id=task_id,
+            level=task_id,
+            computation_cost=rng.uniform(min_cost, max_cost),
+        )
+        if task_id > 0:
+            graph.add_edge(
+                task_id - 1,
+                task_id,
+                data_size=rng.uniform(1.0, 10.0),
+            )
+    # Sparse skip edges increase structural diversity without removing the
+    # guaranteed chain backbone.
+    for src in range(num_tasks):
+        for dst in range(src + 2, num_tasks):
+            if rng.random() < edge_density * 0.15:
+                graph.add_edge(src, dst, data_size=rng.uniform(1.0, 10.0))
+    return _build_dag_task(graph)
+
+
 def get_ready_tasks(dag: DAGTask, completed_tasks: set[int] | Iterable[int]) -> list[int]:
     completed = set(completed_tasks)
     ready_tasks: list[int] = []

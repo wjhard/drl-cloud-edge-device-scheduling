@@ -51,7 +51,7 @@ def system_architecture() -> None:
     ax.set_ylim(0, 1)
     ax.axis("off")
     layers = [
-        (0.76, "证据与交付层", "JSON / 日志 / 审计 / Word 报告 / openEuler", "#7A3E9D"),
+        (0.76, "证据与交付层", "JSON / 日志 / 审计 / Word 报告 / openEuler/openKylin/Anolis", "#7A3E9D"),
         (0.58, "评测与基线层", "固定场景 · HEFT · MILP · Hybrid · 配对统计", "#B34A3C"),
         (0.40, "策略与搜索层", "Residual Policy · Best-of-N · 合法重定位 · LNS", "#1F6F8B"),
         (0.22, "训练层", "MaskablePPO · 配置驱动 · 归一化 · checkpoint", "#356A3B"),
@@ -74,12 +74,14 @@ def method_evolution() -> None:
         ("Residual", "evaluation/results/summary_mlp_residual.json"),
         ("Best-of-64", "evaluation/results/summary_mlp_residual_bestof64.json"),
     ]
-    labels = [name for name, _ in sources] + ["+重定位+LNS"]
+    labels = [name for name, _ in sources] + ["+重定位+LNS", "Adaptive\nportfolio"]
     values = [float(load(path)["overall"]["mean_ratio"]) for _, path in sources]
     lns = load("evaluation/results/autonomous_exploration/direction2_lns/direct_vs_residual_paired_summary.json")
     values.append(float(lns["statistics"]["lns_mean_ratio"]["mean"]))
+    adaptive = load("evaluation/results/final_pipeline_lns_summary.json")
+    values.append(float(adaptive["statistics"]["lns_mean_ratio"]["mean"]))
     fig, ax = plt.subplots(figsize=(10.5, 4.8))
-    colors = ["#9A9A9A", "#9A9A9A", "#527C9C", "#2F7D5A", "#76549A", "#D2813D", "#B33A3A"]
+    colors = ["#9A9A9A", "#9A9A9A", "#527C9C", "#2F7D5A", "#76549A", "#D2813D", "#B33A3A", "#7A3E9D"]
     bars = ax.bar(range(len(values)), values, color=colors, width=0.68)
     ax.axhline(1.0, color="#202020", linewidth=1.2, linestyle="--", label="HEFT = 1.0")
     ax.set_ylim(0.82, 1.44)
@@ -102,8 +104,8 @@ def final_pipeline() -> None:
         ("HEFT rank", "安全先验"),
         ("Residual", "学习有界 delta"),
         ("Best-of-64", "构造多样初解"),
-        ("合法重定位", "小邻域精修"),
-        ("Best-only LNS", "破坏—修复"),
+        ("Adaptive 候选", "HEFT/宽度/成本"),
+        ("Best-only LNS", "多候选精修"),
         ("EFT 调度", "输出资源时间线"),
     ]
     palette = ["#7A6C3A", "#66518E", "#BD7531", "#347886", "#A63B3B", "#356A3B"]
@@ -123,26 +125,28 @@ def final_pipeline() -> None:
 def final_statistics() -> None:
     direct = load("evaluation/results/autonomous_exploration/direction2_lns/direct_vs_residual_paired_summary.json")
     compute = load("evaluation/results/autonomous_exploration/compute_matched_sampling/paired_comparison_summary.json")
-    names = ["Residual\nBest-of-64", "Residual\nBest-of-128", "Best-of-64\n+ LNS"]
+    names = ["Residual\nBest-of-64", "Residual\nBest-of-128", "初赛\n+ LNS", "决赛优化\nAdaptive"]
     means = [
         direct["statistics"]["residual_bestof64_mean_ratio"]["mean"],
         compute["statistics"]["pure_sampling_mean_ratio"]["mean"],
         direct["statistics"]["lns_mean_ratio"]["mean"],
+        load("evaluation/results/final_pipeline_lns_summary.json")["statistics"]["lns_mean_ratio"]["mean"],
     ]
     stds = [
         direct["statistics"]["residual_bestof64_mean_ratio"]["sample_std"],
         compute["statistics"]["pure_sampling_mean_ratio"]["sample_std"],
         direct["statistics"]["lns_mean_ratio"]["sample_std"],
+        load("evaluation/results/final_pipeline_lns_summary.json")["statistics"]["lns_mean_ratio"]["sample_std"],
     ]
     fig, ax = plt.subplots(figsize=(8.2, 4.7))
-    bars = ax.bar(names, means, yerr=stds, capsize=6, color=["#7A6A9B", "#C07A34", "#A93434"], width=0.62)
+    bars = ax.bar(names, means, yerr=stds, capsize=6, color=["#7A6A9B", "#C07A34", "#A93434", "#7A3E9D"], width=0.62)
     ax.axhline(1.0, color="#222222", linestyle="--", linewidth=1.2)
     ax.set_ylim(0.90, 1.01)
     ax.set_ylabel("5 次 mean_ratio（均值 ± 样本标准差）")
     ax.grid(axis="y", alpha=0.18)
     for bar, value in zip(bars, means):
         ax.text(bar.get_x() + bar.get_width() / 2, value + 0.004, f"{value:.6f}", ha="center", fontsize=9)
-    ax.set_title("最终 LNS 改进不由单纯增加采样次数解释")
+    ax.set_title("最终方案：先排除采样混淆，再用自适应候选修复泛化短板")
     save(fig, "final_statistics.png")
 
 

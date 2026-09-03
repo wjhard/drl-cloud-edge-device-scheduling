@@ -36,6 +36,8 @@ def evaluate(
     num_samples: int = 64,
     local_max_passes: int = 3,
     lns_iterations: int = 64,
+    portfolio_mode: str = "adaptive",
+    wide_width_ratio_threshold: float = 0.30,
 ) -> dict:
     config = yaml.safe_load(Path(config_path).read_text(encoding="utf-8"))
     env_config = config["env"]
@@ -49,6 +51,9 @@ def evaluate(
         local_max_passes=local_max_passes,
         lns_iterations=lns_iterations,
         normalize_observations=bool(env_config.get("normalize_observations", False)),
+        random_seed=sampling_seed,
+        portfolio_mode=portfolio_mode,
+        wide_width_ratio_threshold=wide_width_ratio_threshold,
     )
     heft = HEFTScheduler()
     records: list[dict] = []
@@ -87,6 +92,11 @@ def evaluate(
                 "lns_ratio": lns_makespan / heft_makespan,
                 "accepted_repairs": scheduler.last_stats.accepted_repairs,
                 "evaluated_neighbors": scheduler.last_stats.evaluated_neighbors,
+                "selected_source": scheduler.last_selected_source,
+                "candidate_makespans": dict(scheduler.last_candidate_makespans),
+                "dag_shape": scheduler.last_shape_stats.as_dict()
+                if scheduler.last_shape_stats is not None
+                else None,
             }
         )
 
@@ -120,6 +130,10 @@ def evaluate(
             "local_search_better_than_heft_count": sum(value < 1.0 for value in local_ratios),
             "lns_better_than_heft_count": sum(value < 1.0 for value in lns_ratios),
             "improved_scenario_count": sum(new < old - 1e-12 for new, old in zip(lns_ratios, local_ratios)),
+            "portfolio_selected_source_counts": {
+                source: sum(record["selected_source"] == source for record in records)
+                for source in sorted({record["selected_source"] for record in records})
+            },
         },
         "scenarios": records,
     }
@@ -140,6 +154,13 @@ def evaluate(
         f"{summary['overall']['paired_mean_difference_lns_minus_local']:+.12f}"
     )
     print(f"better_than_heft={summary['overall']['lns_better_than_heft_count']}/{len(records)}")
+    print(
+        "portfolio_selected_sources="
+        + ",".join(
+            f"{source}:{count}"
+            for source, count in summary["overall"]["portfolio_selected_source_counts"].items()
+        )
+    )
     print(f"improved_scenarios={summary['overall']['improved_scenario_count']}/{len(records)}")
     print(f"elapsed_seconds={elapsed:.6f}")
     print(f"results_path={output_path}")
@@ -155,6 +176,13 @@ def main() -> None:
     parser.add_argument("--num-samples", type=int, default=64)
     parser.add_argument("--local-max-passes", type=int, default=3)
     parser.add_argument("--lns-iterations", type=int, default=64)
+    parser.add_argument(
+        "--portfolio-mode",
+        choices=("residual_only", "adaptive", "full"),
+        default="adaptive",
+        help="Candidate portfolio: preserve the original residual path, add adaptive HEFT/width anchors, or always include all heuristics.",
+    )
+    parser.add_argument("--wide-width-ratio-threshold", type=float, default=0.30)
     args = parser.parse_args()
     evaluate(
         args.config,
@@ -164,6 +192,8 @@ def main() -> None:
         num_samples=args.num_samples,
         local_max_passes=args.local_max_passes,
         lns_iterations=args.lns_iterations,
+        portfolio_mode=args.portfolio_mode,
+        wide_width_ratio_threshold=args.wide_width_ratio_threshold,
     )
 
 

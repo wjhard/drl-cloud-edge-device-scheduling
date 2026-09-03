@@ -1,0 +1,117 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "task_id": 0,
+      "level": 0,
+      "computation_cost": 2.7942696874007265,
+      "id": 0
+    },
+    {
+      "task_id": 1,
+      "level": 1,
+      "computation_cost": 2.6967509993473766,
+      "id": 1
+    },
+    {
+      "task_id": 2,
+      "level": 1,
+      "computation_cost": 5.6190870826166215,
+      "id": 2
+    },
+    {
+      "task_id": 3,
+      "level": 1,
+      "computation_cost": 5.09273973153488,
+      "id": 3
+    },
+    {
+      "task_id": 4,
+      "level": 1,
+      "computation_cost": 1.7036124540175563,
+      "id": 4
+    },
+    {
+      "task_id": 5,
+      "level": 1,
+      "computation_cost": 6.059417254545445,
+      "id": 5
+    },
+    {
+      "task_id": 6,
+      "level": 1,
+      "computation_cost": 8.089454460281441,
+      "id": 6
+    },
+    {
+      "task_id": 7,
+      "level": 2,
+      "computation_cost": 7.135233463293866,
+      "id": 7
+    }
+  ],
+  "links": [
+    {
+      "data_size": 3.4075911615548615,
+      "source": 0,
+      "target": 5
+    },
+    {
+      "data_size": 9.073737257898573,
+      "source": 0,
+      "target": 1
+    },
+    {
+      "data_size": 8.459765463030656,
+      "source": 0,
+      "target": 2
+    },
+    {
+      "data_size": 5.512840889784911,
+      "source": 0,
+      "target": 3
+    },
+    {
+      "data_size": 3.362470120072706,
+      "source": 0,
+      "target": 4
+    },
+    {
+      "data_size": 1.4406414863667107,
+      "source": 0,
+      "target": 6
+    },
+    {
+      "data_size": 8.351997915678398,
+      "source": 1,
+      "target": 7
+    },
+    {
+      "data_size": 8.03378527915449,
+      "source": 2,
+      "target": 7
+    },
+    {
+      "data_size": 6.838303821046415,
+      "source": 3,
+      "target": 7
+    },
+    {
+      "data_size": 2.0198520727437232,
+      "source": 4,
+      "target": 7
+    },
+    {
+      "data_size": 4.0301036238762,
+      "source": 5,
+      "target": 7
+    },
+    {
+      "data_size": 3.6976501153600556,
+      "source": 6,
+      "target": 7
+    }
+  ]
+}

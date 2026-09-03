@@ -1,0 +1,39 @@
+env:
+  min_tasks: 8
+  max_tasks: 30
+  edge_density_min: 0.12
+  edge_density_max: 0.50
+  max_tasks_padding: 36
+  resource_config_path: "configs/resource_default.yaml"
+  reward_mode: "relative_heft"
+  normalize_observations: true
+  scheduler_mode: "residual"
+
+training:
+  total_timesteps: 300000
+  learning_rate: 0.0003
+  n_steps: 2048
+  batch_size: 64
+  n_epochs: 10
+  gamma: 0.99
+  gae_lambda: 0.95
+  clip_range: 0.2
+  ent_coef: 0.01
+  net_arch: [128, 128]
+  residual_delta_scale: 0.75
+  residual_rank_scale: 1.0
+  seed: 20260830
+  save_path: "training/checkpoints/ppo_mlp_residual_robust"
+  tensorboard_log: "training/tb_logs"
+  monitor_log_dir: "training/monitor_logs"
+  curriculum:
+    mode: "structural_mixture"
+    wide_probability: 0.40
+    deep_probability: 0.20
+
+evaluation:
+  num_validation_scenarios: 20
+  validation_task_sizes: [10, 15, 20, 25, 30]
+  validation_seed_start: 2608300
+  scenarios_dir: "evaluation/scenarios_robust"
+  results_path: "evaluation/results/summary_mlp_residual_robust.json"

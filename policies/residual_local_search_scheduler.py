@@ -5,8 +5,11 @@ import heapq
 from pathlib import Path
 import random
 
+import networkx as nx
+
+from baselines.heft_scheduler import HEFTScheduler, compute_upward_ranks
 from env.dag_generator import DAGTask
-from env.resource_config import ResourceConfig
+from env.resource_config import Resource, ResourceConfig
 from env.scheduling_utils import ScheduledEvent, find_earliest_slot
 from policies.rl_scheduler import RLScheduler
 from scheduler_interface import BaseScheduler, ScheduleResult
@@ -27,6 +30,161 @@ class LargeNeighborhoodStats:
     iterations: int
     accepted_repairs: int
     evaluated_neighbors: int
+
+
+@dataclass(frozen=True)
+class DAGShapeStats:
+    """Cheap, deterministic structural descriptors used by the adaptive portfolio."""
+
+    task_count: int
+    edge_count: int
+    source_count: int
+    sink_count: int
+    longest_path_edges: int
+    level_width: int
+    width_ratio: float
+    edge_density: float
+
+    def as_dict(self) -> dict[str, float | int]:
+        return {
+            "task_count": self.task_count,
+            "edge_count": self.edge_count,
+            "source_count": self.source_count,
+            "sink_count": self.sink_count,
+            "longest_path_edges": self.longest_path_edges,
+            "level_width": self.level_width,
+            "width_ratio": self.width_ratio,
+            "edge_density": self.edge_density,
+        }
+
+
+def describe_dag_shape(dag: DAGTask) -> DAGShapeStats:
+    """Return stable graph-shape features without changing the DAG.
+
+    The level width is computed from the longest-path level of each task.  It
+    is a useful proxy for the size of the ready set and is robust to JSON
+    files that do not carry an explicit ``level`` attribute.
+    """
+
+    graph = dag.graph
+    task_count = graph.number_of_nodes()
+    edge_count = graph.number_of_edges()
+    if task_count == 0:
+        return DAGShapeStats(0, 0, 0, 0, 0, 0, 0.0, 0.0)
+    if not nx.is_directed_acyclic_graph(graph):
+        raise ValueError("describe_dag_shape requires a directed acyclic graph")
+
+    levels: dict[int, int] = {}
+    for task_id in nx.topological_sort(graph):
+        predecessors = [int(pred) for pred in graph.predecessors(task_id)]
+        levels[int(task_id)] = (
+            0 if not predecessors else 1 + max(levels[pred] for pred in predecessors)
+        )
+    level_counts: dict[int, int] = {}
+    for level in levels.values():
+        level_counts[level] = level_counts.get(level, 0) + 1
+    level_width = max(level_counts.values(), default=0)
+    return DAGShapeStats(
+        task_count=task_count,
+        edge_count=edge_count,
+        source_count=len(dag.source_tasks),
+        sink_count=len(dag.sink_tasks),
+        longest_path_edges=max(levels.values(), default=0),
+        level_width=level_width,
+        width_ratio=level_width / task_count,
+        edge_density=nx.density(graph),
+    )
+
+
+def _clone_resource_config(resource_config: ResourceConfig) -> ResourceConfig:
+    """Clone resource parameters so heuristic candidates cannot share state."""
+
+    return ResourceConfig(
+        [
+            Resource(
+                id=resource.id,
+                tier=resource.tier,
+                compute_power=resource.compute_power,
+                bandwidth=resource.bandwidth,
+            )
+            for resource in resource_config.resources
+        ]
+    )
+
+
+def width_aware_topological_order(
+    dag: DAGTask,
+    resource_config: ResourceConfig,
+    *,
+    rank_weight: float = 0.55,
+    cost_weight: float = 0.30,
+    fanout_weight: float = 0.15,
+) -> list[int]:
+    """Build a legal order that prioritizes wide-frontier load balancing.
+
+    HEFT's upward rank remains the strongest signal for deep graphs.  On wide
+    graphs this tie-break also rewards expensive and high fan-out tasks, which
+    tends to expose useful parallel work early while the EFT replay balances
+    it across resources.
+    """
+
+    graph = dag.graph
+    if not nx.is_directed_acyclic_graph(graph):
+        raise ValueError("width_aware_topological_order requires a DAG")
+    ranks = compute_upward_ranks(dag, resource_config)
+    topological_index = {
+        int(task_id): index for index, task_id in enumerate(nx.topological_sort(graph))
+    }
+    if min(rank_weight, cost_weight, fanout_weight) < 0:
+        raise ValueError("priority weights must be non-negative")
+    weight_sum = rank_weight + cost_weight + fanout_weight
+    if weight_sum <= 0:
+        raise ValueError("at least one priority weight must be positive")
+    rank_weight /= weight_sum
+    cost_weight /= weight_sum
+    fanout_weight /= weight_sum
+    max_rank = max(ranks.values(), default=1.0)
+    max_cost = max(
+        (float(graph.nodes[task_id].get("computation_cost", 0.0)) for task_id in graph.nodes),
+        default=1.0,
+    )
+    indegree = {int(task_id): int(graph.in_degree(task_id)) for task_id in graph.nodes}
+    ready: list[tuple[float, float, int, int]] = []
+    for task_id, degree in indegree.items():
+        if degree == 0:
+            node = graph.nodes[task_id]
+            score = (
+                rank_weight * float(ranks.get(task_id, 0.0)) / max_rank
+                + cost_weight * float(node.get("computation_cost", 0.0)) / max_cost
+                + fanout_weight
+                * float(graph.out_degree(task_id))
+                / max(1, graph.number_of_nodes() - 1)
+            )
+            heapq.heappush(ready, (-score, float(topological_index[task_id]), task_id, task_id))
+
+    order: list[int] = []
+    while ready:
+        _, _, _, task_id = heapq.heappop(ready)
+        order.append(task_id)
+        for successor in graph.successors(task_id):
+            successor = int(successor)
+            indegree[successor] -= 1
+            if indegree[successor] == 0:
+                node = graph.nodes[successor]
+                score = (
+                    rank_weight * float(ranks.get(successor, 0.0)) / max_rank
+                    + cost_weight * float(node.get("computation_cost", 0.0)) / max_cost
+                    + fanout_weight
+                    * float(graph.out_degree(successor))
+                    / max(1, graph.number_of_nodes() - 1)
+                )
+                heapq.heappush(
+                    ready,
+                    (-score, float(topological_index[successor]), successor, successor),
+                )
+    if len(order) != graph.number_of_nodes():
+        raise RuntimeError("width-aware priority queue failed to produce a complete topological order")
+    return order
 
 
 def schedule_task_order(
@@ -328,7 +486,14 @@ class ResidualLocalSearchScheduler(BaseScheduler):
 
 
 class ResidualLargeNeighborhoodScheduler(BaseScheduler):
-    """Residual Best-of-N, local search, then destroy-repair large-neighborhood search."""
+    """Residual + local search + adaptive heuristic portfolio.
+
+    ``portfolio_mode='adaptive'`` keeps the original Residual/LNS path and
+    adds a HEFT anchor for every graph plus a width-aware candidate when the
+    graph has a broad level frontier.  The final answer is always the best
+    candidate by the same EFT replay objective, so this extension cannot
+    return a schedule worse than its HEFT anchor.
+    """
 
     def __init__(
         self,
@@ -339,7 +504,14 @@ class ResidualLargeNeighborhoodScheduler(BaseScheduler):
         lns_iterations: int = 64,
         lns_local_passes: int = 1,
         normalize_observations: bool = True,
+        random_seed: int | None = None,
+        portfolio_mode: str = "adaptive",
+        wide_width_ratio_threshold: float = 0.30,
     ):
+        if portfolio_mode not in {"residual_only", "adaptive", "full"}:
+            raise ValueError("portfolio_mode must be 'residual_only', 'adaptive', or 'full'")
+        if not 0.0 <= wide_width_ratio_threshold <= 1.0:
+            raise ValueError("wide_width_ratio_threshold must be in [0, 1]")
         self.local_scheduler = ResidualLocalSearchScheduler(
             model_path=model_path,
             max_tasks=max_tasks,
@@ -349,17 +521,61 @@ class ResidualLargeNeighborhoodScheduler(BaseScheduler):
         )
         self.lns_iterations = lns_iterations
         self.lns_local_passes = lns_local_passes
+        self.local_max_passes = local_max_passes
         self.last_local_schedule: ScheduleResult | None = None
         self.last_local_order: list[int] | None = None
         self.last_final_order: list[int] | None = None
         self.last_stats: LargeNeighborhoodStats | None = None
+        self.random_seed = random_seed
+        self.portfolio_mode = portfolio_mode
+        self.wide_width_ratio_threshold = wide_width_ratio_threshold
+        self.last_selected_source: str | None = None
+        self.last_candidate_makespans: dict[str, float] = {}
+        self.last_shape_stats: DAGShapeStats | None = None
+
+    def _rng_for_dag(self, dag: DAGTask, salt: int = 0) -> random.Random:
+        """Derive a per-DAG RNG so repeated runs are reproducible and isolated."""
+
+        base = 0 if self.random_seed is None else int(self.random_seed)
+        signature = dag.graph.number_of_nodes() * 1_000_003 + dag.graph.number_of_edges()
+        for task_id in sorted(int(task) for task in dag.graph.nodes):
+            signature = (signature * 1_000_033 + task_id + 17) & ((1 << 63) - 1)
+        for src, dst in sorted((int(src), int(dst)) for src, dst in dag.graph.edges):
+            signature = (signature * 1_000_037 + src * 257 + dst) & ((1 << 63) - 1)
+        return random.Random((base ^ signature ^ (int(salt) * 1_000_000_007)) & ((1 << 63) - 1))
+
+    def _refine_order_candidate(
+        self,
+        dag: DAGTask,
+        resource_config: ResourceConfig,
+        initial_order: list[int],
+        *,
+        salt: int,
+    ) -> tuple[ScheduleResult, list[int]]:
+        locally_improved, improved_order, _ = improve_task_order(
+            dag,
+            _clone_resource_config(resource_config),
+            initial_order,
+            max_passes=self.local_max_passes,
+        )
+        lns_schedule, lns_order, _ = large_neighborhood_search(
+            dag,
+            _clone_resource_config(resource_config),
+            improved_order,
+            self._rng_for_dag(dag, salt=salt),
+            iterations=self.lns_iterations,
+            local_passes=self.lns_local_passes,
+        )
+        if self.compute_makespan(lns_schedule) > self.compute_makespan(locally_improved) + 1e-9:
+            raise RuntimeError("candidate LNS worsened its local-search input")
+        return lns_schedule, lns_order
 
     def schedule(self, dag: DAGTask, resource_config: ResourceConfig) -> ScheduleResult:
         local_schedule = self.local_scheduler.schedule(dag, resource_config)
         local_order = self.local_scheduler.last_final_order
         if local_order is None:
             raise RuntimeError("local-search phase did not expose its task order")
-        rng = random.Random(random.getrandbits(64))
+        rng = self._rng_for_dag(dag)
         final_schedule, final_order, stats = large_neighborhood_search(
             dag,
             resource_config,
@@ -372,6 +588,72 @@ class ResidualLargeNeighborhoodScheduler(BaseScheduler):
             raise RuntimeError("large-neighborhood search worsened its local-search input")
         self.last_local_schedule = local_schedule
         self.last_local_order = local_order
-        self.last_final_order = final_order
         self.last_stats = stats
-        return final_schedule
+
+        candidates: dict[str, tuple[ScheduleResult, list[int] | None]] = {
+            "residual_lns": (final_schedule, final_order)
+        }
+        shape_stats = describe_dag_shape(dag)
+        self.last_shape_stats = shape_stats
+
+        if self.portfolio_mode != "residual_only":
+            # Keep an exact HEFT anchor.  Selecting the minimum over this
+            # candidate set provides a hard non-regression guarantee against
+            # the baseline under the same scheduling simulator.
+            heft = HEFTScheduler()
+            heft_config = _clone_resource_config(resource_config)
+            heft_schedule = heft.schedule(dag, heft_config)
+            heft_order = heft._task_order(dag, heft_config)
+            candidates["heft_anchor"] = (heft_schedule, heft_order)
+            candidates["heft_lns"] = self._refine_order_candidate(
+                dag,
+                resource_config,
+                heft_order,
+                salt=11,
+            )
+
+            include_width_candidate = (
+                self.portfolio_mode == "full"
+                or shape_stats.width_ratio >= self.wide_width_ratio_threshold
+            )
+            if include_width_candidate:
+                width_order = width_aware_topological_order(
+                    dag,
+                    _clone_resource_config(resource_config),
+                )
+                width_schedule, width_final_order = self._refine_order_candidate(
+                    dag,
+                    resource_config,
+                    width_order,
+                    salt=23,
+                )
+                candidates["width_aware_lns"] = (width_schedule, width_final_order)
+                cost_first_order = width_aware_topological_order(
+                    dag,
+                    _clone_resource_config(resource_config),
+                    rank_weight=0.15,
+                    cost_weight=0.75,
+                    fanout_weight=0.10,
+                )
+                candidates["cost_first_lns"] = self._refine_order_candidate(
+                    dag,
+                    resource_config,
+                    cost_first_order,
+                    salt=37,
+                )
+
+        candidate_makespans = {
+            source: self.compute_makespan(schedule)
+            for source, (schedule, _) in candidates.items()
+        }
+        selected_source = min(
+            candidate_makespans,
+            key=lambda source: (candidate_makespans[source], source != "residual_lns", source),
+        )
+        selected_schedule, selected_order = candidates[selected_source]
+        if selected_order is None:
+            raise RuntimeError(f"candidate {selected_source} did not expose a task order")
+        self.last_candidate_makespans = candidate_makespans
+        self.last_selected_source = selected_source
+        self.last_final_order = selected_order
+        return selected_schedule

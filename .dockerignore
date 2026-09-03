@@ -1,0 +1,17 @@
+.git
+.venv
+.validation_env
+.pytest_cache
+**/__pycache__
+**/*.py[cod]
+
+# Submission documents, videos, and development records are not runtime inputs.
+docs
+diagnostics
+artifacts
+evaluation/results
+*.docx
+*.pdf
+*.pptx
+*.mp4
+*.zip

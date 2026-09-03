@@ -15,7 +15,7 @@
 
 本项目面向中国研究生操作系统开源创新大赛第 16 题，研究带依赖约束的任务 DAG 在云、边、端异构计算资源上的调度问题。目标是在满足任务前驱关系、通信时延和资源互斥约束的前提下，最小化整体完成时间（makespan）。
 
-项目提供完整的环境建模、HEFT/MILP 基线、MaskablePPO 训练、残差式任务排序、Best-of-N 推理、局部搜索精修、统计检验及 openEuler 跨平台验证流程。
+项目提供完整的环境建模、HEFT/MILP 基线、MaskablePPO 训练、残差式任务排序、Best-of-N 推理、局部搜索精修、统计检验及 openEuler/openKylin/Anolis Docker 验证入口。
 
 ## 最终方案
 
@@ -24,6 +24,10 @@
 1. **Residual Scheduling**：以 HEFT upward rank 作为零初始化策略的确定性锚点，神经网络只学习有界排序修正量。
 2. **Best-of-64**：随机生成 64 个完整合法调度，保留 makespan 最小的初解。
 3. **拓扑序重定位与 best-only LNS**：在保持 DAG 拓扑合法性的前提下执行局部重定位和破坏-修复搜索，只接受严格改善 makespan 的候选。
+
+为应对决赛中可能出现的宽并行 DAG，仓库同时提供自适应候选集：
+
+4. **Adaptive portfolio**：保留 Residual/LNS 主路径，并加入 HEFT 锚点、HEFT+LNS、宽度感知拓扑序和成本优先拓扑序候选；所有候选使用同一 EFT 重放器和 best-only LNS，最终选择 makespan 最小者。该策略对 HEFT 具有硬性非回归保护，宽并行图不再依赖单一训练分布。
 
 ```mermaid
 flowchart LR
@@ -42,16 +46,17 @@ flowchart LR
 |---|---:|---:|---|
 | Residual Best-of-64 | 0.950814 ± 0.003358 | 平均 18.2/20 | `evaluation/results/autonomous_exploration/direction2_lns/direct_vs_residual_paired_summary.json` |
 | 计算量对齐 Best-of-128 | 0.942048 ± 0.002063 | 平均 18.6/20 | `evaluation/results/autonomous_exploration/compute_matched_sampling/paired_comparison_summary.json` |
-| **Residual Best-of-64 + 重定位 + LNS** | **0.920890 ± 0.001729** | **20/20** | `evaluation/results/autonomous_exploration/direction2_lns/direct_vs_residual_paired_summary.json` |
+| Residual Best-of-64 + 重定位 + LNS | 0.920890 ± 0.001729 | 20/20 | `evaluation/results/autonomous_exploration/direction2_lns/direct_vs_residual_paired_summary.json` |
+| **Adaptive portfolio + 重定位 + LNS** | **0.916441 ± 0.000984** | **20/20** | `evaluation/results/final_pipeline_lns_summary.json` |
 
-最终方案相对配对的 Residual Best-of-64 平均降低 `0.029925`，双侧配对 t 检验 `p=2.656851×10^-5`。与耗时相近的纯 Best-of-128 相比，最终方案平均降低 `0.021158`，`p=2.072081×10^-6`，用于排除“效果仅来自增加采样次数”的混淆因素。
+决赛优化版最终方案相对配对的 Residual Best-of-64 平均降低 `0.034373`，双侧配对 t 检验 `p=3.121263×10^-5`。旧版 LNS 与耗时相近的纯 Best-of-128 相比平均降低 `0.021158`，`p=2.072081×10^-6`，用于排除“效果仅来自增加采样次数”的混淆因素。
 
 MILP 精确求解在 7 个可证明最优的小规模场景上给出的平均距离为：HEFT/Optimal=`1.106807`，Residual/Optimal=`1.044188`。原始数据见 `evaluation/results/milp_optimal_comparison.json`。
 
 ## 技术报告
 
 - [技术报告（Word）](docs/技术报告.docx)
-- [技术报告（PDF）](docs/技术报告.pdf)
+- [技术报告（PDF，初赛存档；当前版以 Word/Markdown 为准）](docs/技术报告.pdf)
 - [技术报告源文件（Markdown）](docs/技术报告.md)
 - [自主探索日志](docs/自主探索日志.md)
 - [作品介绍 PPT 制作研究记录](docs/PPT制作研究记录.md)
@@ -77,7 +82,7 @@ python -m pytest tests/ -v
 
 ### 一键最终流水线
 
-该脚本检查依赖和 checkpoint，必要时训练模型，生成固定验证场景，并使用报告中的 5 个规范种子依次运行 **Residual Best-of-64 + 合法拓扑序重定位 + best-only LNS**。最后自动执行配对统计，输出报告对应的 `mean_ratio=0.920890 ± 0.001729`。使用仓库内 checkpoint 时，完整评测通常需要约 4 至 6 分钟。
+该脚本检查依赖和 checkpoint，必要时训练模型，生成固定验证场景，并使用报告中的 5 个规范种子依次运行 **Adaptive portfolio + Residual Best-of-64 + 合法拓扑序重定位 + best-only LNS**。最后自动执行配对统计，输出决赛优化版对应的 `mean_ratio=0.916441 ± 0.000984`。使用仓库内 checkpoint 时，完整评测通常需要约 10 至 12 分钟。
 
 Windows PowerShell：
 
@@ -92,6 +97,31 @@ bash scripts/run_final_pipeline.sh
 ```
 
 输出汇总保存在 `evaluation/results/final_pipeline_lns_summary.json`，五次逐轮结果保存在 `evaluation/results/final_pipeline_lns_repeats/`。
+
+### 决赛前推荐的一键复现
+
+默认 smoke 流程会执行字节码编译、完整 pytest、结构化 DAG 生成；`wide`
+流程还会对宽并行场景比较原始 Residual/LNS 与自适应候选集；`final`
+流程再执行五次正式评测。
+
+```bash
+python scripts/reproduce.py --profile smoke --write-manifest
+python scripts/reproduce.py --profile wide --num-samples 16 --lns-iterations 16 --write-manifest
+python scripts/reproduce.py --profile final --write-manifest
+python scripts/reproduce.py --profile smoke --with-os-matrix --write-manifest
+```
+
+一键宽并行 smoke 结果写入 `evaluation/results/wide_parallel_adaptive_reproduce.json`；正式 64/64 宽并行专项结果写入 `evaluation/results/wide_parallel_adaptive.json`，其中会记录
+图形状、候选来源、每个候选 makespan 及配对改进量。
+
+`--with-os-matrix` 会先等待 Docker Desktop 引擎就绪（默认 120 秒），再依次构建
+openEuler 24.03 LTS-SP4、openKylin 2.0 SP1 和 Anolis OS 23 镜像并执行 smoke 检查；等待超时或本机
+没有 Docker 时会将原因写入结果 JSON，而不会伪造通过结果。需要严格把环境不可用
+视为失败时，可直接运行：
+
+```bash
+python scripts/run_os_matrix.py --pull --strict --wait-seconds 120
+```
 
 ### 单次调试 LNS 精修方案
 
@@ -147,20 +177,42 @@ python diagnostics/technical_report_result_audit.py --report docs/技术报告.m
 python diagnostics/technical_report_structure_audit.py --report docs/技术报告.docx
 ```
 
-当前审计结果：62 个报告引用路径全部存在，全部正式数字核对通过；Word 报告包含 6 个原生公式对象和 14 张合规三线数据表。
+当前审计结果：66 个报告引用路径全部存在，全部正式数字核对通过；Word 报告包含 6 个原生公式对象和 15 张合规三线数据表。
 
 完整实验结果索引见 [evaluation/results/README.md](evaluation/results/README.md)，过程性产物说明见 [artifacts/README.md](artifacts/README.md)。
 
 ## 跨平台验证
 
-项目已在 Windows 和 openEuler 24.03 LTS-SP4 Docker 容器中验证。openEuler 环境信息、依赖快照、pytest 输出及推理日志保存在：
+项目提供 Windows 本地验证、历史 openEuler 24.03 LTS-SP4 容器证据，以及
+openEuler 24.03 LTS-SP4 / openKylin 2.0 SP1 / Anolis OS 23 Docker 矩阵入口：
+
+```bash
+python scripts/run_os_matrix.py
+```
+
+2026-08-31 已执行 `--pull --strict` 严格矩阵：三套镜像均构建成功、容器运行
+退出码均为 0，分别使用 Python 3.11.6、3.12.2、3.10.12，统一安装
+`torch=2.12.1+cpu` 且 `cuda_available=False`。三套环境均完成全项目字节码
+编译、完整测试（每套均为 `38 passed, 17 warnings`）和 20 个结构泛化场景
+生成。机器可读原始输出见 `evaluation/results/os_matrix.json`；同日本地一键
+smoke 同样为 `38 passed, 17 warnings`。
+
+openEuler 环境信息、依赖快照、pytest 输出及推理日志保存在：
 
 - `evaluation/results/openeuler_validation/`
 - `evaluation/results/openEuler_pytest_structural_final.log`
 
+Docker 构建定义和边界说明见 `docker/README.md`。OpenHarmony 不是通用 Linux
+服务器运行环境；在没有可公开验证的标准 Python 运行容器前，仓库不宣称已在
+OpenHarmony 原生设备系统上运行。
+
 ## 已知边界
 
 - 模型训练规模为 8 至 25 个任务，不能直接外推为任意大规模 DAG 的性能保证。
-- 宽并行 DAG 上的泛化弱于原始分布；该负面结果保留在 `evaluation/results/structural_generalization/`。
+- 原始 Residual 模型在历史宽并行 DAG 泛化集上弱于原始分布；该负面结果保留在
+  `evaluation/results/structural_generalization/`。决赛优化版自适应候选集通过
+  HEFT 锚点、HEFT+LNS、宽度感知和成本优先候选提供运行时非回归保护；正式宽并行
+  64/64 评测达到 `mean_ratio=0.929848`、5/5 不劣于 HEFT，其中 1 个打平场景由
+  MILP 证明已达到全局最优，证据见 `evaluation/results/wide_parallel_adaptive.json`。
 - LNS 通过增加推理阶段搜索换取更优 makespan，不属于零额外成本改进。
 - 当前结论针对静态已知 DAG，不自动覆盖动态任务到达、抢占或实时硬截止期场景。

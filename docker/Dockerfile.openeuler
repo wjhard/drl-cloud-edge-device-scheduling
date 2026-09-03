@@ -1,0 +1,27 @@
+FROM hub.oepkgs.net/openeuler/openeuler:24.03-lts-sp4
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1
+
+ARG PYPI_INDEX_URL=https://mirrors.nju.edu.cn/pypi/web/simple
+ARG PYTORCH_INDEX_URL=https://mirror.sjtu.edu.cn/pytorch-wheels/cpu
+
+RUN dnf -y --disablerepo=update --disablerepo=update-source \
+        install python3-pip ca-certificates && \
+    dnf clean all && \
+    rm -rf /var/cache/dnf
+
+WORKDIR /opt/drl-scheduler
+COPY requirements.txt ./
+RUN --mount=type=cache,target=/root/.cache/pip \
+    python3 -m pip install --timeout 60 --retries 5 \
+        --no-deps --index-url ${PYTORCH_INDEX_URL} \
+        torch==2.12.1+cpu && \
+    python3 -m pip install --timeout 60 --retries 5 \
+        --index-url ${PYPI_INDEX_URL} \
+        -r requirements.txt && \
+    python3 -m pip check
+COPY . .
+
+CMD ["python3", "scripts/reproduce.py", "--profile", "smoke", "--skip-tests", "--write-manifest"]

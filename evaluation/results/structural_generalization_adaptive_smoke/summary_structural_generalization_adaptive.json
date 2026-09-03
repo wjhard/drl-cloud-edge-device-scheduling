@@ -1,0 +1,56 @@
+{
+  "method": "Adaptive Residual portfolio",
+  "config_path": "training/configs/ppo_mlp_residual.yaml",
+  "model_path": "training/checkpoints/ppo_mlp_residual",
+  "scenarios_root": "evaluation\\scenarios_structural_v2",
+  "results_root": "evaluation\\results\\structural_generalization_adaptive_smoke",
+  "num_samples": 16,
+  "sampling_seed": 20260830,
+  "groups": {
+    "wide_parallel": {
+      "scenario_count": 5,
+      "mean_ratio": 0.9310867352169749,
+      "std_ratio": 0.05154463034914045,
+      "outperform_heft_count": 4,
+      "selected_source_counts": {
+        "cost_first_lns": 2,
+        "residual_lns": 2,
+        "width_aware_lns": 1
+      },
+      "results_path": "evaluation\\results\\structural_generalization_adaptive_smoke\\summary_wide_parallel_adaptive.json"
+    },
+    "deep_chain": {
+      "scenario_count": 5,
+      "mean_ratio": 1.0,
+      "std_ratio": 0.0,
+      "outperform_heft_count": 0,
+      "selected_source_counts": {
+        "residual_lns": 5
+      },
+      "results_path": "evaluation\\results\\structural_generalization_adaptive_smoke\\summary_deep_chain_adaptive.json"
+    },
+    "homogeneous_resources": {
+      "scenario_count": 5,
+      "mean_ratio": 0.9376439837712306,
+      "std_ratio": 0.027948211424064295,
+      "outperform_heft_count": 5,
+      "selected_source_counts": {
+        "heft_lns": 1,
+        "residual_lns": 4
+      },
+      "results_path": "evaluation\\results\\structural_generalization_adaptive_smoke\\summary_homogeneous_resources_adaptive.json"
+    },
+    "original_control": {
+      "scenario_count": 5,
+      "mean_ratio": 0.9037599099521646,
+      "std_ratio": 0.047136519876104614,
+      "outperform_heft_count": 5,
+      "selected_source_counts": {
+        "heft_lns": 1,
+        "residual_lns": 2,
+        "width_aware_lns": 2
+      },
+      "results_path": "evaluation\\results\\structural_generalization_adaptive_smoke\\summary_original_control_adaptive.json"
+    }
+  }
+}

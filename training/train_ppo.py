@@ -28,7 +28,11 @@ from env.scheduling_env_residual import SchedulingEnvResidual
 from policies.gat_features_extractor import TaskGraphFeaturesExtractor
 from policies.residual_ranking_policy import ResidualRankingPolicy
 from training.behavior_cloning import pretrain_policy_with_bc
-from training.dag_curriculum import make_progressive_task_range_generator, make_training_dag_generator
+from training.dag_curriculum import (
+    make_progressive_task_range_generator,
+    make_structural_mixture_generator,
+    make_training_dag_generator,
+)
 
 
 DEFAULT_CONFIG = "training/configs/ppo_mlp_baseline.yaml"
@@ -108,7 +112,18 @@ def build_model(config: dict) -> tuple[MaskablePPO, object]:
     train_config = config["training"]
 
     curriculum_config = train_config.get("curriculum", {})
-    if _as_bool(curriculum_config.get("enabled", False)):
+    curriculum_mode = str(curriculum_config.get("mode", "task_range"))
+    if curriculum_mode == "structural_mixture":
+        dag_generator = make_structural_mixture_generator(
+            min_tasks=int(env_config["min_tasks"]),
+            max_tasks=int(env_config["max_tasks"]),
+            edge_density_min=float(env_config["edge_density_min"]),
+            edge_density_max=float(env_config["edge_density_max"]),
+            base_seed=int(train_config["seed"]),
+            wide_probability=float(curriculum_config.get("wide_probability", 0.35)),
+            deep_probability=float(curriculum_config.get("deep_probability", 0.20)),
+        )
+    elif _as_bool(curriculum_config.get("enabled", False)):
         dag_generator = make_progressive_task_range_generator(
             min_tasks=int(env_config["min_tasks"]),
             max_tasks=int(env_config["max_tasks"]),

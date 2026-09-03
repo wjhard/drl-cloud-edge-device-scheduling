@@ -7,6 +7,7 @@ $ScenarioDir = "evaluation/scenarios"
 $ResultsDir = "evaluation/results/final_pipeline_lns_repeats"
 $SummaryPath = "evaluation/results/final_pipeline_lns_summary.json"
 $CanonicalSeeds = @(1565812275, 842234145, 386081360, 1117038938, 1760006972)
+$PytorchIndexUrl = if ($env:PYTORCH_INDEX_URL) { $env:PYTORCH_INDEX_URL } else { "https://mirror.sjtu.edu.cn/pytorch-wheels/cpu" }
 $RequiredImports = "import importlib.util; import gymnasium, matplotlib, networkx, numpy, pulp, pytest, rich, scipy, torch, tqdm, yaml; assert all(importlib.util.find_spec(name) is not None for name in ('sb3_contrib', 'stable_baselines3', 'tensorboard'))"
 
 if ($env:PYTHON) {
@@ -62,7 +63,7 @@ try {
         if ($LASTEXITCODE -ne 0) {
             Invoke-Python -StepName "install CPU PyTorch" -Arguments @(
                 "-m", "pip", "install", "torch==2.12.1+cpu",
-                "--index-url", "https://download.pytorch.org/whl/cpu"
+                "--index-url", $PytorchIndexUrl
             )
         }
 
@@ -103,6 +104,7 @@ try {
     }
 
     Write-Host "==== evaluate final Residual best-of-64 + relocation + LNS ===="
+    Write-Host "portfolio_mode=adaptive (Residual/LNS + HEFT anchor + width-aware candidate)"
     New-Item -ItemType Directory -Path $ResultsDir -Force | Out-Null
     Get-ChildItem $ResultsDir -Filter "direct_repeat_*.json" -File -ErrorAction SilentlyContinue |
         Remove-Item -Force
@@ -118,7 +120,8 @@ try {
             "--sampling-seed", "$Seed",
             "--num-samples", "64",
             "--local-max-passes", "3",
-            "--lns-iterations", "64"
+            "--lns-iterations", "64",
+            "--portfolio-mode", "adaptive"
         )
     }
 
@@ -140,7 +143,7 @@ try {
     }).Count
 
     Write-Host "FINAL_PIPELINE_RESULT"
-    Write-Host "method=Residual Best-of-64 + topological relocation + best-only LNS"
+    Write-Host "method=Adaptive Residual Best-of-64 + topological relocation + best-only LNS + heuristic portfolio"
     Write-Host "repeat_count=$($Summary.repeat_count)"
     Write-Host ("overall_mean_ratio={0:F12}" -f $MeanRatio)
     Write-Host ("overall_mean_ratio_6dp={0:F6}" -f $MeanRatio)

@@ -1,0 +1,90 @@
+{
+  "status": "passed",
+  "generated_at_utc": "2026-08-31T13:56:01.821065+00:00",
+  "configured_jobs": [
+    {
+      "os": "openEuler-24.03-LTS-SP4",
+      "image_tag": "openeuler",
+      "dockerfile": "docker/Dockerfile.openeuler"
+    },
+    {
+      "os": "openKylin-2.0-SP1",
+      "image_tag": "openkylin",
+      "dockerfile": "docker/Dockerfile.openkylin"
+    },
+    {
+      "os": "Anolis-23",
+      "image_tag": "anolis",
+      "dockerfile": "docker/Dockerfile.anolis"
+    }
+  ],
+  "inputs": {
+    "files": [
+      {
+        "path": "requirements.txt",
+        "sha256": "631c8e4aa1cb143f3f3eb0dc7fa13ce080454c1577bab945e0e74cd654336985"
+      },
+      {
+        "path": "docker/Dockerfile.openeuler",
+        "sha256": "40b163048807e75b90d8e2cf8ce09845b59d8dcfa8e045a06a125bd6fe445b2c"
+      },
+      {
+        "path": "docker/Dockerfile.openkylin",
+        "sha256": "a515952b9f69771191291864c21ff91e8cf4f8a1354471c723da20494c9dbe71"
+      },
+      {
+        "path": "docker/Dockerfile.anolis",
+        "sha256": "9b703a217e0d9917d46bc2dc2255c4e492c3dfd130d6011eaf5dc04d3e5ec38a"
+      }
+    ]
+  },
+  "diagnostics": {
+    "docker_context_ls_exit_code": 0,
+    "docker_context_ls": "NAME              DESCRIPTION                               DOCKER ENDPOINT                             ERROR\ndefault           Current DOCKER_HOST based configuration   npipe:////./pipe/docker_engine              \ndesktop-linux *   Docker Desktop                            npipe:////./pipe/dockerDesktopLinuxEngine",
+    "wsl_status_exit_code": 0,
+    "wsl_status": "默认分发: docker-desktop\r\n默认版本: 2",
+    "wsl_list_exit_code": 0,
+    "wsl_list": "NAME              STATE           VERSION\r\n* docker-desktop    Running         2"
+  },
+  "jobs": [
+    {
+      "os": "openEuler-24.03-LTS-SP4",
+      "image": "drl-scheduler:openeuler",
+      "image_id": "sha256:62b646be43929eed31b5c19423cb46767bbf3180f4804b98d0a6e8a5a843fe7e",
+      "build_exit_code": 0,
+      "run_exit_code": 0,
+      "build_elapsed_seconds": 0.5791292999638245,
+      "run_elapsed_seconds": 5.322753499960527,
+      "verification_command": "set -eu; cat /etc/os-release; python3 --version; python3 -c 'import torch; print(\"torch=\" + torch.__version__); print(\"cuda_available=\" + str(torch.cuda.is_available()))'; python3 -m compileall -q env baselines policies training evaluation scripts tests; python3 scripts/reproduce.py --profile smoke --write-manifest",
+      "stdout": "NAME=\"openEuler\"\nVERSION=\"24.03 (LTS-SP4)\"\nID=\"openEuler\"\nVERSION_ID=\"24.03\"\nPRETTY_NAME=\"openEuler 24.03 (LTS-SP4)\"\nANSI_COLOR=\"0;31\"\n\nPython 3.11.6\ntorch=2.12.1+cpu\ncuda_available=False\nREPRODUCE_START\n{\n  \"timestamp_utc\": \"2026-08-31T13:55:47.327160+00:00\",\n  \"python\": \"3.11.6 (main, Jun 24 2026, 00:37:42) [GCC 12.3.1 (openEuler 12.3.1-110.oe2403sp4)]\",\n  \"python_executable\": \"python3\",\n  \"platform\": \"Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.38\",\n  \"system\": \"Linux\",\n  \"release\": \"6.18.33.2-microsoft-standard-WSL2\",\n  \"machine\": \"x86_64\",\n  \"processor\": \"x86_64\",\n  \"project_root\": \".\",\n  \"os_release\": \"NAME=\\\"openEuler\\\"\\nVERSION=\\\"24.03 (LTS-SP4)\\\"\\nID=\\\"openEuler\\\"\\nVERSION_ID=\\\"24.03\\\"\\nPRETTY_NAME=\\\"openEuler 24.03 (LTS-SP4)\\\"\\nANSI_COLOR=\\\"0;31\\\"\\n\\n\"\n}\n\n=== compileall ===\n$ /usr/bin/python3 -m compileall -q env baselines policies training evaluation tests\n[compileall] exit_code=0 elapsed_seconds=0.082\n\n=== pytest ===\n$ /usr/bin/python3 -m pytest tests -q --basetemp /tmp/drl-scheduler-pytest-5t5baus9\n......................................                                   [100%]\n=============================== warnings summary ===============================\ntests/test_hybrid_scheduler.py: 6 warnings\ntests/test_milp_optimal_scheduler.py: 9 warnings\n  /usr/local/lib/python3.11/site-packages/pulp/pulp.py:318: DeprecationWarning: Constructing LpVariable(name, ...) directly is deprecated; in PuLP 4.0 use prob.add_variable(name, lowBound, upBound, cat=...). Variables are then attached to the model when created.\n    _v4_deprecation(msg, stacklevel=2)\n\ntests/test_hybrid_scheduler.py::test_hybrid_uses_proven_milp_solution_for_small_dag\ntests/test_milp_optimal_scheduler.py::test_milp_finds_known_optimal_parallel_schedule\n  /usr/local/lib/python3.11/site-packages/pulp/apis/coin_api.py:70: DeprecationWarning: PULP_CBC_CMD is deprecated and will be removed in PuLP 4.0. Install CBC with `pip install pulp[cbc]` and use COIN_CMD instead.\n    v4_deprecation(PULP_CBC_CMD_DEPRECATION_MSG, stacklevel=stacklevel)\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n38 passed, 17 warnings in 2.43s\n[pytest] exit_code=0 elapsed_seconds=3.097\n\n=== generate structural scenarios ===\n$ /usr/bin/python3 evaluation/generate_structural_generalization_scenarios.py --output-root evaluation/scenarios_structural_v2_reproduce\ngenerated 20 structural scenarios\nmanifest_path=evaluation/scenarios_structural_v2_reproduce/manifest.json\nseed_start=5000000\ngroup | count | mean_density | mean_sources | mean_longest_path\nwide_parallel | 5 | 0.129768 | 3.000 | 2.000\ndeep_chain | 5 | 0.113899 | 1.000 | 15.200\nhomogeneous_resources | 5 | 0.128334 | 4.400 | 3.200\noriginal_control | 5 | 0.128334 | 4.400 | 3.200\n[generate structural scenarios] exit_code=0 elapsed_seconds=0.261\nmanifest_path=/opt/drl-scheduler/evaluation/results/reproducibility_manifest.json\nREPRODUCE_COMPLETE\n",
+      "stderr": "",
+      "status": "passed"
+    },
+    {
+      "os": "openKylin-2.0-SP1",
+      "image": "drl-scheduler:openkylin",
+      "image_id": "sha256:35f0c2444fa9f9ffebea9705f25edcea5848e8a6f0e21011291c1634ed295db4",
+      "build_exit_code": 0,
+      "run_exit_code": 0,
+      "build_elapsed_seconds": 0.8082214000169188,
+      "run_elapsed_seconds": 4.37300189997768,
+      "verification_command": "set -eu; cat /etc/os-release; python3 --version; python3 -c 'import torch; print(\"torch=\" + torch.__version__); print(\"cuda_available=\" + str(torch.cuda.is_available()))'; python3 -m compileall -q env baselines policies training evaluation scripts tests; python3 scripts/reproduce.py --profile smoke --write-manifest",
+      "stdout": "NAME=\"openKylin\"\nFULL_NAME=\"openKylin\"\nVERSION=\"2.0 SP1 (nile)\"\nVERSION_US=\"2.0 SP1 (nile)\"\nID=openkylin\nPRETTY_NAME=\"openKylin 2.0 SP1\"\nVERSION_ID=\"2.0\"\nHOME_URL=\"https://www.openkylin.top/\"\nVERSION_CODENAME=nile\nPRODUCT_FEATURES=3\nPython 3.12.2\ntorch=2.12.1+cpu\ncuda_available=False\nREPRODUCE_START\n{\n  \"timestamp_utc\": \"2026-08-31T13:55:53.168070+00:00\",\n  \"python\": \"3.12.2 (main, Aug 12 2024, 06:27:22) [GCC 12.3.0]\",\n  \"python_executable\": \"python3\",\n  \"platform\": \"Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.38\",\n  \"system\": \"Linux\",\n  \"release\": \"6.18.33.2-microsoft-standard-WSL2\",\n  \"machine\": \"x86_64\",\n  \"processor\": \"x86_64\",\n  \"project_root\": \".\",\n  \"os_release\": \"NAME=\\\"openKylin\\\"\\nFULL_NAME=\\\"openKylin\\\"\\nVERSION=\\\"2.0 SP1 (nile)\\\"\\nVERSION_US=\\\"2.0 SP1 (nile)\\\"\\nID=openkylin\\nPRETTY_NAME=\\\"openKylin 2.0 SP1\\\"\\nVERSION_ID=\\\"2.0\\\"\\nHOME_URL=\\\"https://www.openkylin.top/\\\"\\nVERSION_CODENAME=nile\\nPRODUCT_FEATURES=3\\n\"\n}\n\n=== compileall ===\n$ /usr/bin/python3 -m compileall -q env baselines policies training evaluation tests\n[compileall] exit_code=0 elapsed_seconds=0.021\n\n=== pytest ===\n$ /usr/bin/python3 -m pytest tests -q --basetemp /tmp/drl-scheduler-pytest-c4bte017\n......................................                                   [100%]\n=============================== warnings summary ===============================\ntests/test_hybrid_scheduler.py: 6 warnings\ntests/test_milp_optimal_scheduler.py: 9 warnings\n  /usr/local/lib/python3.12/dist-packages/pulp/pulp.py:318: DeprecationWarning: Constructing LpVariable(name, ...) directly is deprecated; in PuLP 4.0 use prob.add_variable(name, lowBound, upBound, cat=...). Variables are then attached to the model when created.\n    _v4_deprecation(msg, stacklevel=2)\n\ntests/test_hybrid_scheduler.py::test_hybrid_uses_proven_milp_solution_for_small_dag\ntests/test_milp_optimal_scheduler.py::test_milp_finds_known_optimal_parallel_schedule\n  /usr/local/lib/python3.12/dist-packages/pulp/apis/coin_api.py:70: DeprecationWarning: PULP_CBC_CMD is deprecated and will be removed in PuLP 4.0. Install CBC with `pip install pulp[cbc]` and use COIN_CMD instead.\n    v4_deprecation(PULP_CBC_CMD_DEPRECATION_MSG, stacklevel=stacklevel)\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n38 passed, 17 warnings in 2.33s\n[pytest] exit_code=0 elapsed_seconds=2.809\n\n=== generate structural scenarios ===\n$ /usr/bin/python3 evaluation/generate_structural_generalization_scenarios.py --output-root evaluation/scenarios_structural_v2_reproduce\ngenerated 20 structural scenarios\nmanifest_path=evaluation/scenarios_structural_v2_reproduce/manifest.json\nseed_start=5000000\ngroup | count | mean_density | mean_sources | mean_longest_path\nwide_parallel | 5 | 0.129768 | 3.000 | 2.000\ndeep_chain | 5 | 0.113899 | 1.000 | 15.200\nhomogeneous_resources | 5 | 0.128334 | 4.400 | 3.200\noriginal_control | 5 | 0.128334 | 4.400 | 3.200\n[generate structural scenarios] exit_code=0 elapsed_seconds=0.098\nmanifest_path=/opt/drl-scheduler/evaluation/results/reproducibility_manifest.json\nREPRODUCE_COMPLETE\n",
+      "stderr": "",
+      "status": "passed"
+    },
+    {
+      "os": "Anolis-23",
+      "image": "drl-scheduler:anolis",
+      "image_id": "sha256:67b275eff60768b43458eab3f52d9ef97134effc913536d064a251b22af80382",
+      "build_exit_code": 0,
+      "run_exit_code": 0,
+      "build_elapsed_seconds": 0.8633479999843985,
+      "run_elapsed_seconds": 4.395076899963897,
+      "verification_command": "set -eu; cat /etc/os-release; python3 --version; python3 -c 'import torch; print(\"torch=\" + torch.__version__); print(\"cuda_available=\" + str(torch.cuda.is_available()))'; python3 -m compileall -q env baselines policies training evaluation scripts tests; python3 scripts/reproduce.py --profile smoke --write-manifest",
+      "stdout": "NAME=\"Anolis OS\"\nVERSION=\"23\"\nID=\"anolis\"\nVERSION_ID=\"23\"\nPLATFORM_ID=\"platform:an23\"\nPRETTY_NAME=\"Anolis OS 23\"\nANSI_COLOR=\"0;31\"\nHOME_URL=\"https://openanolis.cn/\"\nBUG_REPORT_URL=\"https://bugzilla.openanolis.cn/\"\n\nPython 3.10.12\ntorch=2.12.1+cpu\ncuda_available=False\nREPRODUCE_START\n{\n  \"timestamp_utc\": \"2026-08-31T13:55:58.560226+00:00\",\n  \"python\": \"3.10.12 (main, Jun  7 2023, 00:00:00) [GCC 12.2.1 20221121 (Anolis OS 12.2.1-2)]\",\n  \"python_executable\": \"python3\",\n  \"platform\": \"Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.36\",\n  \"system\": \"Linux\",\n  \"release\": \"6.18.33.2-microsoft-standard-WSL2\",\n  \"machine\": \"x86_64\",\n  \"processor\": \"\",\n  \"project_root\": \".\",\n  \"os_release\": \"NAME=\\\"Anolis OS\\\"\\nVERSION=\\\"23\\\"\\nID=\\\"anolis\\\"\\nVERSION_ID=\\\"23\\\"\\nPLATFORM_ID=\\\"platform:an23\\\"\\nPRETTY_NAME=\\\"Anolis OS 23\\\"\\nANSI_COLOR=\\\"0;31\\\"\\nHOME_URL=\\\"https://openanolis.cn/\\\"\\nBUG_REPORT_URL=\\\"https://bugzilla.openanolis.cn/\\\"\\n\\n\"\n}\n\n=== compileall ===\n$ /usr/bin/python3 -m compileall -q env baselines policies training evaluation tests\n[compileall] exit_code=0 elapsed_seconds=0.022\n\n=== pytest ===\n$ /usr/bin/python3 -m pytest tests -q --basetemp /tmp/drl-scheduler-pytest-hp_0ucfp\n......................................                                   [100%]\n=============================== warnings summary ===============================\ntests/test_hybrid_scheduler.py: 6 warnings\ntests/test_milp_optimal_scheduler.py: 9 warnings\n  /usr/lib/python3.10/site-packages/pulp/pulp.py:318: DeprecationWarning: Constructing LpVariable(name, ...) directly is deprecated; in PuLP 4.0 use prob.add_variable(name, lowBound, upBound, cat=...). Variables are then attached to the model when created.\n    _v4_deprecation(msg, stacklevel=2)\n\ntests/test_hybrid_scheduler.py::test_hybrid_uses_proven_milp_solution_for_small_dag\ntests/test_milp_optimal_scheduler.py::test_milp_finds_known_optimal_parallel_schedule\n  /usr/lib/python3.10/site-packages/pulp/apis/coin_api.py:70: DeprecationWarning: PULP_CBC_CMD is deprecated and will be removed in PuLP 4.0. Install CBC with `pip install pulp[cbc]` and use COIN_CMD instead.\n    v4_deprecation(PULP_CBC_CMD_DEPRECATION_MSG, stacklevel=stacklevel)\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n38 passed, 17 warnings in 2.37s\n[pytest] exit_code=0 elapsed_seconds=2.865\n\n=== generate structural scenarios ===\n$ /usr/bin/python3 evaluation/generate_structural_generalization_scenarios.py --output-root evaluation/scenarios_structural_v2_reproduce\ngenerated 20 structural scenarios\nmanifest_path=evaluation/scenarios_structural_v2_reproduce/manifest.json\nseed_start=5000000\ngroup | count | mean_density | mean_sources | mean_longest_path\nwide_parallel | 5 | 0.129768 | 3.000 | 2.000\ndeep_chain | 5 | 0.113899 | 1.000 | 15.200\nhomogeneous_resources | 5 | 0.128334 | 4.400 | 3.200\noriginal_control | 5 | 0.128334 | 4.400 | 3.200\n[generate structural scenarios] exit_code=0 elapsed_seconds=0.097\nmanifest_path=/opt/drl-scheduler/evaluation/results/reproducibility_manifest.json\nREPRODUCE_COMPLETE\n",
+      "stderr": "",
+      "status": "passed"
+    }
+  ]
+}

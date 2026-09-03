@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import math
 import re
+import sys
 from pathlib import Path
 from statistics import mean
 
@@ -40,6 +41,8 @@ def require(text: str, label: str, needle: str, failures: list[str]) -> None:
 
 
 def audit_report_v2(report_path: Path) -> int:
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     text = report_path.read_text(encoding="utf-8")
     failures: list[str] = []
     print("TECHNICAL_REPORT_CURRENT_AUDIT")
@@ -60,10 +63,10 @@ def audit_report_v2(report_path: Path) -> int:
             print(f"FAIL missing result JSON: {relative}")
 
     print("\n[DIRECT FINAL RESULT]")
-    direct_path = "evaluation/results/autonomous_exploration/direction2_lns/direct_vs_residual_paired_summary.json"
-    direct = load(direct_path)
-    s = direct["statistics"]
-    direct_tokens = {
+    final_path = "evaluation/results/final_pipeline_lns_summary.json"
+    final_summary = load(final_path)
+    s = final_summary["statistics"]
+    final_tokens = {
         "residual mean": token(s["residual_bestof64_mean_ratio"]["mean"], 6),
         "residual std": token(s["residual_bestof64_mean_ratio"]["sample_std"], 6),
         "LNS mean": token(s["lns_mean_ratio"]["mean"], 6),
@@ -72,11 +75,11 @@ def audit_report_v2(report_path: Path) -> int:
         "paired diff std": token(s["paired_difference"]["sample_std"], 6),
         "t statistic": token(s["paired_t_test_two_sided"]["t_statistic"], 6),
         "p mantissa": token(s["paired_t_test_two_sided"]["p_value"] * 1e5, 6),
-        "elapsed mean": token(mean(row["elapsed_seconds"] for row in direct["paired_runs"]), 6),
+        "elapsed mean": token(mean(row["elapsed_seconds"] for row in final_summary["paired_runs"]), 6),
     }
-    for label, value in direct_tokens.items():
+    for label, value in final_tokens.items():
         require(text, label, value, failures)
-    for row in direct["paired_runs"]:
+    for row in final_summary["paired_runs"]:
         for label, value in (
             (f"run {row['repeat']} residual", row["residual_bestof64_mean_ratio"]),
             (f"run {row['repeat']} LNS", row["lns_mean_ratio"]),
@@ -84,6 +87,17 @@ def audit_report_v2(report_path: Path) -> int:
             (f"run {row['repeat']} elapsed", row["elapsed_seconds"]),
         ):
             require(text, label, token(float(value), 6), failures)
+
+    print("\n[HISTORICAL LNS RESULT]")
+    direct_path = "evaluation/results/autonomous_exploration/direction2_lns/direct_vs_residual_paired_summary.json"
+    direct = load(direct_path)
+    historical = direct["statistics"]
+    historical_tokens = {
+        "historical LNS mean": token(historical["lns_mean_ratio"]["mean"], 6),
+        "historical LNS std": token(historical["lns_mean_ratio"]["sample_std"], 6),
+    }
+    for label, value in historical_tokens.items():
+        require(text, label, value, failures)
 
     print("\n[COMPUTE-MATCHED RESULT]")
     compute_path = "evaluation/results/autonomous_exploration/compute_matched_sampling/paired_comparison_summary.json"
@@ -126,6 +140,17 @@ def audit_report_v2(report_path: Path) -> int:
         require(text, f"{key} mean", token(values["mean_ratio"], 6), failures)
         require(text, f"{key} std", token(values["std_ratio"], 6), failures)
         require(text, f"{key} delta", token(values["mean_ratio_delta_vs_control"], 6), failures)
+
+    print("\n[WIDE-PARALLEL ADAPTIVE FIX]")
+    wide = load("evaluation/results/wide_parallel_adaptive.json")
+    adaptive = wide["groups"]["adaptive"]
+    wide_tokens = {
+        "adaptive wide mean": token(adaptive["mean_ratio"], 6),
+        "adaptive wide non-regression count": f"{adaptive['non_regression_vs_heft_count']}/5",
+        "adaptive wide optimal tie count": f"{adaptive['heft_tie_proven_optimal_count']} 个打平",
+    }
+    for label, value in wide_tokens.items():
+        require(text, label, str(value), failures)
 
     print("\n[MILP]")
     milp = load("evaluation/results/milp_optimal_comparison.json")

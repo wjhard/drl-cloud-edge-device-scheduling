@@ -4,7 +4,12 @@ import random
 from collections.abc import Callable
 from dataclasses import dataclass
 
-from env.dag_generator import DAGTask, generate_random_dag
+from env.dag_generator import (
+    DAGTask,
+    generate_deep_chain_dag,
+    generate_random_dag,
+    generate_wide_parallel_dag,
+)
 
 
 @dataclass(frozen=True)
@@ -118,4 +123,77 @@ def make_progressive_task_range_generator(
         edge_density_min=edge_density_min,
         edge_density_max=edge_density_max,
         base_seed=base_seed,
+    )
+
+
+class StructuralMixtureDagGenerator:
+    """Training generator that explicitly covers wide, deep and ordinary DAGs."""
+
+    def __init__(
+        self,
+        min_tasks: int,
+        max_tasks: int,
+        edge_density_min: float,
+        edge_density_max: float,
+        base_seed: int | None = None,
+        wide_probability: float = 0.35,
+        deep_probability: float = 0.20,
+    ):
+        if min_tasks <= 0 or max_tasks < min_tasks:
+            raise ValueError("task bounds must satisfy 0 < min_tasks <= max_tasks")
+        if not 0.0 <= edge_density_min <= edge_density_max <= 1.0:
+            raise ValueError("edge density bounds must satisfy 0 <= min <= max <= 1")
+        if wide_probability < 0 or deep_probability < 0:
+            raise ValueError("shape probabilities must be non-negative")
+        if wide_probability + deep_probability > 1.0:
+            raise ValueError("wide_probability + deep_probability must be <= 1")
+        self.min_tasks = min_tasks
+        self.max_tasks = max_tasks
+        self.edge_density_min = edge_density_min
+        self.edge_density_max = edge_density_max
+        self.wide_probability = wide_probability
+        self.deep_probability = deep_probability
+        self.stream_rng = random.Random(base_seed)
+
+    def __call__(self, seed: int | None = None) -> DAGTask:
+        rng = random.Random(seed) if seed is not None else self.stream_rng
+        num_tasks = rng.randint(self.min_tasks, self.max_tasks)
+        shape_draw = rng.random()
+        dag_seed = rng.randrange(0, 2**32)
+        if shape_draw < self.wide_probability:
+            return generate_wide_parallel_dag(
+                num_tasks=max(3, num_tasks),
+                edge_density=rng.uniform(0.08, 0.20),
+                seed=dag_seed,
+            )
+        if shape_draw < self.wide_probability + self.deep_probability:
+            return generate_deep_chain_dag(
+                num_tasks=num_tasks,
+                edge_density=rng.uniform(0.55, 0.85),
+                seed=dag_seed,
+            )
+        return generate_random_dag(
+            num_tasks=num_tasks,
+            edge_density=rng.uniform(self.edge_density_min, self.edge_density_max),
+            seed=dag_seed,
+        )
+
+
+def make_structural_mixture_generator(
+    min_tasks: int,
+    max_tasks: int,
+    edge_density_min: float,
+    edge_density_max: float,
+    base_seed: int | None = None,
+    wide_probability: float = 0.35,
+    deep_probability: float = 0.20,
+) -> StructuralMixtureDagGenerator:
+    return StructuralMixtureDagGenerator(
+        min_tasks=min_tasks,
+        max_tasks=max_tasks,
+        edge_density_min=edge_density_min,
+        edge_density_max=edge_density_max,
+        base_seed=base_seed,
+        wide_probability=wide_probability,
+        deep_probability=deep_probability,
     )

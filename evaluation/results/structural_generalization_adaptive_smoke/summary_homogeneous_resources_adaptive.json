@@ -1,0 +1,186 @@
+{
+  "method": "Residual Best-of-64 + local search + destroy-repair LNS",
+  "config_path": "evaluation\\results\\structural_generalization_adaptive_smoke\\homogeneous_resources.yaml",
+  "model_path": "training/checkpoints/ppo_mlp_residual",
+  "sampling_seed": 20260830,
+  "num_samples": 16,
+  "local_max_passes": 3,
+  "lns_iterations": 16,
+  "scenario_count": 5,
+  "elapsed_seconds": 7.764851899992209,
+  "overall": {
+    "residual_bestof64_mean_ratio": 1.0101711065984893,
+    "local_search_mean_ratio": 0.9628392204786709,
+    "lns_mean_ratio": 0.9376439837712306,
+    "paired_mean_difference_lns_minus_residual": -0.07252712282725877,
+    "paired_mean_difference_lns_minus_local": -0.025195236707440238,
+    "residual_bestof64_better_than_heft_count": 3,
+    "local_search_better_than_heft_count": 4,
+    "lns_better_than_heft_count": 5,
+    "improved_scenario_count": 2,
+    "portfolio_selected_source_counts": {
+      "heft_lns": 1,
+      "residual_lns": 4
+    }
+  },
+  "scenarios": [
+    {
+      "scenario": "scenario_12_1.json",
+      "num_tasks": 12,
+      "scenario_seed": 20260830,
+      "heft_makespan": 0.6219607007682162,
+      "residual_bestof64_makespan": 0.5959937760880238,
+      "local_search_makespan": 0.5834973528828351,
+      "lns_makespan": 0.5834973528828351,
+      "residual_bestof64_ratio": 0.9582498948114901,
+      "local_search_ratio": 0.9381579128104509,
+      "lns_ratio": 0.9381579128104509,
+      "accepted_repairs": 0,
+      "evaluated_neighbors": 788,
+      "selected_source": "residual_lns",
+      "candidate_makespans": {
+        "residual_lns": 0.5834973528828351,
+        "heft_anchor": 0.6219607007682162,
+        "heft_lns": 0.5834973528828351,
+        "width_aware_lns": 0.5834973528828351,
+        "cost_first_lns": 0.5920840188062719
+      },
+      "dag_shape": {
+        "task_count": 12,
+        "edge_count": 16,
+        "source_count": 5,
+        "sink_count": 4,
+        "longest_path_edges": 3,
+        "level_width": 5,
+        "width_ratio": 0.4166666666666667,
+        "edge_density": 0.12121212121212122
+      }
+    },
+    {
+      "scenario": "scenario_16_2.json",
+      "num_tasks": 16,
+      "scenario_seed": 20260831,
+      "heft_makespan": 0.8346645197728922,
+      "residual_bestof64_makespan": 0.8272293854658662,
+      "local_search_makespan": 0.8272293854658662,
+      "lns_makespan": 0.7558327910448382,
+      "residual_bestof64_ratio": 0.9910920685725936,
+      "local_search_ratio": 0.9910920685725936,
+      "lns_ratio": 0.9055527977282374,
+      "accepted_repairs": 2,
+      "evaluated_neighbors": 1288,
+      "selected_source": "residual_lns",
+      "candidate_makespans": {
+        "residual_lns": 0.7558327910448382,
+        "heft_anchor": 0.8346645197728922,
+        "heft_lns": 0.7558327910448382,
+        "width_aware_lns": 0.7584355326258658,
+        "cost_first_lns": 0.7840877384020687
+      },
+      "dag_shape": {
+        "task_count": 16,
+        "edge_count": 27,
+        "source_count": 5,
+        "sink_count": 6,
+        "longest_path_edges": 3,
+        "level_width": 6,
+        "width_ratio": 0.375,
+        "edge_density": 0.1125
+      }
+    },
+    {
+      "scenario": "scenario_20_3.json",
+      "num_tasks": 20,
+      "scenario_seed": 20260832,
+      "heft_makespan": 1.3425882430153975,
+      "residual_bestof64_makespan": 1.3221586471189075,
+      "local_search_makespan": 1.241994245926838,
+      "lns_makespan": 1.241994245926838,
+      "residual_bestof64_ratio": 0.9847834241043211,
+      "local_search_ratio": 0.9250745732268373,
+      "lns_ratio": 0.9250745732268373,
+      "accepted_repairs": 0,
+      "evaluated_neighbors": 1317,
+      "selected_source": "residual_lns",
+      "candidate_makespans": {
+        "residual_lns": 1.241994245926838,
+        "heft_anchor": 1.3425882430153975,
+        "heft_lns": 1.241994245926838,
+        "width_aware_lns": 1.2600407001774954,
+        "cost_first_lns": 1.241994245926838
+      },
+      "dag_shape": {
+        "task_count": 20,
+        "edge_count": 54,
+        "source_count": 4,
+        "sink_count": 5,
+        "longest_path_edges": 4,
+        "level_width": 7,
+        "width_ratio": 0.35,
+        "edge_density": 0.14210526315789473
+      }
+    },
+    {
+      "scenario": "scenario_25_4.json",
+      "num_tasks": 25,
+      "scenario_seed": 20260833,
+      "heft_makespan": 1.2695508527665458,
+      "residual_bestof64_makespan": 1.3212833358871632,
+      "local_search_makespan": 1.307224756694678,
+      "lns_makespan": 1.25588803970223,
+      "residual_bestof64_ratio": 1.0407486498141325,
+      "local_search_ratio": 1.0296749861149987,
+      "lns_ratio": 0.9892380734221538,
+      "accepted_repairs": 3,
+      "evaluated_neighbors": 1894,
+      "selected_source": "heft_lns",
+      "candidate_makespans": {
+        "residual_lns": 1.2707475649773363,
+        "heft_anchor": 1.2695508527665458,
+        "heft_lns": 1.25588803970223
+      },
+      "dag_shape": {
+        "task_count": 25,
+        "edge_count": 79,
+        "source_count": 6,
+        "sink_count": 6,
+        "longest_path_edges": 5,
+        "level_width": 7,
+        "width_ratio": 0.28,
+        "edge_density": 0.13166666666666665
+      }
+    },
+    {
+      "scenario": "scenario_8_0.json",
+      "num_tasks": 8,
+      "scenario_seed": 20260834,
+      "heft_makespan": 0.3018679716516366,
+      "residual_bestof64_makespan": 0.3248043516386072,
+      "local_search_makespan": 0.28079654930818865,
+      "lns_makespan": 0.28079654930818865,
+      "residual_bestof64_ratio": 1.0759814956899096,
+      "local_search_ratio": 0.9301965616684738,
+      "lns_ratio": 0.9301965616684738,
+      "accepted_repairs": 0,
+      "evaluated_neighbors": 468,
+      "selected_source": "residual_lns",
+      "candidate_makespans": {
+        "residual_lns": 0.28079654930818865,
+        "heft_anchor": 0.3018679716516366,
+        "heft_lns": 0.28079654930818865,
+        "width_aware_lns": 0.28079654930818865,
+        "cost_first_lns": 0.28079654930818865
+      },
+      "dag_shape": {
+        "task_count": 8,
+        "edge_count": 5,
+        "source_count": 3,
+        "sink_count": 5,
+        "longest_path_edges": 2,
+        "level_width": 4,
+        "width_ratio": 0.5,
+        "edge_density": 0.08928571428571429
+      }
+    }
+  ]
+}

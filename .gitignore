@@ -1,11 +1,13 @@
 __pycache__/
 .pytest_cache/
 .venv/
+.validation_env/
 *.py[cod]
 
 # Demo/validation artifacts
 env/dag_demo.png
 evaluation/scenarios/
+evaluation/scenarios_structural_reproduce/
 evaluation/results/final_pipeline_fresh_clone_path.txt
 
 # Training artifacts

@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import math
 import random
 import sys
 from pathlib import Path
@@ -12,10 +11,16 @@ import networkx as nx
 if __package__ in {None, ""}:
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from env.dag_generator import DAGTask, generate_random_dag, save_dag_to_json
+from env.dag_generator import (
+    DAGTask,
+    generate_deep_chain_dag,
+    generate_random_dag,
+    generate_wide_parallel_dag,
+    save_dag_to_json,
+)
 
 
-DEFAULT_OUTPUT_ROOT = "evaluation/scenarios_structural"
+DEFAULT_OUTPUT_ROOT = "evaluation/scenarios_structural_v2"
 DEFAULT_SEED_START = 5_000_000
 TASK_SIZES = (8, 12, 16, 20, 25)
 DEFAULT_DENSITY = 0.35
@@ -27,47 +32,12 @@ GROUPS = (
     "homogeneous_resources",
     "original_control",
 )
-
-
-def _generate_deep_layered_dag(num_tasks: int, edge_density: float, seed: int) -> DAGTask:
-    """Generate a narrow, many-level DAG while retaining limited parallel choices."""
-    rng = random.Random(seed)
-    graph = nx.DiGraph()
-    level_count = max(3, math.ceil(num_tasks / 3))
-    levels: list[list[int]] = [[] for _ in range(level_count)]
-
-    for task_id in range(num_tasks):
-        level = min(task_id // 3, level_count - 1)
-        levels[level].append(task_id)
-        graph.add_node(
-            task_id,
-            task_id=task_id,
-            level=level,
-            computation_cost=rng.uniform(1.0, 10.0),
-        )
-
-    nonempty_levels = [nodes for nodes in levels if nodes]
-    for src_level, src_nodes in enumerate(nonempty_levels[:-1]):
-        for dst_nodes in nonempty_levels[src_level + 1 :]:
-            for src in src_nodes:
-                for dst in dst_nodes:
-                    if rng.random() < edge_density:
-                        graph.add_edge(src, dst, data_size=rng.uniform(1.0, 10.0))
-
-    # Guarantee a path through every level without collapsing each level to one task.
-    for current_nodes, next_nodes in zip(nonempty_levels, nonempty_levels[1:]):
-        anchor_src = current_nodes[0]
-        anchor_dst = next_nodes[0]
-        if not graph.has_edge(anchor_src, anchor_dst):
-            graph.add_edge(anchor_src, anchor_dst, data_size=rng.uniform(1.0, 10.0))
-        for dst in next_nodes:
-            if graph.in_degree(dst) == 0:
-                src = rng.choice(current_nodes)
-                graph.add_edge(src, dst, data_size=rng.uniform(1.0, 10.0))
-
-    source_tasks = sorted(node for node in graph if graph.in_degree(node) == 0)
-    sink_tasks = sorted(node for node in graph if graph.out_degree(node) == 0)
-    return DAGTask(graph=graph, source_tasks=source_tasks, sink_tasks=sink_tasks)
+RESOURCE_CONFIGS = {
+    "wide_parallel": "configs/resource_default.yaml",
+    "deep_chain": "configs/resource_default.yaml",
+    "homogeneous_resources": "configs/resource_structural_homogeneous.yaml",
+    "original_control": "configs/resource_default.yaml",
+}
 
 
 def _scenario_record(
@@ -110,7 +80,11 @@ def generate_structural_scenarios(
     for index, task_size in enumerate(TASK_SIZES):
         wide_seed = seed_start + index
         wide_density = random.Random(wide_seed).uniform(*WIDE_DENSITY_RANGE)
-        wide_dag = generate_random_dag(task_size, edge_density=wide_density, seed=wide_seed)
+        wide_dag = generate_wide_parallel_dag(
+            task_size,
+            edge_density=wide_density,
+            seed=wide_seed,
+        )
         wide_path = root / "wide_parallel" / f"scenario_{task_size}_{index}.json"
         save_dag_to_json(wide_dag, wide_path)
         records.append(
@@ -121,7 +95,11 @@ def generate_structural_scenarios(
 
         deep_seed = seed_start + 100 + index
         deep_density = random.Random(deep_seed).uniform(*DEEP_DENSITY_RANGE)
-        deep_dag = _generate_deep_layered_dag(task_size, deep_density, deep_seed)
+        deep_dag = generate_deep_chain_dag(
+            task_size,
+            edge_density=deep_density,
+            seed=deep_seed,
+        )
         deep_path = root / "deep_chain" / f"scenario_{task_size}_{index}.json"
         save_dag_to_json(deep_dag, deep_path)
         records.append(
@@ -153,12 +131,7 @@ def generate_structural_scenarios(
         "task_sizes": list(TASK_SIZES),
         "scenario_file_count": len(records),
         "paired_resource_groups": ["homogeneous_resources", "original_control"],
-        "resource_configs": {
-            "wide_parallel": "configs/resource_default.yaml",
-            "deep_chain": "configs/resource_default.yaml",
-            "homogeneous_resources": "configs/resource_structural_homogeneous.yaml",
-            "original_control": "configs/resource_default.yaml",
-        },
+        "resource_configs": RESOURCE_CONFIGS,
         "scenarios": records,
     }
     manifest_path = root / "manifest.json"

@@ -1,0 +1,260 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "task_id": 0,
+      "level": 0,
+      "computation_cost": 7.702320860520656,
+      "id": 0
+    },
+    {
+      "task_id": 1,
+      "level": 0,
+      "computation_cost": 7.710093522252947,
+      "id": 1
+    },
+    {
+      "task_id": 2,
+      "level": 0,
+      "computation_cost": 7.892045937486175,
+      "id": 2
+    },
+    {
+      "task_id": 3,
+      "level": 1,
+      "computation_cost": 4.590388202301476,
+      "id": 3
+    },
+    {
+      "task_id": 4,
+      "level": 1,
+      "computation_cost": 6.522998884304888,
+      "id": 4
+    },
+    {
+      "task_id": 5,
+      "level": 1,
+      "computation_cost": 2.6921469778006917,
+      "id": 5
+    },
+    {
+      "task_id": 6,
+      "level": 1,
+      "computation_cost": 7.911103423091275,
+      "id": 6
+    },
+    {
+      "task_id": 7,
+      "level": 1,
+      "computation_cost": 5.321369928502364,
+      "id": 7
+    },
+    {
+      "task_id": 8,
+      "level": 1,
+      "computation_cost": 5.078618563313097,
+      "id": 8
+    },
+    {
+      "task_id": 9,
+      "level": 1,
+      "computation_cost": 4.435984287386622,
+      "id": 9
+    },
+    {
+      "task_id": 10,
+      "level": 1,
+      "computation_cost": 2.733997367140031,
+      "id": 10
+    },
+    {
+      "task_id": 11,
+      "level": 1,
+      "computation_cost": 3.31818023681193,
+      "id": 11
+    },
+    {
+      "task_id": 12,
+      "level": 1,
+      "computation_cost": 7.418307819169499,
+      "id": 12
+    },
+    {
+      "task_id": 13,
+      "level": 2,
+      "computation_cost": 5.676330741248543,
+      "id": 13
+    },
+    {
+      "task_id": 14,
+      "level": 2,
+      "computation_cost": 5.579566562491583,
+      "id": 14
+    },
+    {
+      "task_id": 15,
+      "level": 2,
+      "computation_cost": 7.074456948268174,
+      "id": 15
+    }
+  ],
+  "links": [
+    {
+      "data_size": 2.229057737550968,
+      "source": 0,
+      "target": 10
+    },
+    {
+      "data_size": 6.148390721801226,
+      "source": 0,
+      "target": 5
+    },
+    {
+      "data_size": 4.039986472284953,
+      "source": 0,
+      "target": 7
+    },
+    {
+      "data_size": 3.822230689412393,
+      "source": 0,
+      "target": 11
+    },
+    {
+      "data_size": 5.762826410513844,
+      "source": 0,
+      "target": 12
+    },
+    {
+      "data_size": 6.041741325286354,
+      "source": 1,
+      "target": 12
+    },
+    {
+      "data_size": 6.703710427234038,
+      "source": 1,
+      "target": 6
+    },
+    {
+      "data_size": 1.1751525421341564,
+      "source": 1,
+      "target": 8
+    },
+    {
+      "data_size": 6.652232714630848,
+      "source": 1,
+      "target": 10
+    },
+    {
+      "data_size": 5.168101686980337,
+      "source": 1,
+      "target": 5
+    },
+    {
+      "data_size": 3.281089292686321,
+      "source": 2,
+      "target": 11
+    },
+    {
+      "data_size": 5.250686091447914,
+      "source": 2,
+      "target": 3
+    },
+    {
+      "data_size": 4.4525561017435855,
+      "source": 2,
+      "target": 4
+    },
+    {
+      "data_size": 4.949486224855925,
+      "source": 2,
+      "target": 9
+    },
+    {
+      "data_size": 5.450309484830458,
+      "source": 2,
+      "target": 6
+    },
+    {
+      "data_size": 7.238017743449016,
+      "source": 3,
+      "target": 14
+    },
+    {
+      "data_size": 3.1647011162153817,
+      "source": 3,
+      "target": 13
+    },
+    {
+      "data_size": 9.870248812292617,
+      "source": 4,
+      "target": 13
+    },
+    {
+      "data_size": 1.1590837087582946,
+      "source": 4,
+      "target": 14
+    },
+    {
+      "data_size": 7.9783322479045955,
+      "source": 5,
+      "target": 15
+    },
+    {
+      "data_size": 1.3291998316661415,
+      "source": 6,
+      "target": 15
+    },
+    {
+      "data_size": 4.691986773212545,
+      "source": 7,
+      "target": 14
+    },
+    {
+      "data_size": 4.382140703486867,
+      "source": 8,
+      "target": 14
+    },
+    {
+      "data_size": 7.93645317039211,
+      "source": 8,
+      "target": 13
+    },
+    {
+      "data_size": 4.4558365832255955,
+      "source": 9,
+      "target": 13
+    },
+    {
+      "data_size": 4.18122920710576,
+      "source": 9,
+      "target": 15
+    },
+    {
+      "data_size": 1.1494550442179672,
+      "source": 10,
+      "target": 15
+    },
+    {
+      "data_size": 2.805610150895596,
+      "source": 10,
+      "target": 13
+    },
+    {
+      "data_size": 6.408224686162031,
+      "source": 11,
+      "target": 14
+    },
+    {
+      "data_size": 1.1285974981721032,
+      "source": 12,
+      "target": 15
+    },
+    {
+      "data_size": 7.56673768024257,
+      "source": 12,
+      "target": 14
+    }
+  ]
+}

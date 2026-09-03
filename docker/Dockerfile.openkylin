@@ -1,0 +1,31 @@
+FROM quay.io/openkylin/openkylin:2.0
+
+ENV DEBIAN_FRONTEND=noninteractive \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1
+
+ARG PYPI_INDEX_URL=https://mirrors.nju.edu.cn/pypi/web/simple
+ARG PYTORCH_INDEX_URL=https://mirror.sjtu.edu.cn/pytorch-wheels/cpu
+
+RUN rm -f /etc/apt/sources.list.d/openkylin-anything.list && \
+    apt-get -o Acquire::Retries=5 -o Acquire::http::Timeout=60 update && \
+    apt-get -o Acquire::Retries=5 -o Acquire::http::Timeout=60 \
+        install -y --no-install-recommends \
+        python3 python3-pip ca-certificates && \
+    rm -rf /var/lib/apt/lists/*
+
+WORKDIR /opt/drl-scheduler
+COPY requirements.txt ./
+RUN --mount=type=cache,target=/root/.cache/pip \
+    python3 -m pip install --break-system-packages \
+        --timeout 60 --retries 5 \
+        --no-deps --index-url ${PYTORCH_INDEX_URL} \
+        torch==2.12.1+cpu && \
+    python3 -m pip install --break-system-packages \
+        --timeout 60 --retries 5 --index-url ${PYPI_INDEX_URL} \
+        -r requirements.txt && \
+    python3 -m pip check
+COPY . .
+
+CMD ["python3", "scripts/reproduce.py", "--profile", "smoke", "--skip-tests", "--write-manifest"]
