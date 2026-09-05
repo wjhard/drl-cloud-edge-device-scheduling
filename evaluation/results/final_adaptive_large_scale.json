@@ -1,0 +1,1236 @@
+{
+  "schema_version": 1,
+  "method": "Adaptive Residual portfolio + topological relocation + best-only LNS",
+  "protocol": {
+    "scenarios_dir": "evaluation/scenarios_large",
+    "resource_config_path": "configs/resource_default.yaml",
+    "config_path": "training/configs/ppo_mlp_residual.yaml",
+    "model_path": "training/checkpoints/ppo_mlp_residual",
+    "model_capacity_tasks": 30,
+    "seed": 20260905,
+    "num_samples": 64,
+    "local_max_passes": 3,
+    "lns_iterations": 64,
+    "time_budget_seconds_per_scenario": 10.0,
+    "time_budget_semantics": "soft wall-clock limit checked between rollouts and neighborhood evaluations; HEFT anchor construction is always allowed to finish",
+    "logical_cpu_count": 24
+  },
+  "model_load": {
+    "seconds": 1.093661399994744,
+    "rss_before_mib": 270.796875,
+    "rss_after_mib": 353.796875,
+    "peak_rss_mib": 356.37109375,
+    "checkpoint_size_mib": 3.8481521606445312
+  },
+  "overall": {
+    "scenario_count": 20,
+    "mean_ratio": 0.9416271415360488,
+    "sample_std_ratio": 0.02656934045619979,
+    "mean_improvement_percent_vs_heft": 5.837285846395124,
+    "mean_ratio_confidence_interval_95": [
+      0.9291923074334717,
+      0.9540619756386258
+    ],
+    "paired_t_test_ratio_vs_one": {
+      "difference_definition": "adaptive ratio minus HEFT ratio (1.0)",
+      "t_statistic": -9.82528563564035,
+      "p_value_two_sided": 6.985757808499217e-09
+    },
+    "strictly_better_than_heft_count": 20,
+    "non_regression_vs_heft_count": 20,
+    "mean_schedule_seconds": 10.001676294997015,
+    "median_schedule_seconds": 10.001259249998839,
+    "p95_schedule_seconds": 10.00342633500477,
+    "max_schedule_seconds": 10.003446000002441,
+    "mean_process_cpu_seconds": 21.25859375,
+    "mean_slowdown_vs_heft": 2118.7519454673647,
+    "max_process_peak_rss_mib": 358.0703125,
+    "time_limit_reached_count": 20,
+    "residual_skipped_count": 15,
+    "selected_source_counts": {
+      "heft_lns": 15,
+      "residual_lns": 5
+    }
+  },
+  "by_task_size": {
+    "30": {
+      "scenario_count": 5,
+      "mean_ratio": 0.9349073757068567,
+      "sample_std_ratio": 0.03113703579668524,
+      "mean_improvement_percent_vs_heft": 6.509262429314333,
+      "mean_ratio_confidence_interval_95": [
+        0.8962456393473307,
+        0.9735691120663826
+      ],
+      "paired_t_test_ratio_vs_one": {
+        "difference_definition": "adaptive ratio minus HEFT ratio (1.0)",
+        "t_statistic": -4.674546854868494,
+        "p_value_two_sided": 0.009486135336758897
+      },
+      "strictly_better_than_heft_count": 5,
+      "non_regression_vs_heft_count": 5,
+      "mean_schedule_seconds": 10.00306093999825,
+      "median_schedule_seconds": 10.002949199988507,
+      "p95_schedule_seconds": 10.00344186000293,
+      "max_schedule_seconds": 10.003446000002441,
+      "mean_process_cpu_seconds": 55.296875,
+      "mean_slowdown_vs_heft": 3397.616933416842,
+      "max_process_peak_rss_mib": 356.37109375,
+      "time_limit_reached_count": 5,
+      "residual_skipped_count": 0,
+      "selected_source_counts": {
+        "residual_lns": 5
+      }
+    },
+    "40": {
+      "scenario_count": 5,
+      "mean_ratio": 0.9267307300964415,
+      "sample_std_ratio": 0.02555263160863784,
+      "mean_improvement_percent_vs_heft": 7.326926990355853,
+      "mean_ratio_confidence_interval_95": [
+        0.8950029473686323,
+        0.9584585128242507
+      ],
+      "paired_t_test_ratio_vs_one": {
+        "difference_definition": "adaptive ratio minus HEFT ratio (1.0)",
+        "t_statistic": -6.411671043336035,
+        "p_value_two_sided": 0.0030403678228945316
+      },
+      "strictly_better_than_heft_count": 5,
+      "non_regression_vs_heft_count": 5,
+      "mean_schedule_seconds": 10.001119159997325,
+      "median_schedule_seconds": 10.00116070000513,
+      "p95_schedule_seconds": 10.001826439995785,
+      "max_schedule_seconds": 10.00195239999448,
+      "mean_process_cpu_seconds": 9.890625,
+      "mean_slowdown_vs_heft": 2126.6652258372437,
+      "max_process_peak_rss_mib": 356.37109375,
+      "time_limit_reached_count": 5,
+      "residual_skipped_count": 5,
+      "selected_source_counts": {
+        "heft_lns": 5
+      }
+    },
+    "50": {
+      "scenario_count": 5,
+      "mean_ratio": 0.948592290114789,
+      "sample_std_ratio": 0.01834720794604264,
+      "mean_improvement_percent_vs_heft": 5.140770988521104,
+      "mean_ratio_confidence_interval_95": [
+        0.9258112225406298,
+        0.9713733576889482
+      ],
+      "paired_t_test_ratio_vs_one": {
+        "difference_definition": "adaptive ratio minus HEFT ratio (1.0)",
+        "t_statistic": -6.2653202715628415,
+        "p_value_two_sided": 0.0033113013377658075
+      },
+      "strictly_better_than_heft_count": 5,
+      "non_regression_vs_heft_count": 5,
+      "mean_schedule_seconds": 10.001181519994862,
+      "median_schedule_seconds": 10.001074300002074,
+      "p95_schedule_seconds": 10.001747839988091,
+      "max_schedule_seconds": 10.00191319998703,
+      "mean_process_cpu_seconds": 9.9125,
+      "mean_slowdown_vs_heft": 1660.213200593648,
+      "max_process_peak_rss_mib": 356.37109375,
+      "time_limit_reached_count": 5,
+      "residual_skipped_count": 5,
+      "selected_source_counts": {
+        "heft_lns": 5
+      }
+    },
+    "60": {
+      "scenario_count": 5,
+      "mean_ratio": 0.9562781702261081,
+      "sample_std_ratio": 0.02704282621785548,
+      "mean_improvement_percent_vs_heft": 4.372182977389194,
+      "mean_ratio_confidence_interval_95": [
+        0.9227000665017161,
+        0.9898562739505
+      ],
+      "paired_t_test_ratio_vs_one": {
+        "difference_definition": "adaptive ratio minus HEFT ratio (1.0)",
+        "t_statistic": -3.615191056123626,
+        "p_value_two_sided": 0.02245282951394374
+      },
+      "strictly_better_than_heft_count": 5,
+      "non_regression_vs_heft_count": 5,
+      "mean_schedule_seconds": 10.001343559997622,
+      "median_schedule_seconds": 10.001195899996674,
+      "p95_schedule_seconds": 10.002563279995229,
+      "max_schedule_seconds": 10.002630799994222,
+      "mean_process_cpu_seconds": 9.934375,
+      "mean_slowdown_vs_heft": 1290.5124220217235,
+      "max_process_peak_rss_mib": 358.0703125,
+      "time_limit_reached_count": 5,
+      "residual_skipped_count": 5,
+      "selected_source_counts": {
+        "heft_lns": 5
+      }
+    }
+  },
+  "total_benchmark_seconds": 201.5031006000063,
+  "scenarios": [
+    {
+      "scenario": "scenario_30_0.json",
+      "num_tasks": 30,
+      "edge_count": 234,
+      "scenario_seed": 20260905,
+      "heft_makespan": 1.3180692217578884,
+      "adaptive_makespan": 1.1991491175501598,
+      "ratio_to_heft": 0.9097770418695259,
+      "selected_source": "residual_lns",
+      "timing": {
+        "schedule_seconds": 10.003425300004892,
+        "process_cpu_seconds": 52.921875,
+        "heft_reference_seconds": 0.005026600003475323,
+        "slowdown_vs_heft": 1990.0977386481238,
+        "candidate_elapsed_seconds": {
+          "residual_lns": 9.999803899991093,
+          "heft_anchor": 0.0033393000048818067
+        }
+      },
+      "memory": {
+        "rss_before_mib": 354.12890625,
+        "rss_after_mib": 355.7890625,
+        "rss_delta_mib": 1.66015625,
+        "process_peak_rss_mib": 356.37109375
+      },
+      "diagnostics": {
+        "candidate_makespans": {
+          "residual_lns": 1.1991491175501598,
+          "heft_anchor": 1.3180692217578884
+        },
+        "time_limit_reached": true,
+        "residual_skipped_reason": null,
+        "residual_samples_completed": 64,
+        "dag_shape": {
+          "task_count": 30,
+          "edge_count": 234,
+          "source_count": 5,
+          "sink_count": 4,
+          "longest_path_edges": 5,
+          "level_width": 7,
+          "width_ratio": 0.23333333333333334,
+          "edge_density": 0.2689655172413793
+        }
+      },
+      "validation": {
+        "valid": true,
+        "error_count": 0,
+        "errors": [],
+        "expected_task_count": 30,
+        "scheduled_task_count": 30,
+        "makespan": 1.1991491175501598
+      }
+    },
+    {
+      "scenario": "scenario_30_1.json",
+      "num_tasks": 30,
+      "edge_count": 154,
+      "scenario_seed": 20260906,
+      "heft_makespan": 1.1282308980988012,
+      "adaptive_makespan": 1.1111546950688322,
+      "ratio_to_heft": 0.9848646203017979,
+      "selected_source": "residual_lns",
+      "timing": {
+        "schedule_seconds": 10.002949199988507,
+        "process_cpu_seconds": 50.78125,
+        "heft_reference_seconds": 0.0028710000042337924,
+        "slowdown_vs_heft": 3484.1341641370277,
+        "candidate_elapsed_seconds": {
+          "residual_lns": 10.000418499999796,
+          "heft_anchor": 0.0023646999907214195
+        }
+      },
+      "memory": {
+        "rss_before_mib": 355.8046875,
+        "rss_after_mib": 355.87109375,
+        "rss_delta_mib": 0.06640625,
+        "process_peak_rss_mib": 356.37109375
+      },
+      "diagnostics": {
+        "candidate_makespans": {
+          "residual_lns": 1.1111546950688322,
+          "heft_anchor": 1.1282308980988012
+        },
+        "time_limit_reached": true,
+        "residual_skipped_reason": null,
+        "residual_samples_completed": 64,
+        "dag_shape": {
+          "task_count": 30,
+          "edge_count": 154,
+          "source_count": 5,
+          "sink_count": 6,
+          "longest_path_edges": 5,
+          "level_width": 9,
+          "width_ratio": 0.3,
+          "edge_density": 0.17701149425287357
+        }
+      },
+      "validation": {
+        "valid": true,
+        "error_count": 0,
+        "errors": [],
+        "expected_task_count": 30,
+        "scheduled_task_count": 30,
+        "makespan": 1.1111546950688322
+      }
+    },
+    {
+      "scenario": "scenario_30_2.json",
+      "num_tasks": 30,
+      "edge_count": 126,
+      "scenario_seed": 20260907,
+      "heft_makespan": 1.113084674804009,
+      "adaptive_makespan": 1.0481227377671545,
+      "ratio_to_heft": 0.9416379198210657,
+      "selected_source": "residual_lns",
+      "timing": {
+        "schedule_seconds": 10.002562599998782,
+        "process_cpu_seconds": 57.03125,
+        "heft_reference_seconds": 0.002522399998269975,
+        "slowdown_vs_heft": 3965.4942145810282,
+        "candidate_elapsed_seconds": {
+          "residual_lns": 10.000127300008899,
+          "heft_anchor": 0.002279299995279871
+        }
+      },
+      "memory": {
+        "rss_before_mib": 355.875,
+        "rss_after_mib": 355.16015625,
+        "rss_delta_mib": -0.71484375,
+        "process_peak_rss_mib": 356.37109375
+      },
+      "diagnostics": {
+        "candidate_makespans": {
+          "residual_lns": 1.0481227377671545,
+          "heft_anchor": 1.113084674804009
+        },
+        "time_limit_reached": true,
+        "residual_skipped_reason": null,
+        "residual_samples_completed": 64,
+        "dag_shape": {
+          "task_count": 30,
+          "edge_count": 126,
+          "source_count": 8,
+          "sink_count": 6,
+          "longest_path_edges": 5,
+          "level_width": 8,
+          "width_ratio": 0.26666666666666666,
+          "edge_density": 0.14482758620689656
+        }
+      },
+      "validation": {
+        "valid": true,
+        "error_count": 0,
+        "errors": [],
+        "expected_task_count": 30,
+        "scheduled_task_count": 30,
+        "makespan": 1.0481227377671545
+      }
+    },
+    {
+      "scenario": "scenario_30_3.json",
+      "num_tasks": 30,
+      "edge_count": 193,
+      "scenario_seed": 20260908,
+      "heft_makespan": 1.3113727201042837,
+      "adaptive_makespan": 1.2186796202790762,
+      "ratio_to_heft": 0.929315976759196,
+      "selected_source": "residual_lns",
+      "timing": {
+        "schedule_seconds": 10.003446000002441,
+        "process_cpu_seconds": 61.421875,
+        "heft_reference_seconds": 0.003092000013566576,
+        "slowdown_vs_heft": 3235.267126814665,
+        "candidate_elapsed_seconds": {
+          "residual_lns": 10.000405899991165,
+          "heft_anchor": 0.002871800010325387
+        }
+      },
+      "memory": {
+        "rss_before_mib": 355.16015625,
+        "rss_after_mib": 355.20703125,
+        "rss_delta_mib": 0.046875,
+        "process_peak_rss_mib": 356.37109375
+      },
+      "diagnostics": {
+        "candidate_makespans": {
+          "residual_lns": 1.2186796202790762,
+          "heft_anchor": 1.3113727201042837
+        },
+        "time_limit_reached": true,
+        "residual_skipped_reason": null,
+        "residual_samples_completed": 64,
+        "dag_shape": {
+          "task_count": 30,
+          "edge_count": 193,
+          "source_count": 4,
+          "sink_count": 7,
+          "longest_path_edges": 5,
+          "level_width": 7,
+          "width_ratio": 0.23333333333333334,
+          "edge_density": 0.2218390804597701
+        }
+      },
+      "validation": {
+        "valid": true,
+        "error_count": 0,
+        "errors": [],
+        "expected_task_count": 30,
+        "scheduled_task_count": 30,
+        "makespan": 1.2186796202790762
+      }
+    },
+    {
+      "scenario": "scenario_30_4.json",
+      "num_tasks": 30,
+      "edge_count": 148,
+      "scenario_seed": 20260909,
+      "heft_makespan": 1.1752884344019146,
+      "adaptive_makespan": 1.0682682206906169,
+      "ratio_to_heft": 0.9089413197826979,
+      "selected_source": "residual_lns",
+      "timing": {
+        "schedule_seconds": 10.002921599996625,
+        "process_cpu_seconds": 54.328125,
+        "heft_reference_seconds": 0.0023191999935079366,
+        "slowdown_vs_heft": 4313.091422903367,
+        "candidate_elapsed_seconds": {
+          "residual_lns": 10.000499499990838,
+          "heft_anchor": 0.0022659999958705157
+        }
+      },
+      "memory": {
+        "rss_before_mib": 355.21484375,
+        "rss_after_mib": 355.21875,
+        "rss_delta_mib": 0.00390625,
+        "process_peak_rss_mib": 356.37109375
+      },
+      "diagnostics": {
+        "candidate_makespans": {
+          "residual_lns": 1.0682682206906169,
+          "heft_anchor": 1.1752884344019146
+        },
+        "time_limit_reached": true,
+        "residual_skipped_reason": null,
+        "residual_samples_completed": 64,
+        "dag_shape": {
+          "task_count": 30,
+          "edge_count": 148,
+          "source_count": 4,
+          "sink_count": 5,
+          "longest_path_edges": 5,
+          "level_width": 9,
+          "width_ratio": 0.3,
+          "edge_density": 0.17011494252873563
+        }
+      },
+      "validation": {
+        "valid": true,
+        "error_count": 0,
+        "errors": [],
+        "expected_task_count": 30,
+        "scheduled_task_count": 30,
+        "makespan": 1.0682682206906169
+      }
+    },
+    {
+      "scenario": "scenario_40_0.json",
+      "num_tasks": 40,
+      "edge_count": 284,
+      "scenario_seed": 20260910,
+      "heft_makespan": 1.5294779601161892,
+      "adaptive_makespan": 1.395840878541298,
+      "ratio_to_heft": 0.9126256899022335,
+      "selected_source": "heft_lns",
+      "timing": {
+        "schedule_seconds": 10.001322600001004,
+        "process_cpu_seconds": 9.90625,
+        "heft_reference_seconds": 0.0042175999988103285,
+        "slowdown_vs_heft": 2371.330283294316,
+        "candidate_elapsed_seconds": {
+          "heft_anchor": 0.004217199995764531,
+          "heft_lns": 9.996767999997246
+        }
+      },
+      "memory": {
+        "rss_before_mib": 355.21875,
+        "rss_after_mib": 355.5625,
+        "rss_delta_mib": 0.34375,
+        "process_peak_rss_mib": 356.37109375
+      },
+      "diagnostics": {
+        "candidate_makespans": {
+          "heft_anchor": 1.5294779601161892,
+          "heft_lns": 1.395840878541298
+        },
+        "time_limit_reached": true,
+        "residual_skipped_reason": "task_count=40 exceeds residual_model_capacity=30",
+        "residual_samples_completed": 64,
+        "dag_shape": {
+          "task_count": 40,
+          "edge_count": 284,
+          "source_count": 6,
+          "sink_count": 4,
+          "longest_path_edges": 6,
+          "level_width": 8,
+          "width_ratio": 0.2,
+          "edge_density": 0.18205128205128204
+        }
+      },
+      "validation": {
+        "valid": true,
+        "error_count": 0,
+        "errors": [],
+        "expected_task_count": 40,
+        "scheduled_task_count": 40,
+        "makespan": 1.395840878541298
+      }
+    },
+    {
+      "scenario": "scenario_40_1.json",
+      "num_tasks": 40,
+      "edge_count": 335,
+      "scenario_seed": 20260911,
+      "heft_makespan": 1.6022092713472884,
+      "adaptive_makespan": 1.4831654160110141,
+      "ratio_to_heft": 0.9257001832000566,
+      "selected_source": "heft_lns",
+      "timing": {
+        "schedule_seconds": 10.000161099989782,
+        "process_cpu_seconds": 9.90625,
+        "heft_reference_seconds": 0.004536199994618073,
+        "slowdown_vs_heft": 2204.5238551771017,
+        "candidate_elapsed_seconds": {
+          "heft_anchor": 0.004835499988985248,
+          "heft_lns": 9.995095799997216
+        }
+      },
+      "memory": {
+        "rss_before_mib": 355.5625,
+        "rss_after_mib": 355.5625,
+        "rss_delta_mib": 0.0,
+        "process_peak_rss_mib": 356.37109375
+      },
+      "diagnostics": {
+        "candidate_makespans": {
+          "heft_anchor": 1.6022092713472884,
+          "heft_lns": 1.4831654160110141
+        },
+        "time_limit_reached": true,
+        "residual_skipped_reason": "task_count=40 exceeds residual_model_capacity=30",
+        "residual_samples_completed": 64,
+        "dag_shape": {
+          "task_count": 40,
+          "edge_count": 335,
+          "source_count": 5,
+          "sink_count": 5,
+          "longest_path_edges": 6,
+          "level_width": 8,
+          "width_ratio": 0.2,
+          "edge_density": 0.21474358974358973
+        }
+      },
+      "validation": {
+        "valid": true,
+        "error_count": 0,
+        "errors": [],
+        "expected_task_count": 40,
+        "scheduled_task_count": 40,
+        "makespan": 1.4831654160110141
+      }
+    },
+    {
+      "scenario": "scenario_40_2.json",
+      "num_tasks": 40,
+      "edge_count": 321,
+      "scenario_seed": 20260912,
+      "heft_makespan": 1.5789116838596158,
+      "adaptive_makespan": 1.5050311714512,
+      "ratio_to_heft": 0.9532079512973034,
+      "selected_source": "heft_lns",
+      "timing": {
+        "schedule_seconds": 10.000998999996227,
+        "process_cpu_seconds": 9.90625,
+        "heft_reference_seconds": 0.00373139999283012,
+        "slowdown_vs_heft": 2680.2269976987545,
+        "candidate_elapsed_seconds": {
+          "heft_anchor": 0.004820200003450736,
+          "heft_lns": 9.99593509999977
+        }
+      },
+      "memory": {
+        "rss_before_mib": 355.56640625,
+        "rss_after_mib": 355.56640625,
+        "rss_delta_mib": 0.0,
+        "process_peak_rss_mib": 356.37109375
+      },
+      "diagnostics": {
+        "candidate_makespans": {
+          "heft_anchor": 1.5789116838596158,
+          "heft_lns": 1.5050311714512
+        },
+        "time_limit_reached": true,
+        "residual_skipped_reason": "task_count=40 exceeds residual_model_capacity=30",
+        "residual_samples_completed": 64,
+        "dag_shape": {
+          "task_count": 40,
+          "edge_count": 321,
+          "source_count": 5,
+          "sink_count": 7,
+          "longest_path_edges": 6,
+          "level_width": 7,
+          "width_ratio": 0.175,
+          "edge_density": 0.20576923076923076
+        }
+      },
+      "validation": {
+        "valid": true,
+        "error_count": 0,
+        "errors": [],
+        "expected_task_count": 40,
+        "scheduled_task_count": 40,
+        "makespan": 1.5050311714512
+      }
+    },
+    {
+      "scenario": "scenario_40_3.json",
+      "num_tasks": 40,
+      "edge_count": 356,
+      "scenario_seed": 20260913,
+      "heft_makespan": 1.7627918400139768,
+      "adaptive_makespan": 1.5730602203040787,
+      "ratio_to_heft": 0.8923686759813945,
+      "selected_source": "heft_lns",
+      "timing": {
+        "schedule_seconds": 10.00195239999448,
+        "process_cpu_seconds": 9.859375,
+        "heft_reference_seconds": 0.004547200005617924,
+        "slowdown_vs_heft": 2199.5848846845047,
+        "candidate_elapsed_seconds": {
+          "heft_anchor": 0.005032700006267987,
+          "heft_lns": 9.996691299995291
+        }
+      },
+      "memory": {
+        "rss_before_mib": 355.5703125,
+        "rss_after_mib": 355.6328125,
+        "rss_delta_mib": 0.0625,
+        "process_peak_rss_mib": 356.37109375
+      },
+      "diagnostics": {
+        "candidate_makespans": {
+          "heft_anchor": 1.7627918400139768,
+          "heft_lns": 1.5730602203040787
+        },
+        "time_limit_reached": true,
+        "residual_skipped_reason": "task_count=40 exceeds residual_model_capacity=30",
+        "residual_samples_completed": 64,
+        "dag_shape": {
+          "task_count": 40,
+          "edge_count": 356,
+          "source_count": 11,
+          "sink_count": 4,
+          "longest_path_edges": 6,
+          "level_width": 11,
+          "width_ratio": 0.275,
+          "edge_density": 0.2282051282051282
+        }
+      },
+      "validation": {
+        "valid": true,
+        "error_count": 0,
+        "errors": [],
+        "expected_task_count": 40,
+        "scheduled_task_count": 40,
+        "makespan": 1.5730602203040787
+      }
+    },
+    {
+      "scenario": "scenario_40_4.json",
+      "num_tasks": 40,
+      "edge_count": 277,
+      "scenario_seed": 20260914,
+      "heft_makespan": 1.2644945873358953,
+      "adaptive_makespan": 1.200955188619033,
+      "ratio_to_heft": 0.9497511501012191,
+      "selected_source": "heft_lns",
+      "timing": {
+        "schedule_seconds": 10.00116070000513,
+        "process_cpu_seconds": 9.875,
+        "heft_reference_seconds": 0.008492399996612221,
+        "slowdown_vs_heft": 1177.6601083315413,
+        "candidate_elapsed_seconds": {
+          "heft_anchor": 0.0062605999992229044,
+          "heft_lns": 9.994674999994459
+        }
+      },
+      "memory": {
+        "rss_before_mib": 355.6328125,
+        "rss_after_mib": 355.6328125,
+        "rss_delta_mib": 0.0,
+        "process_peak_rss_mib": 356.37109375
+      },
+      "diagnostics": {
+        "candidate_makespans": {
+          "heft_anchor": 1.2644945873358953,
+          "heft_lns": 1.200955188619033
+        },
+        "time_limit_reached": true,
+        "residual_skipped_reason": "task_count=40 exceeds residual_model_capacity=30",
+        "residual_samples_completed": 64,
+        "dag_shape": {
+          "task_count": 40,
+          "edge_count": 277,
+          "source_count": 7,
+          "sink_count": 9,
+          "longest_path_edges": 6,
+          "level_width": 9,
+          "width_ratio": 0.225,
+          "edge_density": 0.17756410256410257
+        }
+      },
+      "validation": {
+        "valid": true,
+        "error_count": 0,
+        "errors": [],
+        "expected_task_count": 40,
+        "scheduled_task_count": 40,
+        "makespan": 1.200955188619033
+      }
+    },
+    {
+      "scenario": "scenario_50_0.json",
+      "num_tasks": 50,
+      "edge_count": 539,
+      "scenario_seed": 20260915,
+      "heft_makespan": 1.9026792912681076,
+      "adaptive_makespan": 1.8081735257380327,
+      "ratio_to_heft": 0.9503301654862243,
+      "selected_source": "heft_lns",
+      "timing": {
+        "schedule_seconds": 10.00191319998703,
+        "process_cpu_seconds": 9.921875,
+        "heft_reference_seconds": 0.006060200001229532,
+        "slowdown_vs_heft": 1650.4262562222002,
+        "candidate_elapsed_seconds": {
+          "heft_anchor": 0.007727799995336682,
+          "heft_lns": 9.993853699997999
+        }
+      },
+      "memory": {
+        "rss_before_mib": 355.6328125,
+        "rss_after_mib": 356.265625,
+        "rss_delta_mib": 0.6328125,
+        "process_peak_rss_mib": 356.37109375
+      },
+      "diagnostics": {
+        "candidate_makespans": {
+          "heft_anchor": 1.9026792912681076,
+          "heft_lns": 1.8081735257380327
+        },
+        "time_limit_reached": true,
+        "residual_skipped_reason": "task_count=50 exceeds residual_model_capacity=30",
+        "residual_samples_completed": 64,
+        "dag_shape": {
+          "task_count": 50,
+          "edge_count": 539,
+          "source_count": 3,
+          "sink_count": 5,
+          "longest_path_edges": 7,
+          "level_width": 11,
+          "width_ratio": 0.22,
+          "edge_density": 0.22
+        }
+      },
+      "validation": {
+        "valid": true,
+        "error_count": 0,
+        "errors": [],
+        "expected_task_count": 50,
+        "scheduled_task_count": 50,
+        "makespan": 1.8081735257380327
+      }
+    },
+    {
+      "scenario": "scenario_50_1.json",
+      "num_tasks": 50,
+      "edge_count": 521,
+      "scenario_seed": 20260916,
+      "heft_makespan": 1.9316626555877232,
+      "adaptive_makespan": 1.8334495270433766,
+      "ratio_to_heft": 0.9491561695515284,
+      "selected_source": "heft_lns",
+      "timing": {
+        "schedule_seconds": 10.001044099990395,
+        "process_cpu_seconds": 9.84375,
+        "heft_reference_seconds": 0.006289999990258366,
+        "slowdown_vs_heft": 1589.9911153385542,
+        "candidate_elapsed_seconds": {
+          "heft_anchor": 0.0071988999989116564,
+          "heft_lns": 9.993569300000672
+        }
+      },
+      "memory": {
+        "rss_before_mib": 356.26953125,
+        "rss_after_mib": 356.26171875,
+        "rss_delta_mib": -0.0078125,
+        "process_peak_rss_mib": 356.37109375
+      },
+      "diagnostics": {
+        "candidate_makespans": {
+          "heft_anchor": 1.9316626555877232,
+          "heft_lns": 1.8334495270433766
+        },
+        "time_limit_reached": true,
+        "residual_skipped_reason": "task_count=50 exceeds residual_model_capacity=30",
+        "residual_samples_completed": 64,
+        "dag_shape": {
+          "task_count": 50,
+          "edge_count": 521,
+          "source_count": 12,
+          "sink_count": 3,
+          "longest_path_edges": 7,
+          "level_width": 12,
+          "width_ratio": 0.24,
+          "edge_density": 0.2126530612244898
+        }
+      },
+      "validation": {
+        "valid": true,
+        "error_count": 0,
+        "errors": [],
+        "expected_task_count": 50,
+        "scheduled_task_count": 50,
+        "makespan": 1.8334495270433766
+      }
+    },
+    {
+      "scenario": "scenario_50_2.json",
+      "num_tasks": 50,
+      "edge_count": 537,
+      "scenario_seed": 20260917,
+      "heft_makespan": 1.7330137277907494,
+      "adaptive_makespan": 1.5943226592720836,
+      "ratio_to_heft": 0.9199711656667201,
+      "selected_source": "heft_lns",
+      "timing": {
+        "schedule_seconds": 10.001086399992346,
+        "process_cpu_seconds": 9.90625,
+        "heft_reference_seconds": 0.005500800005393103,
+        "slowdown_vs_heft": 1818.1148905953798,
+        "candidate_elapsed_seconds": {
+          "heft_anchor": 0.0076397999946493655,
+          "heft_lns": 9.993169699999271
+        }
+      },
+      "memory": {
+        "rss_before_mib": 356.26171875,
+        "rss_after_mib": 356.28515625,
+        "rss_delta_mib": 0.0234375,
+        "process_peak_rss_mib": 356.37109375
+      },
+      "diagnostics": {
+        "candidate_makespans": {
+          "heft_anchor": 1.7330137277907494,
+          "heft_lns": 1.5943226592720836
+        },
+        "time_limit_reached": true,
+        "residual_skipped_reason": "task_count=50 exceeds residual_model_capacity=30",
+        "residual_samples_completed": 64,
+        "dag_shape": {
+          "task_count": 50,
+          "edge_count": 537,
+          "source_count": 9,
+          "sink_count": 6,
+          "longest_path_edges": 7,
+          "level_width": 11,
+          "width_ratio": 0.22,
+          "edge_density": 0.21918367346938775
+        }
+      },
+      "validation": {
+        "valid": true,
+        "error_count": 0,
+        "errors": [],
+        "expected_task_count": 50,
+        "scheduled_task_count": 50,
+        "makespan": 1.5943226592720836
+      }
+    },
+    {
+      "scenario": "scenario_50_3.json",
+      "num_tasks": 50,
+      "edge_count": 559,
+      "scenario_seed": 20260918,
+      "heft_makespan": 2.1199790315170706,
+      "adaptive_makespan": 2.0189156157518617,
+      "ratio_to_heft": 0.9523281059563654,
+      "selected_source": "heft_lns",
+      "timing": {
+        "schedule_seconds": 10.001074300002074,
+        "process_cpu_seconds": 9.953125,
+        "heft_reference_seconds": 0.006344800000078976,
+        "slowdown_vs_heft": 1576.2631288421364,
+        "candidate_elapsed_seconds": {
+          "heft_anchor": 0.007848299996112473,
+          "heft_lns": 9.992945100006182
+        }
+      },
+      "memory": {
+        "rss_before_mib": 356.28515625,
+        "rss_after_mib": 356.28515625,
+        "rss_delta_mib": 0.0,
+        "process_peak_rss_mib": 356.37109375
+      },
+      "diagnostics": {
+        "candidate_makespans": {
+          "heft_anchor": 2.1199790315170706,
+          "heft_lns": 2.0189156157518617
+        },
+        "time_limit_reached": true,
+        "residual_skipped_reason": "task_count=50 exceeds residual_model_capacity=30",
+        "residual_samples_completed": 64,
+        "dag_shape": {
+          "task_count": 50,
+          "edge_count": 559,
+          "source_count": 6,
+          "sink_count": 5,
+          "longest_path_edges": 7,
+          "level_width": 11,
+          "width_ratio": 0.22,
+          "edge_density": 0.22816326530612244
+        }
+      },
+      "validation": {
+        "valid": true,
+        "error_count": 0,
+        "errors": [],
+        "expected_task_count": 50,
+        "scheduled_task_count": 50,
+        "makespan": 2.0189156157518617
+      }
+    },
+    {
+      "scenario": "scenario_50_4.json",
+      "num_tasks": 50,
+      "edge_count": 524,
+      "scenario_seed": 20260919,
+      "heft_makespan": 1.8085686523822166,
+      "adaptive_makespan": 1.7564381872520882,
+      "ratio_to_heft": 0.9711758439131061,
+      "selected_source": "heft_lns",
+      "timing": {
+        "schedule_seconds": 10.000789600002463,
+        "process_cpu_seconds": 9.9375,
+        "heft_reference_seconds": 0.006001900008413941,
+        "slowdown_vs_heft": 1666.2706119699697,
+        "candidate_elapsed_seconds": {
+          "heft_anchor": 0.008639600011520088,
+          "heft_lns": 9.99187990000064
+        }
+      },
+      "memory": {
+        "rss_before_mib": 356.2890625,
+        "rss_after_mib": 356.2890625,
+        "rss_delta_mib": 0.0,
+        "process_peak_rss_mib": 356.37109375
+      },
+      "diagnostics": {
+        "candidate_makespans": {
+          "heft_anchor": 1.8085686523822166,
+          "heft_lns": 1.7564381872520882
+        },
+        "time_limit_reached": true,
+        "residual_skipped_reason": "task_count=50 exceeds residual_model_capacity=30",
+        "residual_samples_completed": 64,
+        "dag_shape": {
+          "task_count": 50,
+          "edge_count": 524,
+          "source_count": 6,
+          "sink_count": 7,
+          "longest_path_edges": 7,
+          "level_width": 11,
+          "width_ratio": 0.22,
+          "edge_density": 0.21387755102040817
+        }
+      },
+      "validation": {
+        "valid": true,
+        "error_count": 0,
+        "errors": [],
+        "expected_task_count": 50,
+        "scheduled_task_count": 50,
+        "makespan": 1.7564381872520882
+      }
+    },
+    {
+      "scenario": "scenario_60_0.json",
+      "num_tasks": 60,
+      "edge_count": 879,
+      "scenario_seed": 20260920,
+      "heft_makespan": 2.545555223741102,
+      "adaptive_makespan": 2.311512904315286,
+      "ratio_to_heft": 0.908058439572231,
+      "selected_source": "heft_lns",
+      "timing": {
+        "schedule_seconds": 10.000446699996246,
+        "process_cpu_seconds": 9.921875,
+        "heft_reference_seconds": 0.008874499995727092,
+        "slowdown_vs_heft": 1126.8743821974508,
+        "candidate_elapsed_seconds": {
+          "heft_anchor": 0.012974099998245947,
+          "heft_lns": 9.987105599997449
+        }
+      },
+      "memory": {
+        "rss_before_mib": 356.2890625,
+        "rss_after_mib": 358.0625,
+        "rss_delta_mib": 1.7734375,
+        "process_peak_rss_mib": 358.0625
+      },
+      "diagnostics": {
+        "candidate_makespans": {
+          "heft_anchor": 2.545555223741102,
+          "heft_lns": 2.311512904315286
+        },
+        "time_limit_reached": true,
+        "residual_skipped_reason": "task_count=60 exceeds residual_model_capacity=30",
+        "residual_samples_completed": 64,
+        "dag_shape": {
+          "task_count": 60,
+          "edge_count": 879,
+          "source_count": 10,
+          "sink_count": 8,
+          "longest_path_edges": 7,
+          "level_width": 10,
+          "width_ratio": 0.16666666666666666,
+          "edge_density": 0.2483050847457627
+        }
+      },
+      "validation": {
+        "valid": true,
+        "error_count": 0,
+        "errors": [],
+        "expected_task_count": 60,
+        "scheduled_task_count": 60,
+        "makespan": 2.311512904315286
+      }
+    },
+    {
+      "scenario": "scenario_60_1.json",
+      "num_tasks": 60,
+      "edge_count": 649,
+      "scenario_seed": 20260921,
+      "heft_makespan": 2.2284839143627178,
+      "adaptive_makespan": 2.163298110385668,
+      "ratio_to_heft": 0.9707488110832108,
+      "selected_source": "heft_lns",
+      "timing": {
+        "schedule_seconds": 10.001195899996674,
+        "process_cpu_seconds": 9.90625,
+        "heft_reference_seconds": 0.007384900003671646,
+        "slowdown_vs_heft": 1354.2764147143835,
+        "candidate_elapsed_seconds": {
+          "heft_anchor": 0.008959900005720556,
+          "heft_lns": 9.991596300009405
+        }
+      },
+      "memory": {
+        "rss_before_mib": 358.0625,
+        "rss_after_mib": 358.0625,
+        "rss_delta_mib": 0.0,
+        "process_peak_rss_mib": 358.06640625
+      },
+      "diagnostics": {
+        "candidate_makespans": {
+          "heft_anchor": 2.2284839143627178,
+          "heft_lns": 2.163298110385668
+        },
+        "time_limit_reached": true,
+        "residual_skipped_reason": "task_count=60 exceeds residual_model_capacity=30",
+        "residual_samples_completed": 64,
+        "dag_shape": {
+          "task_count": 60,
+          "edge_count": 649,
+          "source_count": 7,
+          "sink_count": 8,
+          "longest_path_edges": 7,
+          "level_width": 10,
+          "width_ratio": 0.16666666666666666,
+          "edge_density": 0.18333333333333332
+        }
+      },
+      "validation": {
+        "valid": true,
+        "error_count": 0,
+        "errors": [],
+        "expected_task_count": 60,
+        "scheduled_task_count": 60,
+        "makespan": 2.163298110385668
+      }
+    },
+    {
+      "scenario": "scenario_60_2.json",
+      "num_tasks": 60,
+      "edge_count": 716,
+      "scenario_seed": 20260922,
+      "heft_makespan": 2.3500683045492345,
+      "adaptive_makespan": 2.2796640311699656,
+      "ratio_to_heft": 0.9700416054958994,
+      "selected_source": "heft_lns",
+      "timing": {
+        "schedule_seconds": 10.00015120000171,
+        "process_cpu_seconds": 9.984375,
+        "heft_reference_seconds": 0.00757319999684114,
+        "slowdown_vs_heft": 1320.4657481874078,
+        "candidate_elapsed_seconds": {
+          "heft_anchor": 0.009889099994325079,
+          "heft_lns": 9.989901199995074
+        }
+      },
+      "memory": {
+        "rss_before_mib": 358.0625,
+        "rss_after_mib": 358.0703125,
+        "rss_delta_mib": 0.0078125,
+        "process_peak_rss_mib": 358.0703125
+      },
+      "diagnostics": {
+        "candidate_makespans": {
+          "heft_anchor": 2.3500683045492345,
+          "heft_lns": 2.2796640311699656
+        },
+        "time_limit_reached": true,
+        "residual_skipped_reason": "task_count=60 exceeds residual_model_capacity=30",
+        "residual_samples_completed": 64,
+        "dag_shape": {
+          "task_count": 60,
+          "edge_count": 716,
+          "source_count": 6,
+          "sink_count": 11,
+          "longest_path_edges": 7,
+          "level_width": 11,
+          "width_ratio": 0.18333333333333332,
+          "edge_density": 0.20225988700564973
+        }
+      },
+      "validation": {
+        "valid": true,
+        "error_count": 0,
+        "errors": [],
+        "expected_task_count": 60,
+        "scheduled_task_count": 60,
+        "makespan": 2.2796640311699656
+      }
+    },
+    {
+      "scenario": "scenario_60_3.json",
+      "num_tasks": 60,
+      "edge_count": 826,
+      "scenario_seed": 20260923,
+      "heft_makespan": 2.2263548839462817,
+      "adaptive_makespan": 2.1492892319445844,
+      "ratio_to_heft": 0.9653848303532382,
+      "selected_source": "heft_lns",
+      "timing": {
+        "schedule_seconds": 10.002293199999258,
+        "process_cpu_seconds": 9.96875,
+        "heft_reference_seconds": 0.008514800007105805,
+        "slowdown_vs_heft": 1174.6950241523118,
+        "candidate_elapsed_seconds": {
+          "heft_anchor": 0.011157600005390123,
+          "heft_lns": 9.990780799998902
+        }
+      },
+      "memory": {
+        "rss_before_mib": 358.0703125,
+        "rss_after_mib": 358.0703125,
+        "rss_delta_mib": 0.0,
+        "process_peak_rss_mib": 358.0703125
+      },
+      "diagnostics": {
+        "candidate_makespans": {
+          "heft_anchor": 2.2263548839462817,
+          "heft_lns": 2.1492892319445844
+        },
+        "time_limit_reached": true,
+        "residual_skipped_reason": "task_count=60 exceeds residual_model_capacity=30",
+        "residual_samples_completed": 64,
+        "dag_shape": {
+          "task_count": 60,
+          "edge_count": 826,
+          "source_count": 9,
+          "sink_count": 6,
+          "longest_path_edges": 7,
+          "level_width": 13,
+          "width_ratio": 0.21666666666666667,
+          "edge_density": 0.23333333333333334
+        }
+      },
+      "validation": {
+        "valid": true,
+        "error_count": 0,
+        "errors": [],
+        "expected_task_count": 60,
+        "scheduled_task_count": 60,
+        "makespan": 2.1492892319445844
+      }
+    },
+    {
+      "scenario": "scenario_60_4.json",
+      "num_tasks": 60,
+      "edge_count": 640,
+      "scenario_seed": 20260924,
+      "heft_makespan": 2.0685703441217584,
+      "adaptive_makespan": 2.000632628850148,
+      "ratio_to_heft": 0.9671571646259608,
+      "selected_source": "heft_lns",
+      "timing": {
+        "schedule_seconds": 10.002630799994222,
+        "process_cpu_seconds": 9.890625,
+        "heft_reference_seconds": 0.006775700006983243,
+        "slowdown_vs_heft": 1476.2505408570637,
+        "candidate_elapsed_seconds": {
+          "heft_anchor": 0.008958699996583164,
+          "heft_lns": 9.993347099996754
+        }
+      },
+      "memory": {
+        "rss_before_mib": 358.0703125,
+        "rss_after_mib": 358.06640625,
+        "rss_delta_mib": -0.00390625,
+        "process_peak_rss_mib": 358.0703125
+      },
+      "diagnostics": {
+        "candidate_makespans": {
+          "heft_anchor": 2.0685703441217584,
+          "heft_lns": 2.000632628850148
+        },
+        "time_limit_reached": true,
+        "residual_skipped_reason": "task_count=60 exceeds residual_model_capacity=30",
+        "residual_samples_completed": 64,
+        "dag_shape": {
+          "task_count": 60,
+          "edge_count": 640,
+          "source_count": 7,
+          "sink_count": 10,
+          "longest_path_edges": 7,
+          "level_width": 10,
+          "width_ratio": 0.16666666666666666,
+          "edge_density": 0.1807909604519774
+        }
+      },
+      "validation": {
+        "valid": true,
+        "error_count": 0,
+        "errors": [],
+        "expected_task_count": 60,
+        "scheduled_task_count": 60,
+        "makespan": 2.000632628850148
+      }
+    }
+  ]
+}

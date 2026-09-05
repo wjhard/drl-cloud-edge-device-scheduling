@@ -53,6 +53,28 @@ flowchart LR
 
 MILP 精确求解在 7 个可证明最优的小规模场景上给出的平均距离为：HEFT/Optimal=`1.106807`，Residual/Optimal=`1.044188`。原始数据见 `evaluation/results/milp_optimal_comparison.json`。
 
+### 30～60 任务规模外验证与运行开销
+
+最终 Adaptive 调度器现在显式区分模型容量与系统容量：30 个任务以内使用
+Residual 候选；超过模型 `max_tasks_padding=30` 时不会把越界输入送入神经网络，
+而是自动切换到 HEFT 锚点与合法拓扑序 LNS。最终结果始终与 HEFT 锚点比较，
+因此在同一调度物理规则下具有硬性非回归保证。
+
+固定 20 个大规模场景（30/40/50/60 各 5 个）的正式结果如下：
+
+| 协议 | mean_ratio ± 样本标准差 | 反超 HEFT | 平均耗时 | P95 耗时 | 峰值进程内存 |
+|---|---:|---:|---:|---:|---:|
+| 质量档，Best-of-64/3 轮重定位/64 轮 LNS，每场景 10 秒软预算 | 0.941627 ± 0.026569 | 20/20 | 10.002 秒 | 10.003 秒 | 358.1 MiB |
+| 固定工作量，Best-of-8/1 轮重定位/8 轮 LNS，无时间截止 | 0.949723 ± 0.023441 | 20/20 | 6.633 秒 | 13.284 秒 | 359.1 MiB |
+
+10 秒质量档相对 HEFT 平均降低 makespan `5.8373%`，配对 t 检验
+`p=6.985758×10^-9`。固定工作量协议用于严格复现和观察规模趋势；其平均耗时
+从 30 任务的 `3.641` 秒增长到 60 任务的 `13.188` 秒。机器可读证据分别见
+`evaluation/results/final_adaptive_large_scale.json` 和
+`evaluation/results/final_adaptive_large_scale_fixed.json`。这项结果证明的是完整
+Adaptive 系统在 30～60 任务上的安全扩展，不等价于宣称 Residual 神经网络本身
+已在 40～60 任务上泛化；这些越界场景会被明确记录为跳过模型。
+
 ## 技术报告
 
 - [技术报告（Word）](docs/技术报告.docx)
@@ -79,6 +101,35 @@ python -m pytest tests/ -v
 ```
 
 仓库已包含最终模型 `training/checkpoints/ppo_mlp_residual.zip`，可直接评测，无需重新训练。
+
+### 单场景调度 CLI
+
+评委或用户可以直接输入一个 NetworkX node-link 格式的 DAG JSON，得到任务到资源
+的完整映射、开始/结束时间、makespan、相对 HEFT 比值、耗时、内存和合法性校验：
+
+```bash
+python scripts/schedule.py \
+  --input evaluation/scenarios/scenario_10_0.json \
+  --output evaluation/results/schedule_output.json \
+  --preset balanced \
+  --time-budget-seconds 10
+```
+
+`fast`、`balanced`、`quality` 三档分别使用 8/32/64 个 Residual 候选和
+8/32/64 轮 LNS；`--num-samples`、`--local-max-passes`、`--lns-iterations`
+可以单独覆盖。时间预算是软墙钟限制，会在每次 rollout 和邻域评估之间检查；
+为保证始终返回合法结果，已经开始的一次评估和 HEFT 锚点允许完成。输入超过模型
+容量时，输出 JSON 的 `diagnostics.residual_skipped_reason` 会记录自动降级原因。
+
+批量复现大规模质量与开销测试：
+
+```bash
+python evaluation/benchmark_scalability.py \
+  --num-samples 64 \
+  --local-max-passes 3 \
+  --lns-iterations 64 \
+  --time-budget-seconds 10
+```
 
 ### 一键最终流水线
 
@@ -208,7 +259,9 @@ OpenHarmony 原生设备系统上运行。
 
 ## 已知边界
 
-- 模型训练规模为 8 至 25 个任务，不能直接外推为任意大规模 DAG 的性能保证。
+- Residual 模型训练规模为 8 至 25 个任务、输入容量为 30；40～60 任务由系统显式
+  跳过越界模型并使用 HEFT/LNS 安全路径。大规模整体调度结果已经验证，但不能把它
+  表述为神经网络本身完成了任意规模泛化。
 - 原始 Residual 模型在历史宽并行 DAG 泛化集上弱于原始分布；该负面结果保留在
   `evaluation/results/structural_generalization/`。决赛优化版自适应候选集通过
   HEFT 锚点、HEFT+LNS、宽度感知和成本优先候选提供运行时非回归保护；正式宽并行

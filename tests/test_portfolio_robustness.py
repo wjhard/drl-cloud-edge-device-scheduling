@@ -1,12 +1,17 @@
 from __future__ import annotations
 
 import networkx as nx
+from pathlib import Path
+import time
 
 from baselines.heft_scheduler import HEFTScheduler
 from env.dag_generator import generate_wide_parallel_dag
+from env.dag_generator import generate_random_dag
 from env.resource_config import Resource, ResourceConfig
 from policies.residual_local_search_scheduler import (
     describe_dag_shape,
+    improve_task_order,
+    ResidualLargeNeighborhoodScheduler,
     schedule_task_order,
     width_aware_topological_order,
 )
@@ -62,3 +67,45 @@ def test_wide_shape_seeded_generator_is_reproducible() -> None:
     second = generate_wide_parallel_dag(num_tasks=16, edge_density=0.12, seed=123)
     assert list(first.graph.nodes(data=True)) == list(second.graph.nodes(data=True))
     assert list(first.graph.edges(data=True)) == list(second.graph.edges(data=True))
+
+
+def test_expired_deadline_returns_a_valid_non_worsened_schedule() -> None:
+    dag = generate_random_dag(num_tasks=18, edge_density=0.35, seed=1234)
+    initial_order = list(nx.topological_sort(dag.graph))
+    initial_schedule = schedule_task_order(dag, _resources(), initial_order)
+    schedule, order, stats = improve_task_order(
+        dag,
+        _resources(),
+        initial_order,
+        max_passes=3,
+        deadline=time.perf_counter() - 1.0,
+    )
+
+    assert order == initial_order
+    assert stats.terminated_by_time_limit is True
+    assert HEFTScheduler().compute_makespan(schedule) == HEFTScheduler().compute_makespan(
+        initial_schedule
+    )
+
+
+def test_adaptive_scheduler_skips_residual_model_beyond_capacity() -> None:
+    project_root = Path(__file__).resolve().parents[1]
+    dag = generate_random_dag(num_tasks=40, edge_density=0.25, seed=55)
+    scheduler = ResidualLargeNeighborhoodScheduler(
+        model_path=project_root / "training/checkpoints/ppo_mlp_residual",
+        max_tasks=30,
+        num_samples=1,
+        local_max_passes=0,
+        lns_iterations=0,
+        normalize_observations=True,
+        random_seed=17,
+        portfolio_mode="adaptive",
+    )
+    resources = _resources()
+    schedule = scheduler.schedule(dag, resources)
+    heft = HEFTScheduler()
+    heft_schedule = heft.schedule(dag, _resources())
+
+    assert scheduler.last_residual_skipped_reason is not None
+    assert scheduler.last_selected_source in {"heft_anchor", "heft_lns"}
+    assert scheduler.compute_makespan(schedule) <= heft.compute_makespan(heft_schedule) + 1e-12

@@ -4,6 +4,7 @@ from dataclasses import dataclass
 import heapq
 from pathlib import Path
 import random
+import time
 
 import networkx as nx
 
@@ -21,6 +22,8 @@ class LocalSearchStats:
     final_makespan: float
     evaluated_neighbors: int
     accepted_moves: int
+    completed_passes: int = 0
+    terminated_by_time_limit: bool = False
 
 
 @dataclass(frozen=True)
@@ -30,6 +33,8 @@ class LargeNeighborhoodStats:
     iterations: int
     accepted_repairs: int
     evaluated_neighbors: int
+    completed_iterations: int = 0
+    terminated_by_time_limit: bool = False
 
 
 @dataclass(frozen=True)
@@ -110,6 +115,10 @@ def _clone_resource_config(resource_config: ResourceConfig) -> ResourceConfig:
             for resource in resource_config.resources
         ]
     )
+
+
+def _deadline_reached(deadline: float | None) -> bool:
+    return deadline is not None and time.perf_counter() >= deadline
 
 
 def width_aware_topological_order(
@@ -256,6 +265,7 @@ def improve_task_order(
     resource_config: ResourceConfig,
     initial_order: list[int],
     max_passes: int = 3,
+    deadline: float | None = None,
 ) -> tuple[ScheduleResult, list[int], LocalSearchStats]:
     """Best-improvement search over precedence-feasible single-task relocations."""
     if max_passes < 0:
@@ -267,15 +277,26 @@ def improve_task_order(
     initial_makespan = current_makespan
     evaluated_neighbors = 0
     accepted_moves = 0
+    completed_passes = 0
+    terminated_by_time_limit = False
 
     for _ in range(max_passes):
+        if _deadline_reached(deadline):
+            terminated_by_time_limit = True
+            break
         best_order = current_order
         best_schedule = current_schedule
         best_makespan = current_makespan
         seen: set[tuple[int, ...]] = set()
 
         for old_index in range(len(current_order)):
+            if _deadline_reached(deadline):
+                terminated_by_time_limit = True
+                break
             for new_index in range(len(current_order)):
+                if _deadline_reached(deadline):
+                    terminated_by_time_limit = True
+                    break
                 if old_index == new_index:
                     continue
                 candidate = list(current_order)
@@ -297,12 +318,20 @@ def improve_task_order(
                     best_schedule = candidate_schedule
                     best_makespan = candidate_makespan
 
+            if terminated_by_time_limit:
+                break
+
+        if not terminated_by_time_limit:
+            completed_passes += 1
         if best_makespan >= current_makespan - 1e-12:
             break
         current_order = best_order
         current_schedule = best_schedule
         current_makespan = best_makespan
         accepted_moves += 1
+
+        if terminated_by_time_limit:
+            break
 
     return (
         current_schedule,
@@ -312,6 +341,8 @@ def improve_task_order(
             final_makespan=current_makespan,
             evaluated_neighbors=evaluated_neighbors,
             accepted_moves=accepted_moves,
+            completed_passes=completed_passes,
+            terminated_by_time_limit=terminated_by_time_limit,
         ),
     )
 
@@ -366,6 +397,7 @@ def large_neighborhood_search(
     min_destroy_size: int = 2,
     max_destroy_size: int = 4,
     local_passes: int = 1,
+    deadline: float | None = None,
 ) -> tuple[ScheduleResult, list[int], LargeNeighborhoodStats]:
     """Randomized destroy-repair search with deterministic best-only acceptance."""
     if iterations < 0:
@@ -379,8 +411,13 @@ def large_neighborhood_search(
     initial_makespan = best_makespan
     accepted_repairs = 0
     evaluated_neighbors = 0
+    completed_iterations = 0
+    terminated_by_time_limit = False
 
     for _ in range(iterations):
+        if _deadline_reached(deadline):
+            terminated_by_time_limit = True
+            break
         destroy_size = rng.randint(
             min(min_destroy_size, len(best_order)),
             min(max_destroy_size, len(best_order)),
@@ -391,14 +428,19 @@ def large_neighborhood_search(
             resource_config,
             repaired_order,
             max_passes=local_passes,
+            deadline=deadline,
         )
         evaluated_neighbors += local_stats.evaluated_neighbors + 1
+        completed_iterations += 1
         repaired_makespan = BaseScheduler.compute_makespan(BaseScheduler, repaired_schedule)
         if repaired_makespan < best_makespan - 1e-12:
             best_order = repaired_order
             best_schedule = repaired_schedule
             best_makespan = repaired_makespan
             accepted_repairs += 1
+        if local_stats.terminated_by_time_limit:
+            terminated_by_time_limit = True
+            break
 
     return (
         best_schedule,
@@ -409,6 +451,8 @@ def large_neighborhood_search(
             iterations=iterations,
             accepted_repairs=accepted_repairs,
             evaluated_neighbors=evaluated_neighbors,
+            completed_iterations=completed_iterations,
+            terminated_by_time_limit=terminated_by_time_limit,
         ),
     )
 
@@ -435,19 +479,38 @@ class ResidualLocalSearchScheduler(BaseScheduler):
             scheduler_mode="residual",
             num_samples=1,
         )
+        self.max_tasks = max_tasks
         self.num_samples = num_samples
         self.max_passes = max_passes
         self.last_initial_schedule: ScheduleResult | None = None
         self.last_initial_order: list[int] | None = None
         self.last_final_order: list[int] | None = None
         self.last_stats: LocalSearchStats | None = None
+        self.last_samples_completed = 0
+        self.last_timed_out = False
 
-    def schedule(self, dag: DAGTask, resource_config: ResourceConfig) -> ScheduleResult:
+    def schedule(
+        self,
+        dag: DAGTask,
+        resource_config: ResourceConfig,
+        *,
+        deadline: float | None = None,
+    ) -> ScheduleResult:
+        if dag.graph.number_of_nodes() > self.max_tasks:
+            raise ValueError(
+                f"DAG has {dag.graph.number_of_nodes()} tasks, exceeding the residual "
+                f"model capacity of {self.max_tasks}"
+            )
         best_schedule: ScheduleResult | None = None
         best_order: list[int] | None = None
         best_makespan = float("inf")
+        self.last_samples_completed = 0
+        self.last_timed_out = False
 
         for _ in range(self.num_samples):
+            if self.last_samples_completed > 0 and _deadline_reached(deadline):
+                self.last_timed_out = True
+                break
             schedule, order = self.residual._schedule_once_with_order(
                 dag,
                 resource_config,
@@ -458,16 +521,20 @@ class ResidualLocalSearchScheduler(BaseScheduler):
                 best_schedule = schedule
                 best_order = order
                 best_makespan = makespan
+            self.last_samples_completed += 1
 
-        deterministic_schedule, deterministic_order = self.residual._schedule_once_with_order(
-            dag,
-            resource_config,
-            deterministic=True,
-        )
-        deterministic_makespan = self.compute_makespan(deterministic_schedule)
-        if deterministic_makespan < best_makespan:
-            best_schedule = deterministic_schedule
-            best_order = deterministic_order
+        if deadline is None or not _deadline_reached(deadline) or best_schedule is None:
+            deterministic_schedule, deterministic_order = self.residual._schedule_once_with_order(
+                dag,
+                resource_config,
+                deterministic=True,
+            )
+            deterministic_makespan = self.compute_makespan(deterministic_schedule)
+            if deterministic_makespan < best_makespan:
+                best_schedule = deterministic_schedule
+                best_order = deterministic_order
+        else:
+            self.last_timed_out = True
 
         if best_schedule is None or best_order is None:
             raise RuntimeError("residual sampling did not produce an initial schedule")
@@ -477,11 +544,13 @@ class ResidualLocalSearchScheduler(BaseScheduler):
             resource_config,
             best_order,
             max_passes=self.max_passes,
+            deadline=deadline,
         )
         self.last_initial_schedule = best_schedule
         self.last_initial_order = best_order
         self.last_final_order = improved_order
         self.last_stats = stats
+        self.last_timed_out = self.last_timed_out or stats.terminated_by_time_limit
         return improved_schedule
 
 
@@ -507,11 +576,14 @@ class ResidualLargeNeighborhoodScheduler(BaseScheduler):
         random_seed: int | None = None,
         portfolio_mode: str = "adaptive",
         wide_width_ratio_threshold: float = 0.30,
+        time_limit_seconds: float | None = None,
     ):
         if portfolio_mode not in {"residual_only", "adaptive", "full"}:
             raise ValueError("portfolio_mode must be 'residual_only', 'adaptive', or 'full'")
         if not 0.0 <= wide_width_ratio_threshold <= 1.0:
             raise ValueError("wide_width_ratio_threshold must be in [0, 1]")
+        if time_limit_seconds is not None and time_limit_seconds <= 0:
+            raise ValueError("time_limit_seconds must be positive when provided")
         self.local_scheduler = ResidualLocalSearchScheduler(
             model_path=model_path,
             max_tasks=max_tasks,
@@ -529,9 +601,14 @@ class ResidualLargeNeighborhoodScheduler(BaseScheduler):
         self.random_seed = random_seed
         self.portfolio_mode = portfolio_mode
         self.wide_width_ratio_threshold = wide_width_ratio_threshold
+        self.time_limit_seconds = time_limit_seconds
         self.last_selected_source: str | None = None
         self.last_candidate_makespans: dict[str, float] = {}
+        self.last_candidate_elapsed_seconds: dict[str, float] = {}
         self.last_shape_stats: DAGShapeStats | None = None
+        self.last_elapsed_seconds = 0.0
+        self.last_timed_out = False
+        self.last_residual_skipped_reason: str | None = None
 
     def _rng_for_dag(self, dag: DAGTask, salt: int = 0) -> random.Random:
         """Derive a per-DAG RNG so repeated runs are reproducible and isolated."""
@@ -551,12 +628,14 @@ class ResidualLargeNeighborhoodScheduler(BaseScheduler):
         initial_order: list[int],
         *,
         salt: int,
+        deadline: float | None = None,
     ) -> tuple[ScheduleResult, list[int]]:
         locally_improved, improved_order, _ = improve_task_order(
             dag,
             _clone_resource_config(resource_config),
             initial_order,
             max_passes=self.local_max_passes,
+            deadline=deadline,
         )
         lns_schedule, lns_order, _ = large_neighborhood_search(
             dag,
@@ -565,36 +644,67 @@ class ResidualLargeNeighborhoodScheduler(BaseScheduler):
             self._rng_for_dag(dag, salt=salt),
             iterations=self.lns_iterations,
             local_passes=self.lns_local_passes,
+            deadline=deadline,
         )
         if self.compute_makespan(lns_schedule) > self.compute_makespan(locally_improved) + 1e-9:
             raise RuntimeError("candidate LNS worsened its local-search input")
         return lns_schedule, lns_order
 
     def schedule(self, dag: DAGTask, resource_config: ResourceConfig) -> ScheduleResult:
-        local_schedule = self.local_scheduler.schedule(dag, resource_config)
-        local_order = self.local_scheduler.last_final_order
-        if local_order is None:
-            raise RuntimeError("local-search phase did not expose its task order")
-        rng = self._rng_for_dag(dag)
-        final_schedule, final_order, stats = large_neighborhood_search(
-            dag,
-            resource_config,
-            local_order,
-            rng,
-            iterations=self.lns_iterations,
-            local_passes=self.lns_local_passes,
+        started = time.perf_counter()
+        deadline = (
+            started + self.time_limit_seconds
+            if self.time_limit_seconds is not None
+            else None
         )
-        if self.compute_makespan(final_schedule) > self.compute_makespan(local_schedule) + 1e-9:
-            raise RuntimeError("large-neighborhood search worsened its local-search input")
-        self.last_local_schedule = local_schedule
-        self.last_local_order = local_order
-        self.last_stats = stats
+        self.last_candidate_elapsed_seconds = {}
+        self.last_residual_skipped_reason = None
+        self.last_local_schedule = None
+        self.last_local_order = None
+        self.last_final_order = None
+        self.last_stats = None
 
-        candidates: dict[str, tuple[ScheduleResult, list[int] | None]] = {
-            "residual_lns": (final_schedule, final_order)
-        }
+        candidates: dict[str, tuple[ScheduleResult, list[int] | None]] = {}
         shape_stats = describe_dag_shape(dag)
         self.last_shape_stats = shape_stats
+
+        residual_supported = shape_stats.task_count <= self.local_scheduler.max_tasks
+        if residual_supported:
+            stage_started = time.perf_counter()
+            local_schedule = self.local_scheduler.schedule(
+                dag,
+                resource_config,
+                deadline=deadline,
+            )
+            local_order = self.local_scheduler.last_final_order
+            if local_order is None:
+                raise RuntimeError("local-search phase did not expose its task order")
+            rng = self._rng_for_dag(dag)
+            final_schedule, final_order, stats = large_neighborhood_search(
+                dag,
+                resource_config,
+                local_order,
+                rng,
+                iterations=self.lns_iterations,
+                local_passes=self.lns_local_passes,
+                deadline=deadline,
+            )
+            if self.compute_makespan(final_schedule) > self.compute_makespan(local_schedule) + 1e-9:
+                raise RuntimeError("large-neighborhood search worsened its local-search input")
+            self.last_local_schedule = local_schedule
+            self.last_local_order = local_order
+            self.last_stats = stats
+            candidates["residual_lns"] = (final_schedule, final_order)
+            self.last_candidate_elapsed_seconds["residual_lns"] = (
+                time.perf_counter() - stage_started
+            )
+        else:
+            self.last_residual_skipped_reason = (
+                f"task_count={shape_stats.task_count} exceeds residual_model_capacity="
+                f"{self.local_scheduler.max_tasks}"
+            )
+            if self.portfolio_mode == "residual_only":
+                raise ValueError(self.last_residual_skipped_reason)
 
         if self.portfolio_mode != "residual_only":
             # Keep an exact HEFT anchor.  Selecting the minimum over this
@@ -602,45 +712,69 @@ class ResidualLargeNeighborhoodScheduler(BaseScheduler):
             # the baseline under the same scheduling simulator.
             heft = HEFTScheduler()
             heft_config = _clone_resource_config(resource_config)
+            stage_started = time.perf_counter()
             heft_schedule = heft.schedule(dag, heft_config)
             heft_order = heft._task_order(dag, heft_config)
             candidates["heft_anchor"] = (heft_schedule, heft_order)
-            candidates["heft_lns"] = self._refine_order_candidate(
-                dag,
-                resource_config,
-                heft_order,
-                salt=11,
+            self.last_candidate_elapsed_seconds["heft_anchor"] = (
+                time.perf_counter() - stage_started
             )
+            if not _deadline_reached(deadline):
+                stage_started = time.perf_counter()
+                candidates["heft_lns"] = self._refine_order_candidate(
+                    dag,
+                    resource_config,
+                    heft_order,
+                    salt=11,
+                    deadline=deadline,
+                )
+                self.last_candidate_elapsed_seconds["heft_lns"] = (
+                    time.perf_counter() - stage_started
+                )
 
             include_width_candidate = (
                 self.portfolio_mode == "full"
                 or shape_stats.width_ratio >= self.wide_width_ratio_threshold
             )
-            if include_width_candidate:
+            if include_width_candidate and not _deadline_reached(deadline):
                 width_order = width_aware_topological_order(
                     dag,
                     _clone_resource_config(resource_config),
                 )
+                stage_started = time.perf_counter()
                 width_schedule, width_final_order = self._refine_order_candidate(
                     dag,
                     resource_config,
                     width_order,
                     salt=23,
+                    deadline=deadline,
                 )
                 candidates["width_aware_lns"] = (width_schedule, width_final_order)
-                cost_first_order = width_aware_topological_order(
-                    dag,
-                    _clone_resource_config(resource_config),
-                    rank_weight=0.15,
-                    cost_weight=0.75,
-                    fanout_weight=0.10,
+                self.last_candidate_elapsed_seconds["width_aware_lns"] = (
+                    time.perf_counter() - stage_started
                 )
-                candidates["cost_first_lns"] = self._refine_order_candidate(
-                    dag,
-                    resource_config,
-                    cost_first_order,
-                    salt=37,
-                )
+                if not _deadline_reached(deadline):
+                    cost_first_order = width_aware_topological_order(
+                        dag,
+                        _clone_resource_config(resource_config),
+                        rank_weight=0.15,
+                        cost_weight=0.75,
+                        fanout_weight=0.10,
+                    )
+                    stage_started = time.perf_counter()
+                    candidates["cost_first_lns"] = self._refine_order_candidate(
+                        dag,
+                        resource_config,
+                        cost_first_order,
+                        salt=37,
+                        deadline=deadline,
+                    )
+                    self.last_candidate_elapsed_seconds["cost_first_lns"] = (
+                        time.perf_counter() - stage_started
+                    )
+
+        if not candidates:
+            raise RuntimeError("scheduler did not produce any valid candidate")
 
         candidate_makespans = {
             source: self.compute_makespan(schedule)
@@ -656,4 +790,8 @@ class ResidualLargeNeighborhoodScheduler(BaseScheduler):
         self.last_candidate_makespans = candidate_makespans
         self.last_selected_source = selected_source
         self.last_final_order = selected_order
+        self.last_elapsed_seconds = time.perf_counter() - started
+        self.last_timed_out = _deadline_reached(deadline) or bool(
+            self.local_scheduler.last_timed_out if residual_supported else False
+        )
         return selected_schedule
