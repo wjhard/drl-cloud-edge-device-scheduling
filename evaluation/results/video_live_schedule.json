@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "method": "adaptive",
+  "selected_source": "residual_lns",
+  "input": {
+    "scenario_path": "evaluation/scenarios/scenario_10_0.json",
+    "resource_config_path": "configs/resource_default.yaml",
+    "config_path": "training/configs/ppo_mlp_residual.yaml",
+    "model_path": "training/checkpoints/ppo_mlp_residual"
+  },
+  "parameters": {
+    "preset": "quality",
+    "seed": 20260905,
+    "time_budget_seconds": 8.0,
+    "num_samples": 64,
+    "local_max_passes": 3,
+    "lns_iterations": 64
+  },
+  "dag": {
+    "task_count": 10,
+    "edge_count": 16,
+    "source_count": 5,
+    "sink_count": 4
+  },
+  "result": {
+    "makespan": 0.39074550726016205,
+    "heft_makespan": 0.4552284363452672,
+    "ratio_to_heft": 0.8583503930404773
+  },
+  "timing": {
+    "model_load_seconds": 1.1588122229999982,
+    "schedule_seconds": 1.3434793560000031,
+    "heft_reference_seconds": 0.0023621500000032825,
+    "slowdown_vs_heft": 568.7527701450526
+  },
+  "memory": {
+    "rss_before_mib": 248.70703125,
+    "rss_after_mib": 339.1640625,
+    "process_peak_rss_mib": 339.1640625
+  },
+  "diagnostics": {
+    "candidate_makespans": {
+      "residual_lns": 0.39074550726016205,
+      "heft_anchor": 0.4552284363452672,
+      "heft_lns": 0.39074550726016205,
+      "width_aware_lns": 0.39074550726016205,
+      "cost_first_lns": 0.39074550726016205
+    },
+    "candidate_elapsed_seconds": {
+      "residual_lns": 0.8171183999999982,
+      "heft_anchor": 0.00029410599999835085,
+      "heft_lns": 0.18086639499999535,
+      "width_aware_lns": 0.17426216700000197,
+      "cost_first_lns": 0.17049690799999695
+    },
+    "residual_skipped_reason": null,
+    "time_limit_reached": false,
+    "dag_shape": {
+      "task_count": 10,
+      "edge_count": 16,
+      "source_count": 5,
+      "sink_count": 4,
+      "longest_path_edges": 2,
+      "level_width": 5,
+      "width_ratio": 0.5,
+      "edge_density": 0.17777777777777778
+    },
+    "residual_samples_completed": 64
+  },
+  "validation": {
+    "valid": true,
+    "error_count": 0,
+    "errors": [],
+    "expected_task_count": 10,
+    "scheduled_task_count": 10,
+    "makespan": 0.39074550726016205
+  },
+  "schedule": [
+    {
+      "task_id": 0,
+      "resource_id": "cloud_0",
+      "start_time": 0.04572775517371891,
+      "finish_time": 0.12572759284699264,
+      "duration": 0.07999983767327373
+    },
+    {
+      "task_id": 1,
+      "resource_id": "edge_1",
+      "start_time": 0.0,
+      "finish_time": 0.0856156188658462,
+      "duration": 0.0856156188658462
+    },
+    {
+      "task_id": 2,
+      "resource_id": "edge_0",
+      "start_time": 0.0,
+      "finish_time": 0.13015749747582228,
+      "duration": 0.13015749747582228
+    },
+    {
+      "task_id": 3,
+      "resource_id": "edge_0",
+      "start_time": 0.13015749747582228,
+      "finish_time": 0.21494309695035052,
+      "duration": 0.08478559947452824
+    },
+    {
+      "task_id": 4,
+      "resource_id": "cloud_0",
+      "start_time": 0.12572759284699264,
+      "finish_time": 0.2129922065379217,
+      "duration": 0.08726461369092905
+    },
+    {
+      "task_id": 5,
+      "resource_id": "cloud_0",
+      "start_time": 0.0,
+      "finish_time": 0.04572775517371891,
+      "duration": 0.04572775517371891
+    },
+    {
+      "task_id": 6,
+      "resource_id": "cloud_0",
+      "start_time": 0.2931909059400963,
+      "finish_time": 0.39074550726016205,
+      "duration": 0.09755460132006577
+    },
+    {
+      "task_id": 7,
+      "resource_id": "edge_0",
+      "start_time": 0.21802587585122027,
+      "finish_time": 0.3797084879522339,
+      "duration": 0.16168261210101362
+    },
+    {
+      "task_id": 8,
+      "resource_id": "cloud_0",
+      "start_time": 0.2129922065379217,
+      "finish_time": 0.2931909059400963,
+      "duration": 0.08019869940217458
+    },
+    {
+      "task_id": 9,
+      "resource_id": "edge_1",
+      "start_time": 0.10717770744963911,
+      "finish_time": 0.33031352259025465,
+      "duration": 0.22313581514061553
+    }
+  ]
+}

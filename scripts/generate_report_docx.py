@@ -6,6 +6,8 @@ import argparse
 import json
 import re
 import time
+import zipfile
+import xml.etree.ElementTree as ET
 from pathlib import Path
 
 import pythoncom
@@ -57,18 +59,31 @@ WD_TAB_LEADER_SPACES = 0
 TABLE_CAPTIONS = [
     "默认异构资源参数",
     "赛题环节与实现证据对应关系",
+    "官方评分项逐项验收映射",
     "项目目录与模块职责",
     "观测字段及归一化策略",
     "关键技术演进与性能变化",
     "未采纳方案及消融结论",
+    "关键设计选择与工程取舍",
     "最终搜索阶段的不变量与保障机制",
+    "异常与安全降级行为",
+    "实验控制与可复现措施",
     "最终方案五次重复评测结果",
     "计算量对齐对比结果",
     "MILP 最优解距离对比",
     "结构化泛化评测结果",
+    "大规模泛化与运行开销",
+    "国产操作系统容器验证",
+    "多组核心结果的口径区分",
     "复现配置与用途",
+    "常见问题与定位原则",
     "关键结论与原始证据索引",
     "关键代码索引",
+    "最终训练与推理参数",
+    "单场景调度输出字段",
+    "自动化测试覆盖矩阵",
+    "关键证据文件完整性指纹",
+    "主要技术术语",
 ]
 
 
@@ -230,15 +245,17 @@ def add_table(doc, rows: list[list[str]], table_number: int) -> None:
             table.Cell(row_index, column_index).Range.Text = row[column_index - 1] if column_index <= len(row) else ""
     style_table(table)
     header = rows[0]
-    if column_count >= 7 and any("Best-of-64" in cell for cell in header):
-        # Keep dense repeated-evaluation values on one line without widening the page.
-        table.Range.Font.Size = 8.5
+    if column_count >= 6:
+        # Keep dense result and platform tables readable on a portrait A4 page.
+        table.Range.Font.Size = 8.0 if column_count >= 8 else 8.5
     width_map = {
         "阶段": [68, 96, 58, 96, 122],
         "赛题环节": [62, 112, 136, 130],
         "不变量": [92, 130, 218],
         "场景组": [88, 82, 90, 78, 102],
-        "重复": [43, 68, 66, 78, 60, 55, 70],
+        "重复": [35, 57, 52, 64, 47, 45, 43, 55],
+        "协议": [58, 83, 52, 48, 46, 48, 48, 53],
+        "系统": [93, 52, 67, 40, 58, 58],
     }
     widths = width_map.get(header[0])
     if widths and len(widths) == column_count:
@@ -393,9 +410,9 @@ def add_cover(doc) -> None:
     add_paragraph(doc, "暨开放原子大赛操作系统专项赛", alignment=WD_ALIGN_CENTER, first_line=0, space_after=32, east_asia_font="黑体", ascii_font="Arial", size=15, bold=True)
     add_paragraph(doc, "第 16 题：云—边—端异构计算资源调度", alignment=WD_ALIGN_CENTER, first_line=0, space_after=48, east_asia_font="黑体", ascii_font="Arial", size=14, bold=True)
     add_paragraph(doc, "基于深度强化学习的\v云—边—端异构计算资源管理调度方法", alignment=WD_ALIGN_CENTER, first_line=0, space_after=36, east_asia_font="方正小标宋简体", ascii_font="Arial", size=24, bold=True)
-    add_paragraph(doc, "项 目 技 术 报 告", alignment=WD_ALIGN_CENTER, first_line=0, space_after=52, east_asia_font="黑体", ascii_font="Arial", size=20, bold=True)
-    add_paragraph(doc, "参赛队伍：[匿名]", alignment=WD_ALIGN_CENTER, first_line=0, space_after=10, size=12)
-    add_paragraph(doc, "二〇二六年七月", alignment=WD_ALIGN_CENTER, first_line=0, size=12)
+    add_paragraph(doc, "项 目 说 明 书", alignment=WD_ALIGN_CENTER, first_line=0, space_after=52, east_asia_font="黑体", ascii_font="Arial", size=20, bold=True)
+    add_paragraph(doc, "参赛队伍：操作系统创新小分队", alignment=WD_ALIGN_CENTER, first_line=0, space_after=10, size=12)
+    add_paragraph(doc, "二〇二六年九月", alignment=WD_ALIGN_CENTER, first_line=0, size=12)
 
 
 def add_toc(doc):
@@ -562,6 +579,74 @@ def render_key_pages(pdf_path: Path, output_dir: Path) -> list[Path]:
     return outputs
 
 
+def sanitize_docx_package(docx_path: Path) -> None:
+    """Remove personal metadata and external local-template relationships.
+
+    The official template can carry an ``attachedTemplate`` relationship that
+    points at the template author's local Windows profile.  Word does not
+    remove that relationship when ``RemovePersonalInformation`` is enabled, so
+    scrub it after Word has closed the generated package.
+    """
+
+    namespaces = {
+        "cp": "http://schemas.openxmlformats.org/package/2006/metadata/core-properties",
+        "dc": "http://purl.org/dc/elements/1.1/",
+        "dcterms": "http://purl.org/dc/terms/",
+        "dcmitype": "http://purl.org/dc/dcmitype/",
+        "xsi": "http://www.w3.org/2001/XMLSchema-instance",
+        "w": "http://schemas.openxmlformats.org/wordprocessingml/2006/main",
+        "r": "http://schemas.openxmlformats.org/officeDocument/2006/relationships",
+        "pr": "http://schemas.openxmlformats.org/package/2006/relationships",
+    }
+    for prefix, uri in namespaces.items():
+        ET.register_namespace(prefix, uri)
+
+    core_path = "docProps/core.xml"
+    settings_path = "word/settings.xml"
+    settings_rels_path = "word/_rels/settings.xml.rels"
+    creator_tag = "{http://purl.org/dc/elements/1.1/}creator"
+    last_modified_tag = (
+        "{http://schemas.openxmlformats.org/package/2006/metadata/core-properties}"
+        "lastModifiedBy"
+    )
+    attached_template_tag = (
+        "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}attachedTemplate"
+    )
+    relationship_tag = (
+        "{http://schemas.openxmlformats.org/package/2006/relationships}Relationship"
+    )
+    temporary_path = docx_path.with_name(f".{docx_path.name}.sanitized.tmp")
+
+    try:
+        with zipfile.ZipFile(docx_path, "r") as source, zipfile.ZipFile(
+            temporary_path, "w"
+        ) as target:
+            for item in source.infolist():
+                data = source.read(item.filename)
+                if item.filename == core_path:
+                    root = ET.fromstring(data)
+                    for tag in (creator_tag, last_modified_tag):
+                        element = root.find(tag)
+                        if element is not None:
+                            element.text = "Anonymous"
+                    data = ET.tostring(root, encoding="utf-8", xml_declaration=True)
+                elif item.filename == settings_path:
+                    root = ET.fromstring(data)
+                    for element in list(root.findall(attached_template_tag)):
+                        root.remove(element)
+                    data = ET.tostring(root, encoding="utf-8", xml_declaration=True)
+                elif item.filename == settings_rels_path:
+                    root = ET.fromstring(data)
+                    for relationship in list(root.findall(relationship_tag)):
+                        if relationship.get("Type", "").endswith("/attachedTemplate"):
+                            root.remove(relationship)
+                    data = ET.tostring(root, encoding="utf-8", xml_declaration=True)
+                target.writestr(item, data)
+        temporary_path.replace(docx_path)
+    finally:
+        temporary_path.unlink(missing_ok=True)
+
+
 def build(input_path: Path, output_path: Path, template_path: Path, visible: bool) -> dict:
     markdown = input_path.read_text(encoding="utf-8")
     pdf_path = output_path.with_suffix(".pdf")
@@ -614,6 +699,7 @@ def build(input_path: Path, output_path: Path, template_path: Path, visible: boo
         word.UserInitials = original_initials
         word.Quit()
         word = None
+        sanitize_docx_package(output_path)
         screenshots = render_key_pages(pdf_path, screenshots_dir)
         data_table_count = stats["data_table_count"]
         code_block_table_count = stats["code_block_table_count"]

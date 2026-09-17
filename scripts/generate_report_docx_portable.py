@@ -179,7 +179,7 @@ def add_cover(doc: Document) -> None:
         ("基于深度强化学习的\n云—边—端异构计算资源管理调度方法", 23, True, 28),
         ("项 目 说 明 书", 20, True, 40),
         ("参赛队伍：操作系统创新小分队", 12, False, 8),
-        ("二〇二六年八月", 12, False, 0),
+        ("二〇二六年九月", 12, False, 0),
     ]
     for text, size, bold, after in blocks:
         paragraph = doc.add_paragraph()
@@ -389,8 +389,8 @@ def set_core_properties(doc: Document) -> None:
     props = doc.core_properties
     props.title = "基于深度强化学习的云—边—端异构计算资源管理调度方法——项目说明书"
     props.subject = "第16题：云—边—端异构计算资源调度"
-    props.author = "操作系统创新小分队"
-    props.last_modified_by = "操作系统创新小分队"
+    props.author = "Anonymous"
+    props.last_modified_by = "Anonymous"
     props.keywords = "深度强化学习, 异构计算, 云边端, 调度, openEuler"
 
 
