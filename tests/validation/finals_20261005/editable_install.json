@@ -1,0 +1,13 @@
+{
+  "distribution": "drl-cloud-edge-device-scheduling",
+  "version": "0.1.0",
+  "modules": {
+    "env": "<PROJECT_ROOT>\\src\\env\\__init__.py",
+    "baselines": "<PROJECT_ROOT>\\src\\baselines\\__init__.py",
+    "policies": "<PROJECT_ROOT>\\src\\policies\\__init__.py",
+    "training": "<PROJECT_ROOT>\\src\\training\\__init__.py",
+    "evaluation": "<PROJECT_ROOT>\\src\\evaluation\\__init__.py",
+    "diagnostics": "<PROJECT_ROOT>\\src\\diagnostics\\__init__.py",
+    "scheduler_interface": "<PROJECT_ROOT>\\src\\scheduler_interface.py"
+  }
+}

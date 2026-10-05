@@ -15,3 +15,7 @@ evaluation/results
 *.pptx
 *.mp4
 *.zip
+!training/checkpoints/ppo_mlp_residual.zip
+presentation
+demo/output
+.validation-editable-env

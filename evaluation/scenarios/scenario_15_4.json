@@ -1,0 +1,239 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "task_id": 0,
+      "level": 1,
+      "computation_cost": 6.140875011883072,
+      "id": 0
+    },
+    {
+      "task_id": 1,
+      "level": 1,
+      "computation_cost": 1.7306313134317328,
+      "id": 1
+    },
+    {
+      "task_id": 2,
+      "level": 1,
+      "computation_cost": 6.359764692858649,
+      "id": 2
+    },
+    {
+      "task_id": 3,
+      "level": 3,
+      "computation_cost": 5.457758435282123,
+      "id": 3
+    },
+    {
+      "task_id": 4,
+      "level": 1,
+      "computation_cost": 7.030116999770768,
+      "id": 4
+    },
+    {
+      "task_id": 5,
+      "level": 3,
+      "computation_cost": 3.171586962114053,
+      "id": 5
+    },
+    {
+      "task_id": 6,
+      "level": 3,
+      "computation_cost": 9.489376338762055,
+      "id": 6
+    },
+    {
+      "task_id": 7,
+      "level": 0,
+      "computation_cost": 7.417083202493256,
+      "id": 7
+    },
+    {
+      "task_id": 8,
+      "level": 1,
+      "computation_cost": 9.535842236339922,
+      "id": 8
+    },
+    {
+      "task_id": 9,
+      "level": 0,
+      "computation_cost": 3.6557359096524364,
+      "id": 9
+    },
+    {
+      "task_id": 10,
+      "level": 2,
+      "computation_cost": 7.623402025838475,
+      "id": 10
+    },
+    {
+      "task_id": 11,
+      "level": 0,
+      "computation_cost": 4.034267274180398,
+      "id": 11
+    },
+    {
+      "task_id": 12,
+      "level": 1,
+      "computation_cost": 4.001693301999177,
+      "id": 12
+    },
+    {
+      "task_id": 13,
+      "level": 3,
+      "computation_cost": 2.528141154530883,
+      "id": 13
+    },
+    {
+      "task_id": 14,
+      "level": 2,
+      "computation_cost": 3.0880683728910316,
+      "id": 14
+    }
+  ],
+  "links": [
+    {
+      "data_size": 6.255244341490783,
+      "source": 0,
+      "target": 5
+    },
+    {
+      "data_size": 2.689316676788626,
+      "source": 0,
+      "target": 14
+    },
+    {
+      "data_size": 6.761298890467649,
+      "source": 1,
+      "target": 5
+    },
+    {
+      "data_size": 7.562586135761322,
+      "source": 1,
+      "target": 13
+    },
+    {
+      "data_size": 7.838837538047373,
+      "source": 2,
+      "target": 5
+    },
+    {
+      "data_size": 2.6249143317519437,
+      "source": 2,
+      "target": 13
+    },
+    {
+      "data_size": 2.2950877681820248,
+      "source": 4,
+      "target": 6
+    },
+    {
+      "data_size": 1.594709753953636,
+      "source": 7,
+      "target": 0
+    },
+    {
+      "data_size": 9.846453350982445,
+      "source": 7,
+      "target": 1
+    },
+    {
+      "data_size": 7.0293650866253,
+      "source": 7,
+      "target": 2
+    },
+    {
+      "data_size": 3.5882598542379553,
+      "source": 7,
+      "target": 5
+    },
+    {
+      "data_size": 3.794050552507257,
+      "source": 7,
+      "target": 8
+    },
+    {
+      "data_size": 4.859711277108694,
+      "source": 8,
+      "target": 10
+    },
+    {
+      "data_size": 2.1190552929908035,
+      "source": 8,
+      "target": 13
+    },
+    {
+      "data_size": 9.166893989122608,
+      "source": 8,
+      "target": 14
+    },
+    {
+      "data_size": 4.617141860633604,
+      "source": 9,
+      "target": 1
+    },
+    {
+      "data_size": 5.902890083162278,
+      "source": 9,
+      "target": 5
+    },
+    {
+      "data_size": 9.644874824881727,
+      "source": 9,
+      "target": 14
+    },
+    {
+      "data_size": 3.399128439559376,
+      "source": 10,
+      "target": 3
+    },
+    {
+      "data_size": 7.762014940586065,
+      "source": 10,
+      "target": 5
+    },
+    {
+      "data_size": 3.987123266978408,
+      "source": 11,
+      "target": 0
+    },
+    {
+      "data_size": 4.19384874844021,
+      "source": 11,
+      "target": 4
+    },
+    {
+      "data_size": 5.768846236343895,
+      "source": 11,
+      "target": 12
+    },
+    {
+      "data_size": 7.660806855270192,
+      "source": 11,
+      "target": 13
+    },
+    {
+      "data_size": 5.434030399619208,
+      "source": 12,
+      "target": 3
+    },
+    {
+      "data_size": 9.530177426499518,
+      "source": 12,
+      "target": 10
+    },
+    {
+      "data_size": 6.517447251482009,
+      "source": 12,
+      "target": 13
+    },
+    {
+      "data_size": 9.71891405955127,
+      "source": 14,
+      "target": 13
+    }
+  ]
+}

@@ -13,7 +13,7 @@ import torch
 import yaml
 
 if __package__ in {None, ""}:
-    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from baselines.heft_scheduler import HEFTScheduler
 from env.dag_generator import load_dag_from_json

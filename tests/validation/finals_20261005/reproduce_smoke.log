@@ -1,0 +1,32 @@
+REPRODUCE_START
+{
+  "timestamp_utc": "2026-10-05T13:57:28.067413+00:00",
+  "python": "3.12.4 | packaged by Anaconda, Inc. | (main, Jun 18 2024, 15:03:56) [MSC v.1929 64 bit (AMD64)]",
+  "python_executable": "python.exe",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "system": "Windows",
+  "release": "11",
+  "machine": "AMD64",
+  "processor": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+  "project_root": ".",
+  "git_revision": "231139cdbf024a1cfcc0cbb23fcedc06f53aba24",
+  "git_dirty": true
+}
+
+=== compileall ===
+$ <VALIDATION_ENV>\Scripts\python.exe -m compileall -q src scripts tests demo
+[compileall] exit_code=0 elapsed_seconds=0.177
+
+=== generate structural scenarios ===
+$ <VALIDATION_ENV>\Scripts\python.exe src/evaluation/generate_structural_generalization_scenarios.py --output-root tests/validation/finals_20261005/smoke/scenarios_structural
+generated 20 structural scenarios
+manifest_path=tests\validation\finals_20261005\smoke\scenarios_structural\manifest.json
+seed_start=5000000
+group | count | mean_density | mean_sources | mean_longest_path
+wide_parallel | 5 | 0.129768 | 3.000 | 2.000
+deep_chain | 5 | 0.113899 | 1.000 | 15.200
+homogeneous_resources | 5 | 0.128334 | 4.400 | 3.200
+original_control | 5 | 0.128334 | 4.400 | 3.200
+[generate structural scenarios] exit_code=0 elapsed_seconds=0.574
+manifest_path=.\tests\validation\finals_20261005\smoke\reproducibility_manifest.json
+REPRODUCE_COMPLETE

@@ -3,7 +3,8 @@ FROM quay.io/openkylin/openkylin:2.0
 ENV DEBIAN_FRONTEND=noninteractive \
     PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
-    PIP_DISABLE_PIP_VERSION_CHECK=1
+    PIP_DISABLE_PIP_VERSION_CHECK=1 \
+    PYTHONPATH=/opt/drl-scheduler/src
 
 ARG PYPI_INDEX_URL=https://mirrors.nju.edu.cn/pypi/web/simple
 ARG PYTORCH_INDEX_URL=https://mirror.sjtu.edu.cn/pytorch-wheels/cpu

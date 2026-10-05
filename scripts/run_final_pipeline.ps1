@@ -86,7 +86,7 @@ try {
     } else {
         Write-Host "checkpoint_exists=false; starting full 200000-step training"
         Invoke-Python -StepName "train final residual model" -Arguments @(
-            "training/train_ppo.py", "--config", $ConfigPath
+            "src/training/train_ppo.py", "--config", $ConfigPath
         )
     }
 
@@ -99,7 +99,7 @@ try {
     } else {
         Write-Host "validation_scenarios_exist=false; generating fixed validation scenarios"
         Invoke-Python -StepName "generate validation scenarios" -Arguments @(
-            "evaluation/generate_validation_scenarios.py", "--config", $ConfigPath
+            "src/evaluation/generate_validation_scenarios.py", "--config", $ConfigPath
         )
     }
 
@@ -113,7 +113,7 @@ try {
         $Seed = $CanonicalSeeds[$Index]
         $RunPath = Join-Path $ResultsDir "direct_repeat_$Repeat.json"
         Invoke-Python -StepName "final LNS repeat $Repeat/5 (seed=$Seed)" -Arguments @(
-            "evaluation/evaluate_residual_lns.py",
+            "src/evaluation/evaluate_residual_lns.py",
             "--config", $ConfigPath,
             "--model-path", $ModelPath,
             "--results-path", $RunPath,
@@ -126,7 +126,7 @@ try {
     }
 
     Invoke-Python -StepName "analyze five paired final LNS repeats" -Arguments @(
-        "evaluation/analyze_residual_lns_direct_repeats.py",
+        "src/evaluation/analyze_residual_lns_direct_repeats.py",
         "--input-dir", $ResultsDir,
         "--output-path", $SummaryPath
     )

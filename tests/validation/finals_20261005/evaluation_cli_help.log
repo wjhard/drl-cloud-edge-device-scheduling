@@ -1,0 +1,25 @@
+usage: evaluate_residual_lns.py [-h] [--config CONFIG]
+                                [--model-path MODEL_PATH] --results-path
+                                RESULTS_PATH [--sampling-seed SAMPLING_SEED]
+                                [--num-samples NUM_SAMPLES]
+                                [--local-max-passes LOCAL_MAX_PASSES]
+                                [--lns-iterations LNS_ITERATIONS]
+                                [--portfolio-mode {residual_only,adaptive,full}]
+                                [--wide-width-ratio-threshold WIDE_WIDTH_RATIO_THRESHOLD]
+
+Evaluate residual local search plus LNS.
+
+options:
+  -h, --help            show this help message and exit
+  --config CONFIG
+  --model-path MODEL_PATH
+  --results-path RESULTS_PATH
+  --sampling-seed SAMPLING_SEED
+  --num-samples NUM_SAMPLES
+  --local-max-passes LOCAL_MAX_PASSES
+  --lns-iterations LNS_ITERATIONS
+  --portfolio-mode {residual_only,adaptive,full}
+                        Candidate portfolio: preserve the original residual
+                        path, add adaptive HEFT/width anchors, or always
+                        include all heuristics.
+  --wide-width-ratio-threshold WIDE_WIDTH_RATIO_THRESHOLD

@@ -1,0 +1,44 @@
+{
+  "environment": {
+    "timestamp_utc": "2026-10-05T13:57:28.067413+00:00",
+    "python": "3.12.4 | packaged by Anaconda, Inc. | (main, Jun 18 2024, 15:03:56) [MSC v.1929 64 bit (AMD64)]",
+    "python_executable": "python.exe",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "system": "Windows",
+    "release": "11",
+    "machine": "AMD64",
+    "processor": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+    "project_root": ".",
+    "git_revision": "231139cdbf024a1cfcc0cbb23fcedc06f53aba24",
+    "git_dirty": true
+  },
+  "profile": "smoke",
+  "commands": [
+    {
+      "label": "compileall",
+      "command": [
+        "python",
+        "-m",
+        "compileall",
+        "-q",
+        "src",
+        "scripts",
+        "tests",
+        "demo"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.17664580000564456
+    },
+    {
+      "label": "generate structural scenarios",
+      "command": [
+        "python",
+        "src/evaluation/generate_structural_generalization_scenarios.py",
+        "--output-root",
+        "tests/validation/finals_20261005/smoke/scenarios_structural"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.5742026999942027
+    }
+  ]
+}

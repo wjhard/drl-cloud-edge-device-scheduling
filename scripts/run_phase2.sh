@@ -13,9 +13,9 @@ run_step() {
   fi
 }
 
-run_step "train MaskablePPO" "$PYTHON_BIN" training/train_ppo.py --config training/configs/ppo_mlp_baseline.yaml
-run_step "generate validation scenarios" "$PYTHON_BIN" evaluation/generate_validation_scenarios.py
-run_step "evaluate RL vs HEFT" "$PYTHON_BIN" evaluation/evaluate.py \
+run_step "train MaskablePPO" "$PYTHON_BIN" src/training/train_ppo.py --config training/configs/ppo_mlp_baseline.yaml
+run_step "generate validation scenarios" "$PYTHON_BIN" src/evaluation/generate_validation_scenarios.py
+run_step "evaluate RL vs HEFT" "$PYTHON_BIN" src/evaluation/evaluate.py \
   --config training/configs/ppo_mlp_baseline.yaml \
   --model-path training/checkpoints/ppo_mlp_baseline
 

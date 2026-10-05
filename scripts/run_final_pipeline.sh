@@ -63,7 +63,7 @@ if [[ -f "$MODEL_PATH" || -f "${MODEL_PATH}.zip" ]]; then
   echo "checkpoint_path=${MODEL_PATH}.zip"
 else
   echo "checkpoint_exists=false; starting full 200000-step training"
-  run_step "train final residual model" "$PYTHON_BIN" training/train_ppo.py --config "$CONFIG_PATH"
+  run_step "train final residual model" "$PYTHON_BIN" src/training/train_ppo.py --config "$CONFIG_PATH"
 fi
 
 if compgen -G "${SCENARIO_DIR}/scenario_*.json" >/dev/null; then
@@ -73,7 +73,7 @@ if compgen -G "${SCENARIO_DIR}/scenario_*.json" >/dev/null; then
 else
   echo "validation_scenarios_exist=false; generating fixed validation scenarios"
   run_step "generate validation scenarios" "$PYTHON_BIN" \
-    evaluation/generate_validation_scenarios.py --config "$CONFIG_PATH"
+    src/evaluation/generate_validation_scenarios.py --config "$CONFIG_PATH"
 fi
 
 echo "==== evaluate final Residual best-of-64 + relocation + LNS ===="
@@ -85,7 +85,7 @@ for index in "${!CANONICAL_SEEDS[@]}"; do
   seed="${CANONICAL_SEEDS[$index]}"
   run_path="$RESULTS_DIR/direct_repeat_${repeat}.json"
   run_step "final LNS repeat ${repeat}/5 (seed=${seed})" "$PYTHON_BIN" \
-    evaluation/evaluate_residual_lns.py \
+    src/evaluation/evaluate_residual_lns.py \
     --config "$CONFIG_PATH" \
     --model-path "$MODEL_PATH" \
     --results-path "$run_path" \
@@ -97,7 +97,7 @@ for index in "${!CANONICAL_SEEDS[@]}"; do
 done
 
 run_step "analyze five paired final LNS repeats" "$PYTHON_BIN" \
-  evaluation/analyze_residual_lns_direct_repeats.py \
+  src/evaluation/analyze_residual_lns_direct_repeats.py \
   --input-dir "$RESULTS_DIR" \
   --output-path "$SUMMARY_PATH"
 

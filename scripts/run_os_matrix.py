@@ -149,7 +149,7 @@ def _run_image(os_name: str, tag: str, dockerfile: str, pull: bool) -> dict:
         "python3 --version; "
         "python3 -c 'import torch; print(\"torch=\" + torch.__version__); "
         "print(\"cuda_available=\" + str(torch.cuda.is_available()))'; "
-        "python3 -m compileall -q env baselines policies training evaluation scripts tests; "
+        "python3 -m compileall -q src scripts tests demo; "
         "python3 scripts/reproduce.py --profile smoke --write-manifest"
     )
     started = time.perf_counter()

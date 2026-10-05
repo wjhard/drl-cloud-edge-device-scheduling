@@ -1,0 +1,120 @@
+{
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 13667,
+      "sha256": "b2ed6f619652dc00c422ee81be6be04dbfd1b2a60eee3337d612a0b022dca6e0"
+    },
+    {
+      "path": "docs/项目说明书.pdf",
+      "bytes": 1143644,
+      "sha256": "6a5fe64d4e900d05411ab9832f2cfe01c4c091f81221709ade273639f2a92bfb"
+    },
+    {
+      "path": "docs/项目创新说明.pdf",
+      "bytes": 232894,
+      "sha256": "06ea245e4439a8d054a81939c85b707960d7ddcf0f22265c77f9367efcad15e5"
+    },
+    {
+      "path": "docs/成员分工及主要贡献说明.pdf",
+      "bytes": 117932,
+      "sha256": "f1bc64d65926f6127ee24fe76f80b1a86c9df344b013707f35b57d9b5adbb5b8"
+    },
+    {
+      "path": "docs/人工智能及第三方工具使用说明.pdf",
+      "bytes": 403756,
+      "sha256": "be12d2d339ab6c6d87e6b48bf949ea29432a1d0b29ff32c727b7c19de8262bf7"
+    },
+    {
+      "path": "presentation/决赛现场演示PPT.pptx",
+      "bytes": 99550590,
+      "sha256": "14e3fd09b22285dfb9b7446efd9a0b091130276e998091e76962263d5cd7ae7d"
+    },
+    {
+      "path": "presentation/决赛演示视频.mp4",
+      "bytes": 69057993,
+      "sha256": "350f37639101d3e2d2b0747ed51b4663a3681b25b375915f043fcf26eaaa81f8"
+    },
+    {
+      "path": "作品原创承诺书.pdf",
+      "bytes": 197134,
+      "sha256": "04c1fa3ee5ca023a5c79a1481687c67a7a97413487997bf6cfaffff39fe958bb"
+    }
+  ],
+  "required_paths": [
+    "README.md",
+    "src",
+    "docs/项目说明书.pdf",
+    "docs/项目创新说明.pdf",
+    "docs/成员分工及主要贡献说明.pdf",
+    "docs/人工智能及第三方工具使用说明.pdf",
+    "tests",
+    "demo",
+    "presentation/决赛现场演示PPT.pptx",
+    "presentation/决赛演示视频.mp4",
+    "作品原创承诺书.pdf"
+  ],
+  "pending": [
+    "AI official form handwritten team statement and scanned replacement",
+    "GitLink master synchronization and registration-system display upload"
+  ],
+  "report": {
+    "sections": 9,
+    "native_equations": 9,
+    "table_objects_including_cover": 14,
+    "inline_figures": 3,
+    "page_setup_preserved": true
+  },
+  "documents": [
+    {
+      "path": "docs/项目说明书.docx",
+      "pages": 32,
+      "author": "",
+      "last_modified_by": "",
+      "revision_elements": 0,
+      "comments_parts": []
+    },
+    {
+      "path": "docs/成员分工及主要贡献说明.docx",
+      "pages": 1,
+      "author": "",
+      "last_modified_by": "",
+      "revision_elements": 0,
+      "comments_parts": []
+    },
+    {
+      "path": "docs/项目创新说明.docx",
+      "pages": 3,
+      "author": "",
+      "last_modified_by": "",
+      "revision_elements": 0,
+      "comments_parts": []
+    },
+    {
+      "path": "docs/人工智能及第三方工具使用说明.docx",
+      "pages": 6,
+      "author": "",
+      "last_modified_by": "",
+      "revision_elements": 0,
+      "comments_parts": []
+    }
+  ],
+  "presentation": {
+    "ppt_bytes": 99550590,
+    "mp4_bytes": 69057993,
+    "slide_count": 22,
+    "independent_video_seconds": 117.866667,
+    "full_video_decode_verified": true,
+    "visual_pages_reviewed": 22,
+    "user_original_zip_modified": false
+  },
+  "review": {
+    "report_visual_pages_reviewed": 32,
+    "innovation_visual_pages_reviewed": 3,
+    "tools_visual_pages_reviewed": 6,
+    "member_visual_pages_reviewed": 1,
+    "pledge_visual_pages_reviewed": 1,
+    "original_pledge_handwriting_image_preserved": true,
+    "scope": "Word native export, PDF layout review, PowerPoint native reopen/render/media decode; privacy metadata and required-path checks."
+  }
+}

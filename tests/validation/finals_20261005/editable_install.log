@@ -1,0 +1,17 @@
+Obtaining file:///<PROJECT_ROOT>
+  Checking if build backend supports build_editable: started
+  Checking if build backend supports build_editable: finished with status 'done'
+  Preparing editable metadata (pyproject.toml): started
+  Preparing editable metadata (pyproject.toml): finished with status 'done'
+Building wheels for collected packages: drl-cloud-edge-device-scheduling
+  Building editable for drl-cloud-edge-device-scheduling (pyproject.toml): started
+  Building editable for drl-cloud-edge-device-scheduling (pyproject.toml): finished with status 'done'
+  Created wheel for drl-cloud-edge-device-scheduling: filename=drl_cloud_edge_device_scheduling-0.1.0-0.editable-py3-none-any.whl size=1842 sha256=b075fd97297263465385e1b43491b2a340f027ac172191152f6e32e84f541b72
+  Stored in directory: <TEMP_DIR>\pip-ephem-wheel-cache-kqk_kcmh\wheels\ff\ea\cd\a48eb2616686bfa55210da96467b466c4325e87608ea3f6491
+Successfully built drl-cloud-edge-device-scheduling
+Installing collected packages: drl-cloud-edge-device-scheduling
+  Attempting uninstall: drl-cloud-edge-device-scheduling
+    Found existing installation: drl-cloud-edge-device-scheduling 0.1.0
+    Uninstalling drl-cloud-edge-device-scheduling-0.1.0:
+      Successfully uninstalled drl-cloud-edge-device-scheduling-0.1.0
+Successfully installed drl-cloud-edge-device-scheduling-0.1.0

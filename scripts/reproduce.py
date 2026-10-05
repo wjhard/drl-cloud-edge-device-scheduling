@@ -14,7 +14,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 if __package__ in {None, ""}:
-    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from evaluation.generate_structural_generalization_scenarios import DEFAULT_OUTPUT_ROOT
 
@@ -122,6 +122,12 @@ def main() -> None:
     parser.add_argument("--skip-tests", action="store_true")
     parser.add_argument("--write-manifest", action="store_true")
     parser.add_argument(
+        "--output-dir",
+        type=Path,
+        default=None,
+        help="Put smoke/wide scenarios, results, and manifest in this directory instead of evaluation/.",
+    )
+    parser.add_argument(
         "--with-os-matrix",
         action="store_true",
         help="Build/run the openEuler, openKylin, and Anolis Docker containers after the local checks.",
@@ -139,6 +145,14 @@ def main() -> None:
         help="Retry interval passed to the Docker OS matrix checker.",
     )
     args = parser.parse_args()
+    if args.output_dir is not None and args.profile == "final":
+        parser.error("--output-dir applies to smoke/wide; the final pipeline uses its canonical result paths")
+    output_dir = args.output_dir
+    scenarios_dir = (
+        (output_dir / "scenarios_structural").as_posix()
+        if output_dir is not None
+        else REPRODUCE_SCENARIOS_DIR
+    )
 
     commands: list[dict] = []
     environment = _environment_report()
@@ -147,7 +161,7 @@ def main() -> None:
 
     commands.append(
         _run(
-            [sys.executable, "-m", "compileall", "-q", "env", "baselines", "policies", "training", "evaluation", "tests"],
+            [sys.executable, "-m", "compileall", "-q", "src", "scripts", "tests", "demo"],
             label="compileall",
         )
     )
@@ -174,9 +188,9 @@ def main() -> None:
         _run(
             [
                 sys.executable,
-                "evaluation/generate_structural_generalization_scenarios.py",
+                "src/evaluation/generate_structural_generalization_scenarios.py",
                 "--output-root",
-                REPRODUCE_SCENARIOS_DIR,
+                scenarios_dir,
             ],
             label="generate structural scenarios",
         )
@@ -185,11 +199,13 @@ def main() -> None:
     if args.profile in {"wide", "final"}:
         wide_command = [
             sys.executable,
-            "evaluation/evaluate_wide_parallel.py",
+            "src/evaluation/evaluate_wide_parallel.py",
             "--scenarios-dir",
-            f"{REPRODUCE_SCENARIOS_DIR}/wide_parallel",
+            f"{scenarios_dir}/wide_parallel",
             "--results-path",
-            "evaluation/results/wide_parallel_adaptive_reproduce.json",
+            (output_dir / "wide_parallel_adaptive.json").as_posix()
+            if output_dir is not None
+            else "evaluation/results/wide_parallel_adaptive_reproduce.json",
             "--num-samples",
             str(args.num_samples if args.num_samples is not None else (16 if args.profile == "wide" else 64)),
             "--lns-iterations",
@@ -236,7 +252,11 @@ def main() -> None:
 
     manifest = {"environment": environment, "profile": args.profile, "commands": commands}
     if args.write_manifest:
-        output_path = PROJECT_ROOT / "evaluation" / "results" / "reproducibility_manifest.json"
+        output_path = (
+            PROJECT_ROOT / output_dir / "reproducibility_manifest.json"
+            if output_dir is not None
+            else PROJECT_ROOT / "evaluation" / "results" / "reproducibility_manifest.json"
+        )
         output_path.parent.mkdir(parents=True, exist_ok=True)
         output_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
         print(f"manifest_path={output_path}", flush=True)

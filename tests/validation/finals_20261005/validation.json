@@ -1,0 +1,165 @@
+{
+  "environment": {
+    "timestamp_utc": "2026-10-05T13:57:03.743999+00:00",
+    "python": "3.12.4 | packaged by Anaconda, Inc. | (main, Jun 18 2024, 15:03:56) [MSC v.1929 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "machine": "AMD64",
+    "packages": {
+      "torch": "2.13.0",
+      "pytest": "9.1.1",
+      "gymnasium": "1.3.0",
+      "numpy": "2.5.2",
+      "networkx": "3.6.1",
+      "PyYAML": "6.0.3",
+      "matplotlib": "3.11.1",
+      "sb3-contrib": "2.9.0",
+      "stable-baselines3": "2.9.0",
+      "pulp": "3.3.2",
+      "scipy": "1.18.1",
+      "setuptools": "84.0.0"
+    },
+    "torch_runtime_version": "2.13.0+cpu"
+  },
+  "scope": "Native Windows source-layout regression and one shipped-checkpoint inference; no full training or container OS matrix was rerun.",
+  "imported_modules": {
+    "env": "src/env/__init__.py",
+    "baselines": "src/baselines/__init__.py",
+    "policies": "src/policies/__init__.py",
+    "training": "src/training/__init__.py",
+    "evaluation": "src/evaluation/__init__.py",
+    "diagnostics": "src/diagnostics/__init__.py",
+    "scheduler_interface": "src/scheduler_interface.py"
+  },
+  "checkpoint_sha256": "2f7593f4f250b775fa6a5b89d2dfc212ed00f0fc1003e602b8ea7a54e339da4d",
+  "formal_json_count_unchanged": 158,
+  "formal_results_unchanged": true,
+  "commands": [
+    {
+      "label": "pytest",
+      "command": [
+        "python",
+        "-B",
+        "-m",
+        "pytest",
+        "tests",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "--basetemp",
+        "<TEMP_DIR>\\drl-finals-pytest-833vqbyi"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 12.811955599987414,
+      "log": "pytest.log"
+    },
+    {
+      "label": "compile",
+      "command": [
+        "python",
+        "-B",
+        "-m",
+        "compileall",
+        "-q",
+        "src",
+        "scripts",
+        "tests",
+        "demo"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.1972430999740027,
+      "log": "compile.log"
+    },
+    {
+      "label": "train_cli_help",
+      "command": [
+        "python",
+        "-B",
+        "src/training/train_ppo.py",
+        "--help"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 4.334854799963068,
+      "log": "train_cli_help.log"
+    },
+    {
+      "label": "evaluation_cli_help",
+      "command": [
+        "python",
+        "-B",
+        "src/evaluation/evaluate_residual_lns.py",
+        "--help"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 4.157299900020007,
+      "log": "evaluation_cli_help.log"
+    },
+    {
+      "label": "reproduce_smoke",
+      "command": [
+        "python",
+        "-B",
+        "scripts/reproduce.py",
+        "--profile",
+        "smoke",
+        "--skip-tests",
+        "--write-manifest",
+        "--output-dir",
+        "tests/validation/finals_20261005/smoke"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.5306975000421517,
+      "log": "reproduce_smoke.log"
+    },
+    {
+      "label": "checkpoint_demo",
+      "command": [
+        "python",
+        "-B",
+        "demo/run_demo.py",
+        "--skip-plot",
+        "--output-dir",
+        "tests/validation/finals_20261005/demo"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 13.12479719996918,
+      "log": "checkpoint_demo.log"
+    },
+    {
+      "label": "demo_visualization",
+      "command": [
+        "python",
+        "-B",
+        "scripts/visualize_schedule.py",
+        "--scenario",
+        "evaluation/scenarios/scenario_10_0.json",
+        "--result",
+        "tests/validation/finals_20261005/demo/adaptive.json",
+        "--output",
+        "tests/validation/finals_20261005/demo/schedule.png"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.6441856999881566,
+      "log": "demo_visualization.log"
+    }
+  ],
+  "demo": {
+    "task_count": 10,
+    "valid": true,
+    "makespan": 0.39074550726016205,
+    "heft_makespan": 0.4552284363452672,
+    "ratio_to_heft": 0.8583503930404773,
+    "selected_source": "residual_lns",
+    "model_load_seconds": 1.9785705999820493,
+    "schedule_seconds": 2.7383835000218824
+  },
+  "pytest_summary": {
+    "passed": 44,
+    "warnings": 17,
+    "test_seconds": 11.31
+  },
+  "docker_checkpoint_included_by_ignore_rules": true,
+  "docker_validation": {
+    "container_build_or_run_this_round": false,
+    "reason": "Docker Desktop Linux daemon was unavailable; Dockerfile and ignore-rule regression checks passed."
+  }
+}

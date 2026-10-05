@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "method": "heft",
+  "selected_source": "heft_anchor",
+  "input": {
+    "scenario_path": "evaluation/scenarios/scenario_10_0.json",
+    "resource_config_path": "configs/resource_default.yaml",
+    "config_path": null,
+    "model_path": null
+  },
+  "parameters": {
+    "preset": "quality",
+    "seed": 20260905,
+    "time_budget_seconds": 8.0,
+    "num_samples": 64,
+    "local_max_passes": 3,
+    "lns_iterations": 64
+  },
+  "dag": {
+    "task_count": 10,
+    "edge_count": 16,
+    "source_count": 5,
+    "sink_count": 4
+  },
+  "result": {
+    "makespan": 0.4552284363452672,
+    "heft_makespan": 0.4552284363452672,
+    "ratio_to_heft": 1.0
+  },
+  "timing": {
+    "model_load_seconds": 0.0,
+    "schedule_seconds": 0.0025840000016614795,
+    "heft_reference_seconds": 0.0025840000016614795,
+    "slowdown_vs_heft": 1.0
+  },
+  "memory": {
+    "rss_before_mib": 220.98828125,
+    "rss_after_mib": 220.98828125,
+    "process_peak_rss_mib": 220.98828125
+  },
+  "diagnostics": {
+    "candidate_makespans": {
+      "heft_anchor": 0.4552284363452672
+    },
+    "candidate_elapsed_seconds": {
+      "heft_anchor": 0.0025840000016614795
+    },
+    "residual_skipped_reason": "method=heft",
+    "time_limit_reached": false
+  },
+  "validation": {
+    "valid": true,
+    "error_count": 0,
+    "errors": [],
+    "expected_task_count": 10,
+    "scheduled_task_count": 10,
+    "makespan": 0.4552284363452672
+  },
+  "schedule": [
+    {
+      "task_id": 0,
+      "resource_id": "cloud_0",
+      "start_time": 0.0847750044164656,
+      "finish_time": 0.1647748420897393,
+      "duration": 0.0799998376732737
+    },
+    {
+      "task_id": 1,
+      "resource_id": "edge_0",
+      "start_time": 0.0,
+      "finish_time": 0.07134634905487183,
+      "duration": 0.07134634905487183
+    },
+    {
+      "task_id": 2,
+      "resource_id": "cloud_0",
+      "start_time": 0.04572775517371891,
+      "finish_time": 0.0847750044164656,
+      "duration": 0.03904724924274669
+    },
+    {
+      "task_id": 3,
+      "resource_id": "cloud_0",
+      "start_time": 0.1647748420897393,
+      "finish_time": 0.19021052193209778,
+      "duration": 0.025435679842358477
+    },
+    {
+      "task_id": 4,
+      "resource_id": "cloud_0",
+      "start_time": 0.19021052193209778,
+      "finish_time": 0.27747513562302684,
+      "duration": 0.08726461369092905
+    },
+    {
+      "task_id": 5,
+      "resource_id": "cloud_0",
+      "start_time": 0.0,
+      "finish_time": 0.04572775517371891,
+      "duration": 0.04572775517371891
+    },
+    {
+      "task_id": 6,
+      "resource_id": "cloud_0",
+      "start_time": 0.27747513562302684,
+      "finish_time": 0.3750297369430926,
+      "duration": 0.09755460132006577
+    },
+    {
+      "task_id": 7,
+      "resource_id": "edge_0",
+      "start_time": 0.2825088049363254,
+      "finish_time": 0.444191417037339,
+      "duration": 0.1616826121010136
+    },
+    {
+      "task_id": 8,
+      "resource_id": "cloud_0",
+      "start_time": 0.3750297369430926,
+      "finish_time": 0.4552284363452672,
+      "duration": 0.08019869940217461
+    },
+    {
+      "task_id": 9,
+      "resource_id": "edge_0",
+      "start_time": 0.09181521938065906,
+      "finish_time": 0.2777617319978387,
+      "duration": 0.18594651261717965
+    }
+  ]
+}

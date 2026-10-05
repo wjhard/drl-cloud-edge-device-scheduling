@@ -20,15 +20,15 @@ function Invoke-Phase2Step {
 }
 
 Invoke-Phase2Step -Name "train MaskablePPO" -Args @(
-    "training/train_ppo.py",
+    "src/training/train_ppo.py",
     "--config",
     "training/configs/ppo_mlp_baseline.yaml"
 )
 Invoke-Phase2Step -Name "generate validation scenarios" -Args @(
-    "evaluation/generate_validation_scenarios.py"
+    "src/evaluation/generate_validation_scenarios.py"
 )
 Invoke-Phase2Step -Name "evaluate RL vs HEFT" -Args @(
-    "evaluation/evaluate.py",
+    "src/evaluation/evaluate.py",
     "--config",
     "training/configs/ppo_mlp_baseline.yaml",
     "--model-path",

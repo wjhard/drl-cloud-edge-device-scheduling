@@ -1,14 +1,20 @@
 __pycache__/
+~$*.docx
+~$*.pptx
+docs/mso*.tmp
 .pytest_cache/
 .venv/
 .validation_env/
 *.py[cod]
 
 # Demo/validation artifacts
-env/dag_demo.png
-evaluation/scenarios/
+src/env/dag_demo.png
 evaluation/scenarios_structural_reproduce/
 evaluation/results/final_pipeline_fresh_clone_path.txt
+demo/output/
+.validation-editable-env/
+src/*.egg-info/
+tests/validation/finals_20261005/smoke/scenarios_structural/**/*.json
 
 # Training artifacts
 training/checkpoints/*
@@ -22,6 +28,7 @@ training/bc_datasets/
 *.log
 !artifacts/**/*.log
 !evaluation/results/**/*.log
+!tests/validation/**/*.log
 *.pid
 *_meta.txt
 *_audit_report.txt

@@ -1,0 +1,7 @@
+usage: train_ppo.py [-h] [--config CONFIG]
+
+Train MaskablePPO MLP scheduler.
+
+options:
+  -h, --help       show this help message and exit
+  --config CONFIG  Path to training YAML config.
