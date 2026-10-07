@@ -2,8 +2,8 @@
   "files": [
     {
       "path": "README.md",
-      "bytes": 13667,
-      "sha256": "b2ed6f619652dc00c422ee81be6be04dbfd1b2a60eee3337d612a0b022dca6e0"
+      "bytes": 13762,
+      "sha256": "966f7967ef88a628270884be4eb1e9cd6dd3902d753301020b5a2e971f5e9cd1"
     },
     {
       "path": "docs/项目说明书.pdf",
@@ -22,8 +22,8 @@
     },
     {
       "path": "docs/人工智能及第三方工具使用说明.pdf",
-      "bytes": 403756,
-      "sha256": "be12d2d339ab6c6d87e6b48bf949ea29432a1d0b29ff32c727b7c19de8262bf7"
+      "bytes": 495260,
+      "sha256": "df2e85d806cbd92f5acaaec3722255f9f2bed9b111934fde5b1074ae65647687"
     },
     {
       "path": "presentation/决赛现场演示PPT.pptx",
@@ -55,8 +55,7 @@
     "作品原创承诺书.pdf"
   ],
   "pending": [
-    "AI official form handwritten team statement and scanned replacement",
-    "GitLink master synchronization and registration-system display upload"
+    "Registration-system display upload must be confirmed by the team."
   ],
   "report": {
     "sections": 9,
@@ -92,7 +91,7 @@
     },
     {
       "path": "docs/人工智能及第三方工具使用说明.docx",
-      "pages": 6,
+      "pages": 5,
       "author": "",
       "last_modified_by": "",
       "revision_elements": 0,
@@ -116,5 +115,13 @@
     "pledge_visual_pages_reviewed": 1,
     "original_pledge_handwriting_image_preserved": true,
     "scope": "Word native export, PDF layout review, PowerPoint native reopen/render/media decode; privacy metadata and required-path checks."
+  },
+  "handwritten_statement": {
+    "received_on": "2026-10-07",
+    "status": "Team-provided handwritten photo included, with original appendices retained.",
+    "source_sha256": "298ad2e5718a0749b4bca5523395ae4eb9e2a144ec2dabd74d2cddd3bf12ebba",
+    "pdf_pages": 5,
+    "photo_preserved": true,
+    "review_scope": "Uploaded as provided at the team request; no additional content review."
   }
 }
